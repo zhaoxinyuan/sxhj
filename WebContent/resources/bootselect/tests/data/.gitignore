@@ -1,0 +1,9 @@
+/array-tests.js
+/base-tests.js
+/inputData-tests.js
+/maximumInputLength-tests.js
+/maximumSelectionLength-tests.js
+/minimumInputLength-tests.js
+/select-tests.js
+/tags-tests.js
+/tokenizer-tests.js
