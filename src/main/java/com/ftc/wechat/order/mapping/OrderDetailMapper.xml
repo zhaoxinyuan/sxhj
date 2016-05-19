@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ftc.wechat.order.dao.OrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.ftc.wechat.order.bean.OrderDetail" >
+    <id column="detail_id" property="detailId" jdbcType="INTEGER" />
+    <result column="detail_orderid" property="detailOrderid" jdbcType="INTEGER" />
+    <result column="detail_orderno" property="detailOrderno" jdbcType="VARCHAR" />
+    <result column="detail_productid" property="detailProductid" jdbcType="INTEGER" />
+    <result column="detail_qty" property="detailQty" jdbcType="INTEGER" />
+    <result column="detail_amount" property="detailAmount" jdbcType="DOUBLE" />
+    <result column="detail_productname" property="detailProductname" jdbcType="VARCHAR" />
+    <result column="detail_productprice" property="detailProductprice" jdbcType="DOUBLE" />
+    <result column="detail_productimage" property="detailProductimage" jdbcType="VARCHAR" />
+    <result column="detail_productspec" property="detailProductspec" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    detail_id, detail_orderid, detail_orderno, detail_productid, detail_qty, detail_amount, 
+    detail_productname, detail_productprice, detail_productimage, detail_productspec
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from odr_order_detail
+    where detail_id = #{detailId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from odr_order_detail
+    where detail_id = #{detailId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ftc.wechat.order.bean.OrderDetail" >
+    insert into odr_order_detail (detail_id, detail_orderid, detail_orderno, 
+      detail_productid, detail_qty, detail_amount, 
+      detail_productname, detail_productprice, detail_productimage, 
+      detail_productspec)
+    values (#{detailId,jdbcType=INTEGER}, #{detailOrderid,jdbcType=INTEGER}, #{detailOrderno,jdbcType=VARCHAR}, 
+      #{detailProductid,jdbcType=INTEGER}, #{detailQty,jdbcType=INTEGER}, #{detailAmount,jdbcType=DOUBLE}, 
+      #{detailProductname,jdbcType=VARCHAR}, #{detailProductprice,jdbcType=DOUBLE}, #{detailProductimage,jdbcType=VARCHAR}, 
+      #{detailProductspec,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertByBatch" parameterType="java.util.List" >
+    insert into odr_order_detail (detail_id,detail_orderid, detail_orderno, 
+      detail_productid, detail_qty, detail_amount, 
+      detail_productname, detail_productprice, detail_productimage, 
+      detail_productspec)
+    values 
+    <foreach collection="list" item="item" index="index" separator="," >
+      (#{item.detailId,jdbcType=INTEGER}, #{item.detailOrderid,jdbcType=INTEGER}, #{item.detailOrderno,jdbcType=VARCHAR}, 
+      #{item.detailProductid,jdbcType=INTEGER}, #{item.detailQty,jdbcType=INTEGER}, #{item.detailAmount,jdbcType=DOUBLE}, 
+      #{item.detailProductname,jdbcType=VARCHAR}, #{item.detailProductprice,jdbcType=DOUBLE}, #{item.detailProductimage,jdbcType=VARCHAR}, 
+      #{item.detailProductspec,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.ftc.wechat.order.bean.OrderDetail" >
+    insert into odr_order_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="detailId != null" >
+        detail_id,
+      </if>
+      <if test="detailOrderid != null" >
+        detail_orderid,
+      </if>
+      <if test="detailOrderno != null" >
+        detail_orderno,
+      </if>
+      <if test="detailProductid != null" >
+        detail_productid,
+      </if>
+      <if test="detailQty != null" >
+        detail_qty,
+      </if>
+      <if test="detailAmount != null" >
+        detail_amount,
+      </if>
+      <if test="detailProductname != null" >
+        detail_productname,
+      </if>
+      <if test="detailProductprice != null" >
+        detail_productprice,
+      </if>
+      <if test="detailProductimage != null" >
+        detail_productimage,
+      </if>
+      <if test="detailProductspec != null" >
+        detail_productspec,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="detailId != null" >
+        #{detailId,jdbcType=INTEGER},
+      </if>
+      <if test="detailOrderid != null" >
+        #{detailOrderid,jdbcType=INTEGER},
+      </if>
+      <if test="detailOrderno != null" >
+        #{detailOrderno,jdbcType=VARCHAR},
+      </if>
+      <if test="detailProductid != null" >
+        #{detailProductid,jdbcType=INTEGER},
+      </if>
+      <if test="detailQty != null" >
+        #{detailQty,jdbcType=INTEGER},
+      </if>
+      <if test="detailAmount != null" >
+        #{detailAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="detailProductname != null" >
+        #{detailProductname,jdbcType=VARCHAR},
+      </if>
+      <if test="detailProductprice != null" >
+        #{detailProductprice,jdbcType=DOUBLE},
+      </if>
+      <if test="detailProductimage != null" >
+        #{detailProductimage,jdbcType=VARCHAR},
+      </if>
+      <if test="detailProductspec != null" >
+        #{detailProductspec,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ftc.wechat.order.bean.OrderDetail" >
+    update odr_order_detail
+    <set >
+      <if test="detailOrderid != null" >
+        detail_orderid = #{detailOrderid,jdbcType=INTEGER},
+      </if>
+      <if test="detailOrderno != null" >
+        detail_orderno = #{detailOrderno,jdbcType=VARCHAR},
+      </if>
+      <if test="detailProductid != null" >
+        detail_productid = #{detailProductid,jdbcType=INTEGER},
+      </if>
+      <if test="detailQty != null" >
+        detail_qty = #{detailQty,jdbcType=INTEGER},
+      </if>
+      <if test="detailAmount != null" >
+        detail_amount = #{detailAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="detailProductname != null" >
+        detail_productname = #{detailProductname,jdbcType=VARCHAR},
+      </if>
+      <if test="detailProductprice != null" >
+        detail_productprice = #{detailProductprice,jdbcType=DOUBLE},
+      </if>
+      <if test="detailProductimage != null" >
+        detail_productimage = #{detailProductimage,jdbcType=VARCHAR},
+      </if>
+      <if test="detailProductspec != null" >
+        detail_productspec = #{detailProductspec,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where detail_id = #{detailId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ftc.wechat.order.bean.OrderDetail" >
+    update odr_order_detail
+    set detail_orderid = #{detailOrderid,jdbcType=INTEGER},
+      detail_orderno = #{detailOrderno,jdbcType=VARCHAR},
+      detail_productid = #{detailProductid,jdbcType=INTEGER},
+      detail_qty = #{detailQty,jdbcType=INTEGER},
+      detail_amount = #{detailAmount,jdbcType=DOUBLE},
+      detail_productname = #{detailProductname,jdbcType=VARCHAR},
+      detail_productprice = #{detailProductprice,jdbcType=DOUBLE},
+      detail_productimage = #{detailProductimage,jdbcType=VARCHAR},
+      detail_productspec = #{detailProductspec,jdbcType=VARCHAR}
+    where detail_id = #{detailId,jdbcType=INTEGER}
+  </update>
+</mapper>

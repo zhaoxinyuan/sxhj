@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<sitemesh>  
+   <mapping path="/*" decorator="/decorators/basic-theme.jsp" />
+   <mapping path="/login*" decorator="/decorators/other-theme.jsp" />
+   <mapping path="/error*" decorator="/decorators/other-theme.jsp" />
+   
+   
+   <mapping path="/test/a.html" exclue="true" />
+   
+</sitemesh>  
