@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ftc.wechat.order.dao.InvoiceMapper" >
-  <resultMap id="BaseResultMap" type="com.ftc.wechat.order.bean.Invoice" >
+<mapper namespace="com.ftc.wechat.store.dao.InvoiceMapper" >
+  <resultMap id="BaseResultMap" type="com.ftc.wechat.store.bean.Invoice" >
     <id column="invoice_id" property="invoiceId" jdbcType="INTEGER" />
     <result column="invoice_datetime" property="invoiceDatetime" jdbcType="VARCHAR" />
     <result column="invoice_title" property="invoiceTitle" jdbcType="VARCHAR" />
@@ -15,27 +15,27 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from odr_invoice
+    from str_invoice
     where invoice_id = #{invoiceId,jdbcType=INTEGER}
   </select>
    <select id="selectByTempId" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
-    from odr_invoice
+    from str_invoice
     where invoice_tempid = #{tempid,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from odr_invoice
+    delete from str_invoice
     where invoice_id = #{invoiceId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.ftc.wechat.order.bean.Invoice" >
-    insert into odr_invoice (invoice_id, invoice_datetime, invoice_title, 
+  <insert id="insert" parameterType="com.ftc.wechat.store.bean.Invoice" >
+    insert into str_invoice (invoice_id, invoice_datetime, invoice_title, 
       invoice_content, invoice_amount,invoice_tempid)
     values (#{invoiceId,jdbcType=INTEGER}, #{invoiceDatetime,jdbcType=VARCHAR}, #{invoiceTitle,jdbcType=VARCHAR}, 
       #{invoiceContent,jdbcType=VARCHAR}, #{invoiceAmount,jdbcType=DOUBLE}, #{tempid,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.ftc.wechat.order.bean.Invoice" >
-    insert into odr_invoice
+  <insert id="insertSelective" parameterType="com.ftc.wechat.store.bean.Invoice" >
+    insert into str_invoice
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="invoiceId != null" >
         invoice_id,
@@ -77,8 +77,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ftc.wechat.order.bean.Invoice" >
-    update odr_invoice
+  <update id="updateByPrimaryKeySelective" parameterType="com.ftc.wechat.store.bean.Invoice" >
+    update str_invoice
     <set >
       <if test="invoiceDatetime != null" >
         invoice_datetime = #{invoiceDatetime,jdbcType=VARCHAR},
@@ -95,8 +95,8 @@
     </set>
     where invoice_id = #{invoiceId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ftc.wechat.order.bean.Invoice" >
-    update odr_invoice
+  <update id="updateByPrimaryKey" parameterType="com.ftc.wechat.store.bean.Invoice" >
+    update str_invoice
     set invoice_datetime = #{invoiceDatetime,jdbcType=VARCHAR},
       invoice_title = #{invoiceTitle,jdbcType=VARCHAR},
       invoice_content = #{invoiceContent,jdbcType=VARCHAR},

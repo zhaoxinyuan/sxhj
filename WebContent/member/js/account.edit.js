@@ -12,7 +12,6 @@ var accountEdit = {
 				accountEdit.updateUser(accountEdit.userInfo.userId);
 				//toastr.success('Great that you decided to move a mouse.','You are back. ');
 			});
-			
 			this.getUserInfo($.fn.getUrlParam('userid'));
 		},
 		getUserInfo : function(userid){

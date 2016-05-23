@@ -1,4 +1,4 @@
-package com.ftc.wechat.order.service.impl;
+package com.ftc.wechat.store.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,23 +12,23 @@ import org.springframework.stereotype.Service;
 import com.ftc.base.dao.BaseDao;
 import com.ftc.base.util.OrderNoUtil;
 import com.ftc.wechat.account.bean.UserAddress;
-import com.ftc.wechat.order.bean.Invoice;
-import com.ftc.wechat.order.bean.Order;
-import com.ftc.wechat.order.bean.OrderDetail;
-import com.ftc.wechat.order.bean.OrderStatus;
-import com.ftc.wechat.order.entity.OrderTemp;
-import com.ftc.wechat.order.entity.ShoppingCartTemp;
-import com.ftc.wechat.order.service.OrderService;
+import com.ftc.wechat.store.bean.Invoice;
+import com.ftc.wechat.store.bean.Order;
+import com.ftc.wechat.store.bean.OrderDetail;
+import com.ftc.wechat.store.bean.OrderStatus;
 import com.ftc.wechat.store.bean.Store;
+import com.ftc.wechat.store.entity.OrderTemp;
+import com.ftc.wechat.store.entity.ShoppingCartTemp;
+import com.ftc.wechat.store.service.OrderService;
 
 @Service
 public class OrderServiceImpl implements OrderService{
 	
 	private static final String ADDRESS_NAMESPACE_INFOUSER = "com.ftc.wechat.account.bean.mapper.UserAddressMapper.";
-	private static final String ORDER_NAMESPACE_INFOUSER = "com.ftc.wechat.order.dao.OrderMapper.";
-	private static final String ORDER_STATUS_NAMESPACE_INFOUSER = "com.ftc.wechat.order.dao.OrderStatusMapper.";
-	private static final String ORDER_DETAIL_NAMESPACE_INFOUSER = "com.ftc.wechat.order.dao.OrderDetailMapper.";
-	private static final String INVOICE_NAMESPACE_INFOUSER = "com.ftc.wechat.order.dao.InvoiceMapper.";
+	private static final String ORDER_NAMESPACE_INFOUSER = "com.ftc.wechat.store.dao.OrderMapper.";
+	private static final String ORDER_STATUS_NAMESPACE_INFOUSER = "com.ftc.wechat.store.dao.OrderStatusMapper.";
+	private static final String ORDER_DETAIL_NAMESPACE_INFOUSER = "com.ftc.wechat.store.dao.OrderDetailMapper.";
+	private static final String INVOICE_NAMESPACE_INFOUSER = "com.ftc.wechat.store.dao.InvoiceMapper.";
 	
 	
 	@Autowired

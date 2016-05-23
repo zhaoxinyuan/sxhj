@@ -1,4 +1,4 @@
-package com.ftc.wechat.order.entity;
+package com.ftc.wechat.store.entity;
 
 public class ShoppingCartTemp {
 

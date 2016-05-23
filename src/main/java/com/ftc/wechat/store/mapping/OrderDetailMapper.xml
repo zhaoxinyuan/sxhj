@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ftc.wechat.order.dao.OrderDetailMapper" >
-  <resultMap id="BaseResultMap" type="com.ftc.wechat.order.bean.OrderDetail" >
+<mapper namespace="com.ftc.wechat.store.dao.OrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.ftc.wechat.store.bean.OrderDetail" >
     <id column="detail_id" property="detailId" jdbcType="INTEGER" />
     <result column="detail_orderid" property="detailOrderid" jdbcType="INTEGER" />
     <result column="detail_orderno" property="detailOrderno" jdbcType="VARCHAR" />
@@ -20,15 +20,15 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from odr_order_detail
+    from str_order_detail
     where detail_id = #{detailId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from odr_order_detail
+    delete from str_order_detail
     where detail_id = #{detailId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.ftc.wechat.order.bean.OrderDetail" >
-    insert into odr_order_detail (detail_id, detail_orderid, detail_orderno, 
+  <insert id="insert" parameterType="com.ftc.wechat.store.bean.OrderDetail" >
+    insert into str_order_detail (detail_id, detail_orderid, detail_orderno, 
       detail_productid, detail_qty, detail_amount, 
       detail_productname, detail_productprice, detail_productimage, 
       detail_productspec)
@@ -38,7 +38,7 @@
       #{detailProductspec,jdbcType=VARCHAR})
   </insert>
   <insert id="insertByBatch" parameterType="java.util.List" >
-    insert into odr_order_detail (detail_id,detail_orderid, detail_orderno, 
+    insert into str_order_detail (detail_id,detail_orderid, detail_orderno, 
       detail_productid, detail_qty, detail_amount, 
       detail_productname, detail_productprice, detail_productimage, 
       detail_productspec)
@@ -50,8 +50,8 @@
       #{item.detailProductspec,jdbcType=VARCHAR})
     </foreach>
   </insert>
-  <insert id="insertSelective" parameterType="com.ftc.wechat.order.bean.OrderDetail" >
-    insert into odr_order_detail
+  <insert id="insertSelective" parameterType="com.ftc.wechat.store.bean.OrderDetail" >
+    insert into str_order_detail
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="detailId != null" >
         detail_id,
@@ -117,8 +117,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ftc.wechat.order.bean.OrderDetail" >
-    update odr_order_detail
+  <update id="updateByPrimaryKeySelective" parameterType="com.ftc.wechat.store.bean.OrderDetail" >
+    update str_order_detail
     <set >
       <if test="detailOrderid != null" >
         detail_orderid = #{detailOrderid,jdbcType=INTEGER},
@@ -150,8 +150,8 @@
     </set>
     where detail_id = #{detailId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ftc.wechat.order.bean.OrderDetail" >
-    update odr_order_detail
+  <update id="updateByPrimaryKey" parameterType="com.ftc.wechat.store.bean.OrderDetail" >
+    update str_order_detail
     set detail_orderid = #{detailOrderid,jdbcType=INTEGER},
       detail_orderno = #{detailOrderno,jdbcType=VARCHAR},
       detail_productid = #{detailProductid,jdbcType=INTEGER},

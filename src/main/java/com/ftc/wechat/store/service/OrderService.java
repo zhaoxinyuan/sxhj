@@ -1,11 +1,11 @@
-package com.ftc.wechat.order.service;
+package com.ftc.wechat.store.service;
 
 import java.util.List;
 
-import com.ftc.wechat.order.bean.Order;
-import com.ftc.wechat.order.entity.OrderTemp;
-import com.ftc.wechat.order.entity.ShoppingCartTemp;
+import com.ftc.wechat.store.bean.Order;
 import com.ftc.wechat.store.bean.Store;
+import com.ftc.wechat.store.entity.OrderTemp;
+import com.ftc.wechat.store.entity.ShoppingCartTemp;
 
 public interface OrderService {
 

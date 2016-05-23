@@ -1,4 +1,4 @@
-package com.ftc.wechat.order.bean;
+package com.ftc.wechat.store.bean;
 
 public class Invoice {
     private Integer invoiceId;

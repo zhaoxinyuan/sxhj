@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ftc.wechat.order.dao.OrderMapper" >
-  <resultMap id="BaseResultMap" type="com.ftc.wechat.order.bean.Order" >
+<mapper namespace="com.ftc.wechat.store.dao.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.ftc.wechat.store.bean.Order" >
     <id column="order_id" property="orderId" jdbcType="INTEGER" />
     <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
     <result column="order_datetime" property="orderDatetime" jdbcType="VARCHAR" />
@@ -25,12 +25,12 @@
     <result column="order_addressmobile" property="orderAddressmobile" jdbcType="VARCHAR" />
     <result column="order_deleted" property="orderDeleted" jdbcType="INTEGER" />
     <result column="order_statusid" property="orderStatusid" jdbcType="INTEGER" />
-    <association column="order_statusid" property="orderStatus" javaType="com.ftc.wechat.order.bean.OrderStatus">
+    <association column="order_statusid" property="orderStatus" javaType="com.ftc.wechat.store.bean.OrderStatus">
     	<id column="status_id" property="statusId" jdbcType="INTEGER" />
     	<result column="status_name" property="statusName" jdbcType="VARCHAR" />
     	<result column="status_code" property="statusCode" jdbcType="VARCHAR" />
     </association>
-    <association column="order_invoiceid" property="orderInvoice" javaType="com.ftc.wechat.order.bean.Invoice">
+    <association column="order_invoiceid" property="orderInvoice" javaType="com.ftc.wechat.store.bean.Invoice">
     	<id column="invoice_id" property="invoiceId" jdbcType="INTEGER" />
 	    <result column="invoice_datetime" property="invoiceDatetime" jdbcType="VARCHAR" />
 	    <result column="invoice_title" property="invoiceTitle" jdbcType="VARCHAR" />
@@ -38,7 +38,7 @@
 	    <result column="invoice_amount" property="invoiceAmount" jdbcType="DOUBLE" />
 	    <result column="invoice_tempid" property="tempid" jdbcType="VARCHAR" />
     </association>
-    <collection column="detail_orderid" property="orderDetail" ofType="com.ftc.wechat.order.bean.OrderDetail">
+    <collection column="detail_orderid" property="orderDetail" ofType="com.ftc.wechat.store.bean.OrderDetail">
 	    <id column="detail_id" property="detailId" jdbcType="INTEGER" />
 	    <result column="detail_orderid" property="detailOrderid" jdbcType="INTEGER" />
 	    <result column="detail_orderno" property="detailOrderno" jdbcType="VARCHAR" />
@@ -67,10 +67,10 @@
     	   b.*,
     	   c.*,
     	   d.*
-    FROM odr_order a 
-    LEFT JOIN odr_order_status b ON a.order_statusid = b.status_id
-    LEFT JOIN odr_order_detail c ON a.order_id = c.detail_orderid
-    LEFT JOIN odr_invoice d ON a.order_invoiceid = d.invoice_id
+    FROM str_order a 
+    LEFT JOIN str_order_status b ON a.order_statusid = b.status_id
+    LEFT JOIN str_order_detail c ON a.order_id = c.detail_orderid
+    LEFT JOIN str_invoice d ON a.order_invoiceid = d.invoice_id
     WHERE order_id = #{orderId,jdbcType=INTEGER}
   </select>
   <select id="selectByOrderNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -78,24 +78,24 @@
     	   b.*,
     	   c.*,
     	   d.*
-    FROM odr_order a 
-    LEFT JOIN odr_order_status b ON a.order_statusid = b.status_id
-    LEFT JOIN odr_order_detail c ON a.order_id = c.detail_orderid
-    LEFT JOIN odr_invoice d ON a.order_invoiceid = d.invoice_id
+    FROM str_order a 
+    LEFT JOIN str_order_status b ON a.order_statusid = b.status_id
+    LEFT JOIN str_order_detail c ON a.order_id = c.detail_orderid
+    LEFT JOIN str_invoice d ON a.order_invoiceid = d.invoice_id
     WHERE order_no = #{orderNo,jdbcType=VARCHAR}
   </select>
   <select id="selectSerial" resultMap="serialResultMap" parameterType="java.lang.Integer" >
    select 
     (count(1) + 1) as serial
-    from odr_order
+    from str_order
     where date_format(order_datetime,'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from odr_order
+    delete from str_order
     where order_id = #{orderId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.ftc.wechat.order.bean.Order">
-    insert into odr_order (order_id, order_no, order_datetime,order_statusid, 
+  <insert id="insert" parameterType="com.ftc.wechat.store.bean.Order">
+    insert into str_order (order_id, order_no, order_datetime,order_statusid, 
       order_payableamount, order_realpayamount, order_amount, 
       order_discountamount, order_discountinfo, 
       order_paytype, order_payid, order_deliverytime, 
@@ -116,8 +116,8 @@
       
       
   </insert>
-  <insert id="insertSelective" parameterType="com.ftc.wechat.order.bean.Order" >
-    insert into odr_order
+  <insert id="insertSelective" parameterType="com.ftc.wechat.store.bean.Order" >
+    insert into str_order
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="orderId != null" >
         order_id,
@@ -261,8 +261,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ftc.wechat.order.bean.Order" >
-    update odr_order
+  <update id="updateByPrimaryKeySelective" parameterType="com.ftc.wechat.store.bean.Order" >
+    update str_order
     <set >
       <if test="orderNo != null" >
         order_no = #{orderNo,jdbcType=VARCHAR},
@@ -333,8 +333,8 @@
     </set>
     where order_id = #{orderId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ftc.wechat.order.bean.Order" >
-    update odr_order
+  <update id="updateByPrimaryKey" parameterType="com.ftc.wechat.store.bean.Order" >
+    update str_order
     set order_no = #{orderNo,jdbcType=VARCHAR},
       order_statusid = #{orderStatusid,jdbcType=INTEGER},
       order_datetime = #{orderDatetime,jdbcType=VARCHAR},

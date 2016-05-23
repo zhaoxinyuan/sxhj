@@ -1,4 +1,4 @@
-package com.ftc.wechat.order.entity;
+package com.ftc.wechat.store.entity;
 
 import java.util.List;
 

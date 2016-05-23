@@ -1,4 +1,4 @@
-package com.ftc.wechat.order.controller;
+package com.ftc.wechat.store.controller;
 
 import java.util.List;
 
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ftc.wechat.order.bean.Order;
-import com.ftc.wechat.order.entity.OrderTemp;
-import com.ftc.wechat.order.entity.ShoppingCartTemp;
-import com.ftc.wechat.order.service.OrderService;
+import com.ftc.wechat.store.bean.Order;
 import com.ftc.wechat.store.bean.Store;
+import com.ftc.wechat.store.entity.OrderTemp;
+import com.ftc.wechat.store.entity.ShoppingCartTemp;
+import com.ftc.wechat.store.service.OrderService;
 import com.ftc.wechat.util.JsonpUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -25,9 +25,9 @@ import com.google.gson.reflect.TypeToken;
 @Controller 
 @ResponseBody
 @Scope("prototype")
-@RequestMapping("/orderAction")
+@RequestMapping("/store/orderAction")
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-public class OrderAction {
+public class StoreOrderAction {
 	@Autowired
 	private OrderService orderService;
 	
