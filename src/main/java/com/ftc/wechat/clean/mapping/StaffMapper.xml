@@ -10,11 +10,11 @@
     <result column="staff_nativeplace" property="staffNativeplace" jdbcType="VARCHAR" />
     <result column="staff_idcode" property="staffIdcode" jdbcType="VARCHAR" />
     <result column="staff_mobile" property="staffMobile" jdbcType="VARCHAR" />
-    <result column="staff_status" property="staffStatus" jdbcType="INTEGER" />
+    <result column="staff_statusid" property="staffStatusId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     staff_id, staff_code, staff_name, staff_age, staff_image, staff_nativeplace, staff_idcode, 
-    staff_mobile, staff_status
+    staff_mobile, staff_statusid
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -35,11 +35,11 @@
   <insert id="insert" parameterType="com.ftc.wechat.clean.bean.Staff" >
     insert into cle_staff (staff_id, staff_code, staff_name, 
       staff_age, staff_image, staff_nativeplace, 
-      staff_idcode, staff_mobile, staff_status
+      staff_idcode, staff_mobile, staff_statusid
       )
     values (#{staffId,jdbcType=INTEGER}, #{staffCode,jdbcType=VARCHAR}, #{staffName,jdbcType=VARCHAR}, 
       #{staffAge,jdbcType=INTEGER}, #{staffImage,jdbcType=VARCHAR}, #{staffNativeplace,jdbcType=VARCHAR}, 
-      #{staffIdcode,jdbcType=VARCHAR}, #{staffMobile,jdbcType=VARCHAR}, #{staffStatus,jdbcType=INTEGER}
+      #{staffIdcode,jdbcType=VARCHAR}, #{staffMobile,jdbcType=VARCHAR}, #{staffStatusId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.ftc.wechat.clean.bean.Staff" >
@@ -69,8 +69,8 @@
       <if test="staffMobile != null" >
         staff_mobile,
       </if>
-      <if test="staffStatus != null" >
-        staff_status,
+      <if test="staffStatusId != null" >
+        staff_statusid,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -98,8 +98,8 @@
       <if test="staffMobile != null" >
         #{staffMobile,jdbcType=VARCHAR},
       </if>
-      <if test="staffStatus != null" >
-        #{staffStatus,jdbcType=INTEGER},
+      <if test="staffStatusId != null" >
+        #{staffStatusId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -127,8 +127,8 @@
       <if test="staffMobile != null" >
         staff_mobile = #{staffMobile,jdbcType=VARCHAR},
       </if>
-      <if test="staffStatus != null" >
-        staff_status = #{staffStatus,jdbcType=INTEGER},
+      <if test="staffStatusId != null" >
+        staff_statusid = #{staffStatusId,jdbcType=INTEGER},
       </if>
     </set>
     where staff_id = #{staffId,jdbcType=INTEGER}
@@ -142,7 +142,7 @@
       staff_nativeplace = #{staffNativeplace,jdbcType=VARCHAR},
       staff_idcode = #{staffIdcode,jdbcType=VARCHAR},
       staff_mobile = #{staffMobile,jdbcType=VARCHAR},
-      staff_status = #{staffStatus,jdbcType=INTEGER}
+      staff_statusid = #{staffStatusId,jdbcType=INTEGER}
     where staff_id = #{staffId,jdbcType=INTEGER}
   </update>
 </mapper>
