@@ -58,5 +58,18 @@ public class UserAddressServiceImpl implements UserAddressService{
 		baseDao.modify(NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", address);
 	}
 
-	
+	@Override
+	public UserAddress getDefaultAddress(Integer addressUserid) {
+		List<UserAddress> list =  baseDao.selectList(NAMESPACE_INFOUSER + "selectAll", addressUserid);
+		UserAddress address = null;
+		if(list.size() != 0){
+			address = list.get(0);
+			for (UserAddress userAddress : list) {
+				if(userAddress.getAddressDefault() == 1){
+					address = userAddress;
+				}
+			}
+		}
+		return address;
+	}
 }

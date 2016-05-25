@@ -1,25 +1,21 @@
-package com.ftc.wechat.store.bean;
-
-import java.util.List;
-
-import com.ftc.background.sys.bean.Status;
+package com.ftc.wechat.clean.bean;
 
 public class Order {
     private Integer orderId;
 
     private String orderNo;
 
+    private Integer orderCategory;
+
     private String orderDatetime;
-    
+
+    private Integer orderServiceNumber;
+
     private Integer orderStatusid;
-    
-    private Status orderStatus;
 
     private Double orderPayableamount;
 
     private Double orderRealpayamount;
-
-    private Double orderAmount;
 
     private Double orderDiscountamount;
 
@@ -28,14 +24,6 @@ public class Order {
     private Integer orderPaytype;
 
     private Integer orderPayid;
-
-    private String orderDeliverytime;
-
-    private Double orderDeliveryamount;
-
-    private Integer orderInvoiceid;
-    
-    private Invoice orderInvoice;
 
     private Integer orderUserid;
 
@@ -54,8 +42,6 @@ public class Order {
     private String orderAddressmobile;
 
     private Integer orderDeleted;
-    
-    private List<OrderDetail> orderDetail;
 
     public Integer getOrderId() {
         return orderId;
@@ -73,6 +59,14 @@ public class Order {
         this.orderNo = orderNo == null ? null : orderNo.trim();
     }
 
+    public Integer getOrderCategory() {
+        return orderCategory;
+    }
+
+    public void setOrderCategory(Integer orderCategory) {
+        this.orderCategory = orderCategory;
+    }
+
     public String getOrderDatetime() {
         return orderDatetime;
     }
@@ -81,23 +75,23 @@ public class Order {
         this.orderDatetime = orderDatetime == null ? null : orderDatetime.trim();
     }
 
+    public Integer getOrderServiceNumber() {
+        return orderServiceNumber;
+    }
+
+    public void setOrderServiceNumber(Integer orderServiceNumber) {
+        this.orderServiceNumber = orderServiceNumber;
+    }
+
     public Integer getOrderStatusid() {
-		return orderStatusid;
-	}
+        return orderStatusid;
+    }
 
-	public void setOrderStatusid(Integer orderStatusid) {
-		this.orderStatusid = orderStatusid;
-	}
-	
-	public Status getOrderStatus() {
-		return orderStatus;
-	}
+    public void setOrderStatusid(Integer orderStatusid) {
+        this.orderStatusid = orderStatusid;
+    }
 
-	public void setOrderStatus(Status orderStatus) {
-		this.orderStatus = orderStatus;
-	}
-
-	public Double getOrderPayableamount() {
+    public Double getOrderPayableamount() {
         return orderPayableamount;
     }
 
@@ -111,14 +105,6 @@ public class Order {
 
     public void setOrderRealpayamount(Double orderRealpayamount) {
         this.orderRealpayamount = orderRealpayamount;
-    }
-
-    public Double getOrderAmount() {
-        return orderAmount;
-    }
-
-    public void setOrderAmount(Double orderAmount) {
-        this.orderAmount = orderAmount;
     }
 
     public Double getOrderDiscountamount() {
@@ -153,39 +139,7 @@ public class Order {
         this.orderPayid = orderPayid;
     }
 
-    public String getOrderDeliverytime() {
-        return orderDeliverytime;
-    }
-
-    public void setOrderDeliverytime(String orderDeliverytime) {
-        this.orderDeliverytime = orderDeliverytime == null ? null : orderDeliverytime.trim();
-    }
-
-    public Double getOrderDeliveryamount() {
-        return orderDeliveryamount;
-    }
-
-    public void setOrderDeliveryamount(Double orderDeliveryamount) {
-        this.orderDeliveryamount = orderDeliveryamount;
-    }
-
-    public Integer getOrderInvoiceid() {
-        return orderInvoiceid;
-    }
-
-    public void setOrderInvoiceid(Integer orderInvoiceid) {
-        this.orderInvoiceid = orderInvoiceid;
-    }
-    
-    public Invoice getOrderInvoice() {
-		return orderInvoice;
-	}
-
-	public void setOrderInvoice(Invoice orderInvoice) {
-		this.orderInvoice = orderInvoice;
-	}
-
-	public Integer getOrderUserid() {
+    public Integer getOrderUserid() {
         return orderUserid;
     }
 
@@ -256,13 +210,4 @@ public class Order {
     public void setOrderDeleted(Integer orderDeleted) {
         this.orderDeleted = orderDeleted;
     }
-
-	public List<OrderDetail> getOrderDetail() {
-		return orderDetail;
-	}
-
-	public void setOrderDetail(List<OrderDetail> orderDetail) {
-		this.orderDetail = orderDetail;
-	}
-    
 }

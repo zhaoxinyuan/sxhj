@@ -59,4 +59,9 @@ public class AddressAction extends BaseAction{
 		addressService.deleteAddress(address);
 		return JsonpUtil.jsonpCllback(super.backSuccess(),callback);
 	}
+	
+	@RequestMapping(value = "defaultAddresses",method = RequestMethod.GET)
+	public String getDefaultAddress(HttpServletRequest request,HttpServletResponse response,Integer addressUserid,String callback){
+		return JsonpUtil.jsonpCllback(addressService.getDefaultAddress(addressUserid),callback);
+	}
 }

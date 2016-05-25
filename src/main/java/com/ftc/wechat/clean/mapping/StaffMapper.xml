@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ftc.wechat.clean.dao.StaffMapper" >
+  <resultMap id="BaseResultMap" type="com.ftc.wechat.clean.bean.Staff" >
+    <id column="staff_id" property="staffId" jdbcType="INTEGER" />
+    <result column="staff_code" property="staffCode" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+    <result column="staff_age" property="staffAge" jdbcType="INTEGER" />
+    <result column="staff_image" property="staffImage" jdbcType="VARCHAR" />
+    <result column="staff_nativeplace" property="staffNativeplace" jdbcType="VARCHAR" />
+    <result column="staff_idcode" property="staffIdcode" jdbcType="VARCHAR" />
+    <result column="staff_mobile" property="staffMobile" jdbcType="VARCHAR" />
+    <result column="staff_status" property="staffStatus" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    staff_id, staff_code, staff_name, staff_age, staff_image, staff_nativeplace, staff_idcode, 
+    staff_mobile, staff_status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from cle_staff
+    where staff_id = #{staffId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByCategory" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select b.* 
+    from cle_staff_category_mapping a
+    left join cle_staff b on a.staff_id = b.staff_id
+    where a.category_id = #{categoryId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cle_staff
+    where staff_id = #{staffId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ftc.wechat.clean.bean.Staff" >
+    insert into cle_staff (staff_id, staff_code, staff_name, 
+      staff_age, staff_image, staff_nativeplace, 
+      staff_idcode, staff_mobile, staff_status
+      )
+    values (#{staffId,jdbcType=INTEGER}, #{staffCode,jdbcType=VARCHAR}, #{staffName,jdbcType=VARCHAR}, 
+      #{staffAge,jdbcType=INTEGER}, #{staffImage,jdbcType=VARCHAR}, #{staffNativeplace,jdbcType=VARCHAR}, 
+      #{staffIdcode,jdbcType=VARCHAR}, #{staffMobile,jdbcType=VARCHAR}, #{staffStatus,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ftc.wechat.clean.bean.Staff" >
+    insert into cle_staff
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="staffId != null" >
+        staff_id,
+      </if>
+      <if test="staffCode != null" >
+        staff_code,
+      </if>
+      <if test="staffName != null" >
+        staff_name,
+      </if>
+      <if test="staffAge != null" >
+        staff_age,
+      </if>
+      <if test="staffImage != null" >
+        staff_image,
+      </if>
+      <if test="staffNativeplace != null" >
+        staff_nativeplace,
+      </if>
+      <if test="staffIdcode != null" >
+        staff_idcode,
+      </if>
+      <if test="staffMobile != null" >
+        staff_mobile,
+      </if>
+      <if test="staffStatus != null" >
+        staff_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="staffId != null" >
+        #{staffId,jdbcType=INTEGER},
+      </if>
+      <if test="staffCode != null" >
+        #{staffCode,jdbcType=VARCHAR},
+      </if>
+      <if test="staffName != null" >
+        #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="staffAge != null" >
+        #{staffAge,jdbcType=INTEGER},
+      </if>
+      <if test="staffImage != null" >
+        #{staffImage,jdbcType=VARCHAR},
+      </if>
+      <if test="staffNativeplace != null" >
+        #{staffNativeplace,jdbcType=VARCHAR},
+      </if>
+      <if test="staffIdcode != null" >
+        #{staffIdcode,jdbcType=VARCHAR},
+      </if>
+      <if test="staffMobile != null" >
+        #{staffMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="staffStatus != null" >
+        #{staffStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ftc.wechat.clean.bean.Staff" >
+    update cle_staff
+    <set >
+      <if test="staffCode != null" >
+        staff_code = #{staffCode,jdbcType=VARCHAR},
+      </if>
+      <if test="staffName != null" >
+        staff_name = #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="staffAge != null" >
+        staff_age = #{staffAge,jdbcType=INTEGER},
+      </if>
+      <if test="staffImage != null" >
+        staff_image = #{staffImage,jdbcType=VARCHAR},
+      </if>
+      <if test="staffNativeplace != null" >
+        staff_nativeplace = #{staffNativeplace,jdbcType=VARCHAR},
+      </if>
+      <if test="staffIdcode != null" >
+        staff_idcode = #{staffIdcode,jdbcType=VARCHAR},
+      </if>
+      <if test="staffMobile != null" >
+        staff_mobile = #{staffMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="staffStatus != null" >
+        staff_status = #{staffStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where staff_id = #{staffId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ftc.wechat.clean.bean.Staff" >
+    update cle_staff
+    set staff_code = #{staffCode,jdbcType=VARCHAR},
+      staff_name = #{staffName,jdbcType=VARCHAR},
+      staff_age = #{staffAge,jdbcType=INTEGER},
+      staff_image = #{staffImage,jdbcType=VARCHAR},
+      staff_nativeplace = #{staffNativeplace,jdbcType=VARCHAR},
+      staff_idcode = #{staffIdcode,jdbcType=VARCHAR},
+      staff_mobile = #{staffMobile,jdbcType=VARCHAR},
+      staff_status = #{staffStatus,jdbcType=INTEGER}
+    where staff_id = #{staffId,jdbcType=INTEGER}
+  </update>
+</mapper>

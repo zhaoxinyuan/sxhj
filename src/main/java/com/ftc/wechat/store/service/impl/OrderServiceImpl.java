@@ -9,13 +9,14 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ftc.background.sys.bean.Status;
 import com.ftc.base.dao.BaseDao;
 import com.ftc.base.util.OrderNoUtil;
 import com.ftc.wechat.account.bean.UserAddress;
+import com.ftc.wechat.account.service.UserAddressService;
 import com.ftc.wechat.store.bean.Invoice;
 import com.ftc.wechat.store.bean.Order;
 import com.ftc.wechat.store.bean.OrderDetail;
-import com.ftc.wechat.store.bean.OrderStatus;
 import com.ftc.wechat.store.bean.Store;
 import com.ftc.wechat.store.entity.OrderTemp;
 import com.ftc.wechat.store.entity.ShoppingCartTemp;
@@ -24,15 +25,17 @@ import com.ftc.wechat.store.service.OrderService;
 @Service
 public class OrderServiceImpl implements OrderService{
 	
-	private static final String ADDRESS_NAMESPACE_INFOUSER = "com.ftc.wechat.account.bean.mapper.UserAddressMapper.";
 	private static final String ORDER_NAMESPACE_INFOUSER = "com.ftc.wechat.store.dao.OrderMapper.";
-	private static final String ORDER_STATUS_NAMESPACE_INFOUSER = "com.ftc.wechat.store.dao.OrderStatusMapper.";
+	private static final String ORDER_STATUS_NAMESPACE_INFOUSER = "com.ftc.background.sys.bean.StatusMapper.";
 	private static final String ORDER_DETAIL_NAMESPACE_INFOUSER = "com.ftc.wechat.store.dao.OrderDetailMapper.";
 	private static final String INVOICE_NAMESPACE_INFOUSER = "com.ftc.wechat.store.dao.InvoiceMapper.";
 	
 	
 	@Autowired
 	private BaseDao baseDao;
+	
+	@Autowired
+	private UserAddressService addressService;
 
 	@Override
 	public OrderTemp creatOrder(List<ShoppingCartTemp> cart, Integer userId,Store store,Integer addressId) {
@@ -40,7 +43,7 @@ public class OrderServiceImpl implements OrderService{
 		order.setCart(cart);
 		order.setProductAmount(order.getProductAmount());
 		order.setDeliveryAmount(store.getStoreDeliveryamount());
-		order.setAddress(addressId == null ? (UserAddress)baseDao.selectOne(ADDRESS_NAMESPACE_INFOUSER + "selectByUserDefault",userId) : (UserAddress)baseDao.selectOne(ADDRESS_NAMESPACE_INFOUSER + "selectByPrimaryKey",addressId));
+		order.setAddress(addressId == null ? (UserAddress)addressService.getDefaultAddress(userId) : (UserAddress)addressService.getAddress(addressId));
 		order.setOrderAmount(order.getOrderAmount());
 		return order;
 	}
@@ -60,7 +63,7 @@ public class OrderServiceImpl implements OrderService{
 			invoice = baseDao.selectOne(INVOICE_NAMESPACE_INFOUSER + "selectByTempId",tempId.toString());
 		}
 		
-		OrderStatus orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "status_001") ;
+		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "str_001") ;
 		
 		OrderNoUtil orderNoUtil = (OrderNoUtil)baseDao.selectOne(ORDER_NAMESPACE_INFOUSER + "selectSerial");
 		order.setOrderNo(orderNoUtil.createOrderNo("MKT"));

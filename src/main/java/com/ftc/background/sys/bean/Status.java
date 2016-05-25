@@ -1,6 +1,6 @@
-package com.ftc.wechat.store.bean;
+package com.ftc.background.sys.bean;
 
-public class OrderStatus {
+public class Status {
     private Integer statusId;
 
     private String statusName;

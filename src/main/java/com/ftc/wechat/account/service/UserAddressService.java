@@ -16,4 +16,6 @@ public interface UserAddressService {
 	public void deleteAddress(UserAddress address);
 	
 	public void updateAddressDefault(UserAddress address);
+	
+	public UserAddress getDefaultAddress(Integer addressUserid);
 }

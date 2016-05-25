@@ -37,23 +37,6 @@
     order by address_id desc
     LIMIT 1
   </select>
-  <select id="selectByUserDefault" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-   SELECT 	CASE WHEN a.address_id = NULL THEN b.address_id ELSE a.address_id END AS address_id,
-			CASE WHEN a.address_id = NULL THEN b.address_userid ELSE a.address_userid END AS address_userid,
-			CASE WHEN a.address_id = NULL THEN b.address_consignee ELSE a.address_consignee END AS address_consignee,
-			CASE WHEN a.address_id = NULL THEN b.address_mobile ELSE a.address_mobile END AS address_mobile,
-			CASE WHEN a.address_id = NULL THEN b.address_province ELSE a.address_province END AS address_province,
-			CASE WHEN a.address_id = NULL THEN b.address_city ELSE a.address_city END AS address_city,	
-			CASE WHEN a.address_id = NULL THEN b.address_street ELSE a.address_street END AS address_street,
-			CASE WHEN a.address_id = NULL THEN b.address_default ELSE a.address_default END AS address_default
-	FROM (
-		SELECT * FROM act_user_address WHERE address_userid = #{userId,jdbcType=INTEGER} AND address_default = 1 
-	) a ,(
-		SELECT * FROM act_user_address WHERE address_userid = #{userId,jdbcType=INTEGER}
-	) b
-		
-	LIMIT 1
-  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from act_user_address
     where address_id = #{addressId,jdbcType=INTEGER}
