@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ftc.base.entity.MyPage;
+import com.ftc.wechat.clean.bean.NanOrder;
+import com.ftc.wechat.clean.bean.Order;
 import com.ftc.wechat.clean.service.CleanService;
 import com.ftc.wechat.util.JsonpUtil;
+import com.google.gson.Gson;
 
 @Controller 
 @ResponseBody
@@ -43,5 +46,20 @@ public class CleanAction {
 	@RequestMapping(value = "staff",method = RequestMethod.GET)
 	public String getStaff(HttpServletRequest request,HttpServletResponse response,Integer staffId,String callback){
 		return JsonpUtil.jsonpCllback(cleanService.getStaff(staffId),callback);
+	}
+	
+	@RequestMapping(value = "cleordersubmit",method = RequestMethod.GET)
+	public String cleanOrderSubmit(HttpServletRequest request,HttpServletResponse response,String order,String callback){
+		return JsonpUtil.jsonpCllback(cleanService.orderSubmit(new Gson().fromJson(order, Order.class)),callback);
+	}
+	
+	@RequestMapping(value = "nanordersubmit",method = RequestMethod.GET)
+	public String nannyOrderSubmit(HttpServletRequest request,HttpServletResponse response,String order,String callback){
+		return JsonpUtil.jsonpCllback(cleanService.orderSubmit(new Gson().fromJson(order, NanOrder.class)),callback);
+	}
+	
+	@RequestMapping(value = "stafftimes",method = RequestMethod.GET)
+	public String stafftimes(HttpServletRequest request,HttpServletResponse response,Integer staffId,String callback){
+		return JsonpUtil.jsonpCllback(cleanService.getStaffTimeOccupancy(staffId),callback);
 	}
 }

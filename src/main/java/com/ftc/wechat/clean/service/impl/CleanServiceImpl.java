@@ -13,6 +13,7 @@ import com.ftc.base.entity.MyPage;
 import com.ftc.base.util.OrderNoUtil;
 import com.ftc.wechat.account.bean.UserAddress;
 import com.ftc.wechat.clean.bean.Category;
+import com.ftc.wechat.clean.bean.NanOrder;
 import com.ftc.wechat.clean.bean.Order;
 import com.ftc.wechat.clean.bean.OrderDetail;
 import com.ftc.wechat.clean.bean.Staff;
@@ -27,6 +28,7 @@ public class CleanServiceImpl implements CleanService{
 	private static final String CLEAN_ORDER_DETAIL_NAMESPACE_INFOUSER = "com.ftc.wechat.clean.dao.OrderDetailMapper.";
 	private static final String CLEAN_ORDER_STATUS_NAMESPACE_INFOUSER = "com.ftc.background.sys.bean.StatusMapper.";
 	private static final String ADDRESS_NAMESPACE_INFOUSER = "com.ftc.wechat.account.bean.mapper.UserAddressMapper.";
+	private static final String NAN_ORDER_NAMESPACE_INFOUSER = "com.ftc.wechat.clean.dao.NanOrderMapper.";
 
 	@Autowired
 	private BaseDao baseDao;
@@ -54,7 +56,7 @@ public class CleanServiceImpl implements CleanService{
 	}
 
 	@Override
-	public Order submitOrder(Order order, List<OrderDetail> orderDetail) {
+	public Order orderSubmit(Order order) {
 		Status orderStatus = baseDao.selectOne(CLEAN_ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "cle_001");
 		UserAddress address = baseDao.selectOne(ADDRESS_NAMESPACE_INFOUSER + "selectByPrimaryKey",order.getOrderAddressid());
 		OrderNoUtil orderNoUtil = (OrderNoUtil)baseDao.selectOne(CLEAN_ORDER_NAMESPACE_INFOUSER + "selectSerial");
@@ -62,7 +64,7 @@ public class CleanServiceImpl implements CleanService{
 		order.setOrderNo(orderNoUtil.createOrderNo("CLE"));
 		order.setOrderStatusid(orderStatus.getStatusId());
 		order.setOrderDatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-		order.setOrderServiceNumber(orderDetail.size());
+		order.setOrderServiceNumber(order.getOrderDetail().size());
 		order.setOrderAddressprovince(address.getAddressProvince());
 		order.setOrderAddresscity(address.getAddressCity());
 		order.setOrderAddresscounty(address.getAddressCounty());
@@ -70,14 +72,41 @@ public class CleanServiceImpl implements CleanService{
 		order.setOrderAddressconsignee(address.getAddressConsignee());
 		order.setOrderAddressmobile(address.getAddressMobile());
 		
+		baseDao.insert(CLEAN_ORDER_NAMESPACE_INFOUSER + "insertSelective", order);
+		List<OrderDetail> detailList = order.getOrderDetail();
 		order = baseDao.selectOne(CLEAN_ORDER_NAMESPACE_INFOUSER + "selectByOrderNo",order.getOrderNo());
 		
-		for (OrderDetail detail : orderDetail) {
+		for (OrderDetail detail : detailList) {
 			detail.setDetailOrderid(order.getOrderId());
 			detail.setDetailOrderno(order.getOrderNo());
 		}
-		baseDao.insert(CLEAN_ORDER_DETAIL_NAMESPACE_INFOUSER + "insertByBatch", orderDetail);
+		baseDao.insert(CLEAN_ORDER_DETAIL_NAMESPACE_INFOUSER + "insertByBatch", detailList);
 		return order;
+	}
+
+	@Override
+	public NanOrder orderSubmit(NanOrder order) {
+		Status orderStatus = baseDao.selectOne(CLEAN_ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "nan_001");
+		UserAddress address = baseDao.selectOne(ADDRESS_NAMESPACE_INFOUSER + "selectByPrimaryKey",order.getOrderUseraddressid());
+		OrderNoUtil orderNoUtil = (OrderNoUtil)baseDao.selectOne(NAN_ORDER_NAMESPACE_INFOUSER + "selectSerial");
+		
+		order.setOrderNo(orderNoUtil.createOrderNo("CLE"));
+		order.setOrderStatusid(orderStatus.getStatusId());
+		order.setOrderDatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+		order.setOrderAddressprovince(address.getAddressProvince());
+		order.setOrderAddresscity(address.getAddressCity());
+		order.setOrderAddresscounty(address.getAddressCounty());
+		order.setOrderAddressstreet(address.getAddressStreet());
+		order.setOrderAddressconsignee(address.getAddressConsignee());
+		order.setOrderAddressmobile(address.getAddressMobile());
+		
+		baseDao.insert(NAN_ORDER_NAMESPACE_INFOUSER + "insertSelective", order);
+		return order;
+	}
+
+	@Override
+	public List<OrderDetail> getStaffTimeOccupancy(Integer detailStaffid) {
+		return baseDao.selectList(CLEAN_ORDER_DETAIL_NAMESPACE_INFOUSER + "selectStaffTimeOccupancy", detailStaffid);
 	}
 
 }

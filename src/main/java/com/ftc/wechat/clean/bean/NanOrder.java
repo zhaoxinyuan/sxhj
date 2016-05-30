@@ -1,35 +1,23 @@
 package com.ftc.wechat.clean.bean;
 
-import java.util.List;
-
-public class Order {
+public class NanOrder {
     private Integer orderId;
 
     private String orderNo;
 
-    private Integer orderCategory;
-
     private String orderDatetime;
 
-    private Integer orderServiceNumber;
+    private Integer orderCategoryid;
 
     private Integer orderStatusid;
 
-    private Double orderPayableamount;
+    private Integer orderStaffid;
 
-    private Double orderRealpayamount;
-
-    private Double orderDiscountamount;
-
-    private String orderDiscountinfo;
-
-    private Integer orderPaytype;
-
-    private Integer orderPayid;
+    private String orderInterviewtime;
 
     private Integer orderUserid;
 
-    private Integer orderAddressid;
+    private Integer orderUseraddressid;
 
     private String orderAddressprovince;
 
@@ -44,8 +32,6 @@ public class Order {
     private String orderAddressmobile;
 
     private Integer orderDeleted;
-    
-    private List<OrderDetail> orderDetail;
 
     public Integer getOrderId() {
         return orderId;
@@ -63,14 +49,6 @@ public class Order {
         this.orderNo = orderNo == null ? null : orderNo.trim();
     }
 
-    public Integer getOrderCategory() {
-        return orderCategory;
-    }
-
-    public void setOrderCategory(Integer orderCategory) {
-        this.orderCategory = orderCategory;
-    }
-
     public String getOrderDatetime() {
         return orderDatetime;
     }
@@ -79,12 +57,12 @@ public class Order {
         this.orderDatetime = orderDatetime == null ? null : orderDatetime.trim();
     }
 
-    public Integer getOrderServiceNumber() {
-        return orderServiceNumber;
+    public Integer getOrderCategoryid() {
+        return orderCategoryid;
     }
 
-    public void setOrderServiceNumber(Integer orderServiceNumber) {
-        this.orderServiceNumber = orderServiceNumber;
+    public void setOrderCategoryid(Integer orderCategoryid) {
+        this.orderCategoryid = orderCategoryid;
     }
 
     public Integer getOrderStatusid() {
@@ -95,52 +73,20 @@ public class Order {
         this.orderStatusid = orderStatusid;
     }
 
-    public Double getOrderPayableamount() {
-        return orderPayableamount;
+    public Integer getOrderStaffid() {
+        return orderStaffid;
     }
 
-    public void setOrderPayableamount(Double orderPayableamount) {
-        this.orderPayableamount = orderPayableamount;
+    public void setOrderStaffid(Integer orderStaffid) {
+        this.orderStaffid = orderStaffid;
     }
 
-    public Double getOrderRealpayamount() {
-        return orderRealpayamount;
+    public String getOrderInterviewtime() {
+        return orderInterviewtime;
     }
 
-    public void setOrderRealpayamount(Double orderRealpayamount) {
-        this.orderRealpayamount = orderRealpayamount;
-    }
-
-    public Double getOrderDiscountamount() {
-        return orderDiscountamount;
-    }
-
-    public void setOrderDiscountamount(Double orderDiscountamount) {
-        this.orderDiscountamount = orderDiscountamount;
-    }
-
-    public String getOrderDiscountinfo() {
-        return orderDiscountinfo;
-    }
-
-    public void setOrderDiscountinfo(String orderDiscountinfo) {
-        this.orderDiscountinfo = orderDiscountinfo == null ? null : orderDiscountinfo.trim();
-    }
-
-    public Integer getOrderPaytype() {
-        return orderPaytype;
-    }
-
-    public void setOrderPaytype(Integer orderPaytype) {
-        this.orderPaytype = orderPaytype;
-    }
-
-    public Integer getOrderPayid() {
-        return orderPayid;
-    }
-
-    public void setOrderPayid(Integer orderPayid) {
-        this.orderPayid = orderPayid;
+    public void setOrderInterviewtime(String orderInterviewtime) {
+        this.orderInterviewtime = orderInterviewtime == null ? null : orderInterviewtime.trim();
     }
 
     public Integer getOrderUserid() {
@@ -151,12 +97,12 @@ public class Order {
         this.orderUserid = orderUserid;
     }
 
-    public Integer getOrderAddressid() {
-        return orderAddressid;
+    public Integer getOrderUseraddressid() {
+        return orderUseraddressid;
     }
 
-    public void setOrderAddressid(Integer orderAddressid) {
-        this.orderAddressid = orderAddressid;
+    public void setOrderUseraddressid(Integer orderUseraddressid) {
+        this.orderUseraddressid = orderUseraddressid;
     }
 
     public String getOrderAddressprovince() {
@@ -214,12 +160,4 @@ public class Order {
     public void setOrderDeleted(Integer orderDeleted) {
         this.orderDeleted = orderDeleted;
     }
-
-	public List<OrderDetail> getOrderDetail() {
-		return orderDetail;
-	}
-
-	public void setOrderDetail(List<OrderDetail> orderDetail) {
-		this.orderDetail = orderDetail;
-	}
 }
