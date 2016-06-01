@@ -58,12 +58,12 @@
       detail_service_metre, detail_service_from, 
       detail_service_to, detail_type, detail_staffid
       )
+      values
     <foreach collection="list" item="item" index="index" separator="," >  
-    values (#{item.detailId,jdbcType=INTEGER}, #{item.detailOrderid,jdbcType=INTEGER}, #{item.detailOrderno,jdbcType=VARCHAR}, 
+    (#{item.detailId,jdbcType=INTEGER}, #{item.detailOrderid,jdbcType=INTEGER}, #{item.detailOrderno,jdbcType=VARCHAR}, 
       #{item.detaiAmount,jdbcType=DOUBLE}, #{item.detailServicePrice,jdbcType=DOUBLE}, #{item.detailServiceHours,jdbcType=INTEGER}, 
       #{item.detailServiceMetre,jdbcType=INTEGER}, #{item.detailServiceFrom,jdbcType=VARCHAR}, 
-      #{item.detailServiceTo,jdbcType=VARCHAR}, #{item.detailType,jdbcType=INTEGER}, #{item.detailStaffid,jdbcType=INTEGER}
-      )
+      #{item.detailServiceTo,jdbcType=VARCHAR}, #{item.detailType,jdbcType=INTEGER}, #{item.detailStaffid,jdbcType=INTEGER})
     </foreach>  
   </insert>
   <insert id="insertSelective" parameterType="com.ftc.wechat.clean.bean.OrderDetail" >
