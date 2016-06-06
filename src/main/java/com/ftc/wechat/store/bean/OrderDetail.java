@@ -20,6 +20,8 @@ public class OrderDetail {
     private String detailProductimage;
 
     private String detailProductspec;
+    
+    private Product detailProduct;
 
     public Integer getDetailId() {
         return detailId;
@@ -100,4 +102,12 @@ public class OrderDetail {
     public void setDetailProductspec(String detailProductspec) {
         this.detailProductspec = detailProductspec == null ? null : detailProductspec.trim();
     }
+
+	public Product getDetailProduct() {
+		return detailProduct;
+	}
+
+	public void setDetailProduct(Product detailProduct) {
+		this.detailProduct = detailProduct;
+	}
 }

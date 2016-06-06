@@ -26,7 +26,7 @@ public class CleanServiceImpl implements CleanService{
 	private static final String CLEAN_STAFF_NAMESPACE_INFOUSER = "com.ftc.wechat.clean.dao.StaffMapper.";
 	private static final String CLEAN_ORDER_NAMESPACE_INFOUSER = "com.ftc.wechat.clean.dao.OrderMapper.";
 	private static final String CLEAN_ORDER_DETAIL_NAMESPACE_INFOUSER = "com.ftc.wechat.clean.dao.OrderDetailMapper.";
-	private static final String CLEAN_ORDER_STATUS_NAMESPACE_INFOUSER = "com.ftc.background.sys.bean.StatusMapper.";
+	private static final String ORDER_STATUS_NAMESPACE_INFOUSER = "com.ftc.background.sys.bean.StatusMapper.";
 	private static final String ADDRESS_NAMESPACE_INFOUSER = "com.ftc.wechat.account.bean.mapper.UserAddressMapper.";
 	private static final String NAN_ORDER_NAMESPACE_INFOUSER = "com.ftc.wechat.clean.dao.NanOrderMapper.";
 
@@ -43,11 +43,11 @@ public class CleanServiceImpl implements CleanService{
 		return baseDao.selectOne(CLEAN_CATEGORY_NAMESPACE_INFOUSER + "selectByPrimaryKey", categoryId);
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public List<Staff> getStaffs(MyPage page,Integer categoryId) {
+	public MyPage getStaffs(MyPage page,Integer categoryId) {
 		PageHelper.startPage(page.getCurrent(), page.getRowCount());
-		return baseDao.selectList(CLEAN_STAFF_NAMESPACE_INFOUSER + "selectByCategory", categoryId);
+		return new MyPage().init(baseDao.selectList(CLEAN_STAFF_NAMESPACE_INFOUSER + "selectByCategory", categoryId));
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class CleanServiceImpl implements CleanService{
 
 	@Override
 	public Order orderSubmit(Order order) {
-		Status orderStatus = baseDao.selectOne(CLEAN_ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "cle_001");
+		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "cle_001");
 		UserAddress address = baseDao.selectOne(ADDRESS_NAMESPACE_INFOUSER + "selectByPrimaryKey",order.getOrderAddressid());
 		OrderNoUtil orderNoUtil = (OrderNoUtil)baseDao.selectOne(CLEAN_ORDER_NAMESPACE_INFOUSER + "selectSerial");
 		
@@ -86,7 +86,7 @@ public class CleanServiceImpl implements CleanService{
 
 	@Override
 	public NanOrder orderSubmit(NanOrder order) {
-		Status orderStatus = baseDao.selectOne(CLEAN_ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "nan_001");
+		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "nan_001");
 		UserAddress address = baseDao.selectOne(ADDRESS_NAMESPACE_INFOUSER + "selectByPrimaryKey",order.getOrderUseraddressid());
 		OrderNoUtil orderNoUtil = (OrderNoUtil)baseDao.selectOne(NAN_ORDER_NAMESPACE_INFOUSER + "selectSerial");
 		
@@ -107,6 +107,69 @@ public class CleanServiceImpl implements CleanService{
 	@Override
 	public List<OrderDetail> getStaffTimeOccupancy(Integer detailStaffid) {
 		return baseDao.selectList(CLEAN_ORDER_DETAIL_NAMESPACE_INFOUSER + "selectStaffTimeOccupancy", detailStaffid);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public MyPage getOrders(MyPage page, Order order) {
+		PageHelper.startPage(page.getCurrent(), page.getRowCount()).setOrderBy("order_id desc");;
+		MyPage myPage = new MyPage().init(baseDao.selectList(CLEAN_ORDER_NAMESPACE_INFOUSER + "selectByOrderStatus", order));
+		if(myPage.getRows().size() >= 1){
+			List<OrderDetail> details = baseDao.selectList(CLEAN_ORDER_DETAIL_NAMESPACE_INFOUSER + "selectByOrderIds", myPage.getRows());
+			for (Object obj : myPage.getRows()) {
+				Order odr = (Order)obj;
+				for (OrderDetail det : details) {
+					if(odr.getOrderId() == det.getDetailOrderid()){
+						odr.getOrderDetail().add(det);
+					}
+				}
+			}
+		}
+		return myPage;
+	}
+
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public MyPage getNanOrders(MyPage page, NanOrder order) {
+		PageHelper.startPage(page.getCurrent(), page.getRowCount());
+		return new MyPage().init(baseDao.selectList(NAN_ORDER_NAMESPACE_INFOUSER + "selectOrders", order));
+	}
+
+	@Override
+	public Order getOrder(Integer orderId) {
+		return baseDao.selectOne(CLEAN_ORDER_NAMESPACE_INFOUSER + "selectByPrimaryKey", orderId);
+	}
+
+	@Override
+	public NanOrder getNanOrder(Integer orderId) {
+		return baseDao.selectOne(NAN_ORDER_NAMESPACE_INFOUSER + "selectByPrimaryKey", orderId);
+	}
+
+	@Override
+	public void cancelCleOrder(Order order) {
+		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "odr_002");
+		order.setOrderStatusid(orderStatus.getStatusId());
+		baseDao.modify(CLEAN_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
+	}
+
+	@Override
+	public void delateCleOrder(Order order) {
+		order.setOrderDeleted(1);
+		baseDao.modify(CLEAN_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
+	}
+
+	@Override
+	public void cancelNanOrder(NanOrder order) {
+		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "odr_002");
+		order.setOrderStatusid(orderStatus.getStatusId());
+		baseDao.modify(NAN_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
+	}
+
+	@Override
+	public void delateNanOrder(NanOrder order) {
+		order.setOrderDeleted(1);
+		baseDao.modify(NAN_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
 	}
 
 }

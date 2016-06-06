@@ -12,16 +12,40 @@
     <result column="detail_productprice" property="detailProductprice" jdbcType="DOUBLE" />
     <result column="detail_productimage" property="detailProductimage" jdbcType="VARCHAR" />
     <result column="detail_productspec" property="detailProductspec" jdbcType="VARCHAR" />
+    <association column="detail_productid" property="detailProduct" javaType="com.ftc.wechat.store.bean.Product">
+	    <id column="detail_productid" property="productId" jdbcType="INTEGER" />
+	    <result column="product_store_id" property="productStoreId" jdbcType="INTEGER" />
+	    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+	    <result column="product_price" property="productPrice" jdbcType="DOUBLE" />
+	    <result column="product_costprice" property="productCostprice" jdbcType="DOUBLE" />
+	    <result column="product_brand" property="productBrand" jdbcType="VARCHAR" />
+	    <result column="product_spec" property="productSpec" jdbcType="VARCHAR" />
+	    <result column="product_info" property="productInfo" jdbcType="VARCHAR" />
+	    <result column="product_image" property="productImage" jdbcType="VARCHAR" />
+	    <result column="product_categoryid" property="productCategoryid" jdbcType="INTEGER" />
+	    <result column="product_shelves" property="productShelves" jdbcType="INTEGER" />
+  	</association>
   </resultMap>
   <sql id="Base_Column_List" >
     detail_id, detail_orderid, detail_orderno, detail_productid, detail_qty, detail_amount, 
     detail_productname, detail_productprice, detail_productimage, detail_productspec
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from str_order_detail
-    where detail_id = #{detailId,jdbcType=INTEGER}
+    select a.*,b.*
+    from str_order_detail a
+    left join str_product b on a.detail_productid = b.product_id
+    where a.detail_id = #{detailId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByOrderIds" resultMap="BaseResultMap" parameterType="java.util.List" >
+    select a.*,b.*
+    from str_order_detail a
+    left join str_product b on a.detail_productid = b.product_id
+    where a.detail_orderid in 
+    (
+    	<foreach collection="list" item="item" index="index" separator="," >  
+    		#{item.orderId,jdbcType=INTEGER}
+    	</foreach>
+    )
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from str_order_detail

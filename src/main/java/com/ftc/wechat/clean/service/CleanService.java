@@ -16,7 +16,7 @@ public interface CleanService {
 	public Category getCategory(Integer categoryId);
 	
 	@SuppressWarnings("rawtypes")
-	public List<Staff> getStaffs(MyPage page,Integer categoryId);
+	public MyPage getStaffs(MyPage page,Integer categoryId);
 	
 	public Staff getStaff(Integer staffId);
 	
@@ -25,4 +25,22 @@ public interface CleanService {
 	public NanOrder orderSubmit(NanOrder order);
 	
 	public List<OrderDetail> getStaffTimeOccupancy(Integer detailStaffid);
+	
+	@SuppressWarnings("rawtypes")
+	public MyPage getOrders(MyPage page,Order order);
+	
+	@SuppressWarnings("rawtypes")
+	public MyPage getNanOrders(MyPage page,NanOrder order);
+	
+	public Order getOrder(Integer orderId);
+	
+	public NanOrder getNanOrder(Integer orderId);
+	
+	public void cancelCleOrder(Order order);
+	
+	public void delateCleOrder(Order order);
+	
+	public void cancelNanOrder(NanOrder order);
+	
+	public void delateNanOrder(NanOrder order);
 }

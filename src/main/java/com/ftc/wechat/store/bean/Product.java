@@ -22,6 +22,8 @@ public class Product {
     private Integer productCategoryid;
 
     private Integer productShelves;
+    
+    private Integer productSales;
 
     public Integer getProductId() {
         return productId;
@@ -110,4 +112,13 @@ public class Product {
     public void setProductShelves(Integer productShelves) {
         this.productShelves = productShelves;
     }
+
+	public Integer getProductSales() {
+		return productSales;
+	}
+
+	public void setProductSales(Integer productSales) {
+		this.productSales = productSales;
+	}
+    
 }

@@ -21,8 +21,6 @@ public class OrderDetail {
 
     private Integer detailType;
 
-    private Integer detailStaffid;
-
     public Integer getDetailId() {
         return detailId;
     }
@@ -101,13 +99,5 @@ public class OrderDetail {
 
     public void setDetailType(Integer detailType) {
         this.detailType = detailType;
-    }
-
-    public Integer getDetailStaffid() {
-        return detailStaffid;
-    }
-
-    public void setDetailStaffid(Integer detailStaffid) {
-        this.detailStaffid = detailStaffid;
     }
 }

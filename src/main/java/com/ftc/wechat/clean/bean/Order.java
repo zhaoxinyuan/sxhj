@@ -2,16 +2,22 @@ package com.ftc.wechat.clean.bean;
 
 import java.util.List;
 
+import com.ftc.background.sys.bean.Status;
+
 public class Order {
     private Integer orderId;
 
     private String orderNo;
+    
+    private Category orderCategory;
 
-    private Integer orderCategory;
+    private Integer orderCategoryId;
 
     private String orderDatetime;
 
     private Integer orderServiceNumber;
+    
+    private Status orderStatus;
 
     private Integer orderStatusid;
 
@@ -45,7 +51,13 @@ public class Order {
 
     private Integer orderDeleted;
     
+    private Staff staff;
+    
+    private Integer orderStaffid;
+    
     private List<OrderDetail> orderDetail;
+    
+    private String statusCode;
 
     public Integer getOrderId() {
         return orderId;
@@ -63,15 +75,23 @@ public class Order {
         this.orderNo = orderNo == null ? null : orderNo.trim();
     }
 
-    public Integer getOrderCategory() {
-        return orderCategory;
-    }
+    public Category getOrderCategory() {
+		return orderCategory;
+	}
 
-    public void setOrderCategory(Integer orderCategory) {
-        this.orderCategory = orderCategory;
-    }
+	public void setOrderCategory(Category orderCategory) {
+		this.orderCategory = orderCategory;
+	}
 
-    public String getOrderDatetime() {
+	public Integer getOrderCategoryId() {
+		return orderCategoryId;
+	}
+
+	public void setOrderCategoryId(Integer orderCategoryId) {
+		this.orderCategoryId = orderCategoryId;
+	}
+
+	public String getOrderDatetime() {
         return orderDatetime;
     }
 
@@ -86,8 +106,16 @@ public class Order {
     public void setOrderServiceNumber(Integer orderServiceNumber) {
         this.orderServiceNumber = orderServiceNumber;
     }
+    
+    public Status getOrderStatus() {
+		return orderStatus;
+	}
 
-    public Integer getOrderStatusid() {
+	public void setOrderStatus(Status orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public Integer getOrderStatusid() {
         return orderStatusid;
     }
 
@@ -221,5 +249,29 @@ public class Order {
 
 	public void setOrderDetail(List<OrderDetail> orderDetail) {
 		this.orderDetail = orderDetail;
+	}
+
+	public Staff getStaff() {
+		return staff;
+	}
+
+	public void setStaff(Staff staff) {
+		this.staff = staff;
+	}
+
+	public Integer getOrderStaffid() {
+		return orderStaffid;
+	}
+
+	public void setOrderStaffid(Integer orderStaffid) {
+		this.orderStaffid = orderStaffid;
+	}
+
+	public String getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(String statusCode) {
+		this.statusCode = statusCode;
 	}
 }

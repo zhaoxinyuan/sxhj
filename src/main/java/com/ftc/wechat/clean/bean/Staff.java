@@ -18,6 +18,8 @@ public class Staff {
     private String staffMobile;
 
     private Integer staffStatusId;
+    
+    private Integer staffServceQty;
 
     public Integer getStaffId() {
         return staffId;
@@ -91,5 +93,11 @@ public class Staff {
 		this.staffStatusId = staffStatusId;
 	}
 
-    
+	public Integer getStaffServceQty() {
+		return staffServceQty;
+	}
+
+	public void setStaffServceQty(Integer staffServceQty) {
+		this.staffServceQty = staffServceQty;
+	}
 }

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ftc.base.entity.MyPage;
+import com.ftc.base.entity.MyStatus;
 import com.ftc.wechat.store.bean.Order;
 import com.ftc.wechat.store.bean.Store;
 import com.ftc.wechat.store.entity.OrderTemp;
@@ -42,4 +44,26 @@ public class StoreOrderAction {
 		return JsonpUtil.jsonpCllback(orderService.submitOrder(new Gson().fromJson(orderTemp, OrderTemp.class), order, invoiceTitle),callback);
 	}
 	
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "orders",method = RequestMethod.GET)
+	public String getOrders(HttpServletRequest request,HttpServletResponse response,MyPage page, Order order,String callback){
+		return JsonpUtil.jsonpCllback(orderService.getOrders(page, order),callback);
+	}
+	
+	@RequestMapping(value = "order",method = RequestMethod.GET)
+	public String getOrder(HttpServletRequest request,HttpServletResponse response, Integer orderId,String callback){
+		return JsonpUtil.jsonpCllback(orderService.getOrder(orderId),callback);
+	}
+	
+	@RequestMapping(value = "modifystatus",method = RequestMethod.GET)
+	public String updateOrderStatus(HttpServletRequest request,HttpServletResponse response, Order order,String callback){
+		orderService.updateOrderStatus(order);
+		return JsonpUtil.jsonpCllback(new MyStatus().MyStatusSuccess(),callback);
+	}
+	
+	@RequestMapping(value = "removeorder",method = RequestMethod.GET)
+	public String removeOrder(HttpServletRequest request,HttpServletResponse response, Order order,String callback){
+		orderService.removeOrderStatus(order);
+		return JsonpUtil.jsonpCllback(new MyStatus().MyStatusSuccess(),callback);
+	}
 }

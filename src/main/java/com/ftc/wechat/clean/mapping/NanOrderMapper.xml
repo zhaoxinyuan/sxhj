@@ -18,27 +18,72 @@
     <result column="order_addressconsignee" property="orderAddressconsignee" jdbcType="VARCHAR" />
     <result column="order_addressmobile" property="orderAddressmobile" jdbcType="VARCHAR" />
     <result column="order_deleted" property="orderDeleted" jdbcType="INTEGER" />
+    <association column="order_categoryid" property="orderCategory" javaType="com.ftc.wechat.clean.bean.Category">
+  		<id column="category_id" property="categoryId" jdbcType="INTEGER" />
+	    <result column="category_code" property="categoryCode" jdbcType="VARCHAR" />
+	    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+	    <result column="category_price" property="categoryPrice" jdbcType="DOUBLE" />
+	    <result column="category_price_unit" property="categoryPriceUnit" jdbcType="INTEGER" />
+	    <result column="category_image" property="categoryImage" jdbcType="VARCHAR" />
+	    <result column="category_servicetime_from" property="categoryServicetimeFrom" jdbcType="VARCHAR" />
+	    <result column="category_servicetime_to" property="categoryServicetimeTo" jdbcType="VARCHAR" />
+  	</association>
+    <association column="order_statusid" property="orderStatus" javaType="com.ftc.background.sys.bean.Status">
+  		<id column="status_id" property="statusId" jdbcType="INTEGER" />
+	    <result column="status_name" property="statusName" jdbcType="VARCHAR" />
+	    <result column="status_code" property="statusCode" jdbcType="VARCHAR" />
+  	</association>
+  	<association column="order_staffid" property="staff" javaType="com.ftc.wechat.clean.bean.Staff">
+  		<id column="staff_id" property="staffId" jdbcType="INTEGER" />
+	    <result column="staff_code" property="staffCode" jdbcType="VARCHAR" />
+	    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+	    <result column="staff_age" property="staffAge" jdbcType="INTEGER" />
+	    <result column="staff_image" property="staffImage" jdbcType="VARCHAR" />
+	    <result column="staff_nativeplace" property="staffNativeplace" jdbcType="VARCHAR" />
+	    <result column="staff_idcode" property="staffIdcode" jdbcType="VARCHAR" />
+	    <result column="staff_mobile" property="staffMobile" jdbcType="VARCHAR" />
+	    <result column="staff_statusid" property="staffStatusId" jdbcType="INTEGER" />
+  	</association>
   </resultMap>
   <resultMap id="serialResultMap" type="com.ftc.base.util.OrderNoUtil" >
     <result column="serial" property="serial" jdbcType="INTEGER" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    order_id, order_no, order_datetime, order_categoryid, order_statusid, order_staffid, 
-    order_interviewtime, order_userid, order_useraddressid, order_addressprovince, order_addresscity, 
-    order_addresscounty, order_addressstreet, order_addressconsignee, order_addressmobile, 
-    order_deleted
-  </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from cle_nan_order
-    where order_id = #{orderId,jdbcType=INTEGER}
+    SELECT a.*,
+	       b.*,
+	       c.*,
+	       d.*
+	FROM cle_nan_order a
+	LEFT JOIN cle_staff b ON a.order_staffid = b.staff_id
+	LEFT JOIN sys_status c ON a.order_statusid = c.status_id
+	LEFT JOIN cle_category d ON a.order_categoryid = d.category_id
+	WHERE a.order_id = #{orderId,jdbcType=INTEGER}
   </select>
-   <select id="selectByOrderNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from cle_nan_order
-    where order_no = #{orderNo,jdbcType=VARCHAR}
+  <select id="selectByOrderNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT a.*,
+	       b.*,
+	       c.*,
+	       d.*
+	FROM cle_nan_order a
+	LEFT JOIN cle_staff b ON a.order_staffid = b.staff_id
+	LEFT JOIN sys_status c ON a.order_statusid = c.status_id
+	LEFT JOIN cle_category d ON a.order_categoryid = d.category_id
+	WHERE a.order_no = #{orderNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectOrders" resultMap="BaseResultMap" parameterType="com.ftc.wechat.clean.bean.NanOrder" >
+    SELECT a.*,
+	       b.*,
+	       c.*,
+	       d.*
+	FROM cle_nan_order a
+	LEFT JOIN cle_staff b ON a.order_staffid = b.staff_id
+	LEFT JOIN sys_status c ON a.order_statusid = c.status_id
+	LEFT JOIN cle_category d ON a.order_categoryid = d.category_id
+	WHERE 1 =1 
+	<if test="orderUserid != null" >
+        and order_userid = #{orderUserid,jdbcType=INTEGER}
+        and order_deleted is null
+    </if>
   </select>
   <select id="selectSerial" resultMap="serialResultMap" >
    select 

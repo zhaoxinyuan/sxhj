@@ -13,22 +13,21 @@
     <result column="product_image" property="productImage" jdbcType="VARCHAR" />
     <result column="product_categoryid" property="productCategoryid" jdbcType="INTEGER" />
     <result column="product_shelves" property="productShelves" jdbcType="INTEGER" />
+    <result column="productSales" property="productSales" jdbcType="INTEGER" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    product_id, product_store_id, product_name, product_price, product_costprice, product_brand, 
-    product_spec, product_info, product_image, product_categoryid, product_shelves
-  </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from str_product
+    select a.*,
+           IFNULL(b.sales_qty,0) as productSales
+    from str_product a
+    left join str_product_monthsales b on a.product_id =  b.sales_productid and YEAR(DATE_FORMAT(NOW(),'%Y-%m-%d')) = b.sales_year and MONTH(DATE_FORMAT(NOW(),'%Y-%m-%d')) = b.sales_month 
     where product_id = #{productId,jdbcType=INTEGER}
   </select>
   
   <select id="selectByStore" resultMap="BaseResultMap" parameterType="com.ftc.wechat.store.bean.Product" >
-    select 
-    <include refid="Base_Column_List" />
-    from str_product
+   select a.*,
+           IFNULL(b.sales_qty,0) as productSales
+    from str_product a
+    left join str_product_monthsales b on a.product_id =  b.sales_productid and YEAR(DATE_FORMAT(NOW(),'%Y-%m-%d')) = b.sales_year and MONTH(DATE_FORMAT(NOW(),'%Y-%m-%d')) = b.sales_month
     where product_store_id = #{productStoreId,jdbcType=INTEGER}
     <if test="productCategoryid != null" >
        and product_categoryid = #{productCategoryid,jdbcType=INTEGER}

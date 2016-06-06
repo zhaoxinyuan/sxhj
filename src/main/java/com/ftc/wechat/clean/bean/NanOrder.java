@@ -1,16 +1,24 @@
 package com.ftc.wechat.clean.bean;
 
+import com.ftc.background.sys.bean.Status;
+
 public class NanOrder {
     private Integer orderId;
 
     private String orderNo;
 
     private String orderDatetime;
+    
+    private Category orderCategory;
 
     private Integer orderCategoryid;
 
+    private Status orderStatus;
+    
     private Integer orderStatusid;
 
+    private Staff staff;
+    
     private Integer orderStaffid;
 
     private String orderInterviewtime;
@@ -57,7 +65,15 @@ public class NanOrder {
         this.orderDatetime = orderDatetime == null ? null : orderDatetime.trim();
     }
 
-    public Integer getOrderCategoryid() {
+    public Category getOrderCategory() {
+		return orderCategory;
+	}
+
+	public void setOrderCategory(Category orderCategory) {
+		this.orderCategory = orderCategory;
+	}
+
+	public Integer getOrderCategoryid() {
         return orderCategoryid;
     }
 
@@ -65,7 +81,23 @@ public class NanOrder {
         this.orderCategoryid = orderCategoryid;
     }
 
-    public Integer getOrderStatusid() {
+    public Status getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(Status orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public Staff getStaff() {
+		return staff;
+	}
+
+	public void setStaff(Staff staff) {
+		this.staff = staff;
+	}
+
+	public Integer getOrderStatusid() {
         return orderStatusid;
     }
 

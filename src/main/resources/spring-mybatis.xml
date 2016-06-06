@@ -44,7 +44,9 @@
     		<array>
       			<bean class="com.github.pagehelper.PageHelper">
         			<property name="properties">
-          				<value>dialect=hsqldb</value>
+          				<value>
+          					dialect=mysql
+          				</value>
         			</property>
       			</bean>
     		</array>

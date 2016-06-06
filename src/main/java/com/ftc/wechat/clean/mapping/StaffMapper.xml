@@ -12,21 +12,22 @@
     <result column="staff_mobile" property="staffMobile" jdbcType="VARCHAR" />
     <result column="staff_statusid" property="staffStatusId" jdbcType="INTEGER" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    staff_id, staff_code, staff_name, staff_age, staff_image, staff_nativeplace, staff_idcode, 
-    staff_mobile, staff_statusid
-  </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from cle_staff
+    select a.*,
+           IFNULL(b.service_qty,0) as staffServceQty
+    from cle_staff a
+    left join cle_staff_service b on a.staff_id = b.service_staffid
     where staff_id = #{staffId,jdbcType=INTEGER}
   </select>
   <select id="selectByCategory" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select b.* 
+    select b.*,
+           IFNULL(d.service_qty,0) as staffServceQty
     from cle_staff_category_mapping a
     left join cle_staff b on a.staff_id = b.staff_id
+    left join sys_status c on b.staff_statusid = c.status_id
+    left join cle_staff_service d on b.staff_id = d.service_staffid
     where a.category_id = #{categoryId,jdbcType=INTEGER}
+    and c.status_code = 'stf_001'
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from cle_staff

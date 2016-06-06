@@ -56,6 +56,12 @@ public class Order {
     private Integer orderDeleted;
     
     private List<OrderDetail> orderDetail;
+    
+    private String statusCode;
+    
+    private Integer orderStoreId;
+    
+    private Store orderStore;
 
     public Integer getOrderId() {
         return orderId;
@@ -264,5 +270,28 @@ public class Order {
 	public void setOrderDetail(List<OrderDetail> orderDetail) {
 		this.orderDetail = orderDetail;
 	}
-    
+
+	public String getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(String statusCode) {
+		this.statusCode = statusCode;
+	}
+
+	public Integer getOrderStoreId() {
+		return orderStoreId;
+	}
+
+	public void setOrderStoreId(Integer orderStoreId) {
+		this.orderStoreId = orderStoreId;
+	}
+
+	public Store getOrderStore() {
+		return orderStore;
+	}
+
+	public void setOrderStore(Store orderStore) {
+		this.orderStore = orderStore;
+	}
 }

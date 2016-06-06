@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.ftc.background.sys.bean.Status;
 import com.ftc.base.dao.BaseDao;
+import com.ftc.base.entity.MyPage;
 import com.ftc.base.util.OrderNoUtil;
 import com.ftc.wechat.account.bean.UserAddress;
 import com.ftc.wechat.account.service.UserAddressService;
@@ -21,6 +22,7 @@ import com.ftc.wechat.store.bean.Store;
 import com.ftc.wechat.store.entity.OrderTemp;
 import com.ftc.wechat.store.entity.ShoppingCartTemp;
 import com.ftc.wechat.store.service.OrderService;
+import com.github.pagehelper.PageHelper;
 
 @Service
 public class OrderServiceImpl implements OrderService{
@@ -103,6 +105,42 @@ public class OrderServiceImpl implements OrderService{
 		order.setOrderDetail(orderDetail);
 		baseDao.insert(ORDER_DETAIL_NAMESPACE_INFOUSER + "insertByBatch", orderDetail);
 		return order;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public MyPage getOrders(MyPage page, Order order) {
+		PageHelper.startPage(page.getCurrent(), page.getRowCount()).setOrderBy("order_id desc");
+		MyPage myPage = new MyPage().init(baseDao.selectList(ORDER_NAMESPACE_INFOUSER + "selectByOrderStatus", order));
+		if(myPage.getRows().size() >= 1){
+			List<OrderDetail> details = baseDao.selectList(ORDER_DETAIL_NAMESPACE_INFOUSER + "selectByOrderIds", myPage.getRows());
+			for (Object obj : myPage.getRows()) {
+				Order odr = (Order)obj;
+				for (OrderDetail det : details) {
+					if(odr.getOrderId() == det.getDetailOrderid()){
+						odr.getOrderDetail().add(det);
+					}
+				}
+			}
+		}
+		return myPage;
+	}
+
+	@Override
+	public Order getOrder(Integer orderId) {
+		return baseDao.selectOne(ORDER_NAMESPACE_INFOUSER + "selectByPrimaryKey", orderId);
+	}
+
+	@Override
+	public void updateOrderStatus(Order order) {
+		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", order.getStatusCode());
+		order.setOrderStatusid(orderStatus.getStatusId());
+		baseDao.modify(ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
+	}
+
+	@Override
+	public void removeOrderStatus(Order order) {
+		baseDao.modify(ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
 	}
 
 }

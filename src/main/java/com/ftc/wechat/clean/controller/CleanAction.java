@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ftc.base.entity.MyPage;
+import com.ftc.base.entity.MyStatus;
 import com.ftc.wechat.clean.bean.NanOrder;
 import com.ftc.wechat.clean.bean.Order;
 import com.ftc.wechat.clean.service.CleanService;
@@ -58,8 +59,54 @@ public class CleanAction {
 		return JsonpUtil.jsonpCllback(cleanService.orderSubmit(new Gson().fromJson(order, NanOrder.class)),callback);
 	}
 	
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "cleorders",method = RequestMethod.GET)
+	public String getCleOrders(HttpServletRequest request,HttpServletResponse response,MyPage page,Order order,String callback){
+		return JsonpUtil.jsonpCllback(cleanService.getOrders(page, order),callback);
+	}
+	
+	@RequestMapping(value = "cleorder",method = RequestMethod.GET)
+	public String getCleOrder(HttpServletRequest request,HttpServletResponse response,Integer orderId,String callback){
+		return JsonpUtil.jsonpCllback(cleanService.getOrder(orderId),callback);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "nanorders",method = RequestMethod.GET)
+	public String getNanOrders(HttpServletRequest request,HttpServletResponse response,MyPage page,NanOrder order,String callback){
+		return JsonpUtil.jsonpCllback(cleanService.getNanOrders(page, order),callback);
+	}
+	
+	@RequestMapping(value = "nanorder",method = RequestMethod.GET)
+	public String getNanOrder(HttpServletRequest request,HttpServletResponse response,Integer orderId,String callback){
+		return JsonpUtil.jsonpCllback(cleanService.getNanOrder(orderId),callback);
+	}
+	
 	@RequestMapping(value = "stafftimes",method = RequestMethod.GET)
 	public String stafftimes(HttpServletRequest request,HttpServletResponse response,Integer staffId,String callback){
 		return JsonpUtil.jsonpCllback(cleanService.getStaffTimeOccupancy(staffId),callback);
+	}
+	
+	@RequestMapping(value = "canclecleorder",method = RequestMethod.GET)
+	public String cancleCleOrder(HttpServletRequest request,HttpServletResponse response,Order order,String callback){
+		cleanService.cancelCleOrder(order);
+		return JsonpUtil.jsonpCllback(new MyStatus().MyStatusSuccess(),callback);
+	}
+	
+	@RequestMapping(value = "removelecleorder",method = RequestMethod.GET)
+	public String removeCleOrder(HttpServletRequest request,HttpServletResponse response,Order order,String callback){
+		cleanService.delateCleOrder(order);
+		return JsonpUtil.jsonpCllback(new MyStatus().MyStatusSuccess(),callback);
+	}
+	
+	@RequestMapping(value = "canclenanorder",method = RequestMethod.GET)
+	public String cancleNanOrder(HttpServletRequest request,HttpServletResponse response,NanOrder order,String callback){
+		cleanService.cancelNanOrder(order);
+		return JsonpUtil.jsonpCllback(new MyStatus().MyStatusSuccess(),callback);
+	}
+	
+	@RequestMapping(value = "removelenanorder",method = RequestMethod.GET)
+	public String removeNanOrder(HttpServletRequest request,HttpServletResponse response,NanOrder order,String callback){
+		cleanService.delateNanOrder(order);
+		return JsonpUtil.jsonpCllback(new MyStatus().MyStatusSuccess(),callback);
 	}
 }
