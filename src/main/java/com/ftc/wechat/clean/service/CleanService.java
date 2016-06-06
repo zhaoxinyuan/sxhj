@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ftc.base.entity.MyPage;
 import com.ftc.wechat.clean.bean.Category;
+import com.ftc.wechat.clean.bean.DifOrder;
 import com.ftc.wechat.clean.bean.NanOrder;
 import com.ftc.wechat.clean.bean.Order;
 import com.ftc.wechat.clean.bean.OrderDetail;
@@ -43,4 +44,8 @@ public interface CleanService {
 	public void cancelNanOrder(NanOrder order);
 	
 	public void delateNanOrder(NanOrder order);
+	
+	public DifOrder orderSubmit(DifOrder order);
+	
+	public DifOrder getDifOrder(Integer orderId);
 }

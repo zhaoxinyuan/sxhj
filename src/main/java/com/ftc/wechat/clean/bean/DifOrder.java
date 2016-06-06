@@ -13,6 +13,8 @@ public class DifOrder {
 
     private Double orderAmount;
 
+    private Integer orderStatusid;
+
     public Integer getOrderId() {
         return orderId;
     }
@@ -59,5 +61,13 @@ public class DifOrder {
 
     public void setOrderAmount(Double orderAmount) {
         this.orderAmount = orderAmount;
+    }
+
+    public Integer getOrderStatusid() {
+        return orderStatusid;
+    }
+
+    public void setOrderStatusid(Integer orderStatusid) {
+        this.orderStatusid = orderStatusid;
     }
 }

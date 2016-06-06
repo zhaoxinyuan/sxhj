@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ftc.base.entity.MyPage;
 import com.ftc.base.entity.MyStatus;
+import com.ftc.wechat.clean.bean.DifOrder;
 import com.ftc.wechat.clean.bean.NanOrder;
 import com.ftc.wechat.clean.bean.Order;
 import com.ftc.wechat.clean.service.CleanService;
@@ -108,5 +109,15 @@ public class CleanAction {
 	public String removeNanOrder(HttpServletRequest request,HttpServletResponse response,NanOrder order,String callback){
 		cleanService.delateNanOrder(order);
 		return JsonpUtil.jsonpCllback(new MyStatus().MyStatusSuccess(),callback);
+	}
+	
+	@RequestMapping(value = "difordersubmit",method = RequestMethod.GET)
+	public String diforderSubmit(HttpServletRequest request,HttpServletResponse response,DifOrder order,String callback){
+		return JsonpUtil.jsonpCllback(cleanService.orderSubmit(order),callback);
+	}
+	
+	@RequestMapping(value = "diforder",method = RequestMethod.GET)
+	public String getDifOrder(HttpServletRequest request,HttpServletResponse response,Integer orderId,String callback){
+		return JsonpUtil.jsonpCllback(cleanService.getDifOrder(orderId),callback);
 	}
 }
