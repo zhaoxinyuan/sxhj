@@ -17,7 +17,7 @@ public class RevOrder {
 
     private String orderHometime;
 
-    private String orderAddressid;
+    private Integer orderAddressid;
 
     private String orderAddressprovince;
 
@@ -34,6 +34,8 @@ public class RevOrder {
     private Integer orderDeleted;
     
     private String statusCode;
+    
+    private Order order;
 
     public Integer getOrderId() {
         return orderId;
@@ -91,12 +93,12 @@ public class RevOrder {
         this.orderHometime = orderHometime == null ? null : orderHometime.trim();
     }
 
-    public String getOrderAddressid() {
+    public Integer getOrderAddressid() {
         return orderAddressid;
     }
 
-    public void setOrderAddressid(String orderAddressid) {
-        this.orderAddressid = orderAddressid == null ? null : orderAddressid.trim();
+    public void setOrderAddressid(Integer orderAddressid) {
+        this.orderAddressid = orderAddressid;
     }
 
     public String getOrderAddressprovince() {
@@ -161,5 +163,13 @@ public class RevOrder {
 
 	public void setStatusCode(String statusCode) {
 		this.statusCode = statusCode;
+	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 }

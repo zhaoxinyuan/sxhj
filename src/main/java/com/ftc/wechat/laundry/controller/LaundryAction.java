@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ftc.base.entity.MyPage;
 import com.ftc.base.entity.MyStatus;
-import com.ftc.wechat.laundry.bean.Order;
 import com.ftc.wechat.laundry.bean.RevOrder;
 import com.ftc.wechat.laundry.service.LaundryService;
 import com.ftc.wechat.util.JsonpUtil;
@@ -27,37 +26,36 @@ public class LaundryAction {
 	@Autowired
 	private LaundryService laundryService;
 	
+	@RequestMapping(value = "laundry",method = RequestMethod.GET)
+	public String getLaundry(HttpServletRequest request,HttpServletResponse response,RevOrder order,String callback){
+		return JsonpUtil.jsonpCllback(laundryService.getLaundry(),callback);
+	}
+	
 	@RequestMapping(value = "submitrevorder",method = RequestMethod.GET)
 	public String submiRevtOrder(HttpServletRequest request,HttpServletResponse response,RevOrder order,String callback){
 		return JsonpUtil.jsonpCllback(laundryService.submiRevtOrder(order),callback);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "revorders",method = RequestMethod.GET)
-	public String getRevOrders(HttpServletRequest request,HttpServletResponse response,MyPage page,RevOrder order,String callback){
-		return JsonpUtil.jsonpCllback(laundryService.getRevOrders(page, order),callback);
-	}
-	
-	@RequestMapping(value = "revorder",method = RequestMethod.GET)
+	@RequestMapping(value = "order",method = RequestMethod.GET)
 	public String getRevOrder(HttpServletRequest request,HttpServletResponse response,Integer orderId,String callback){
 		return JsonpUtil.jsonpCllback(laundryService.getOrder(orderId),callback);
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "orders",method = RequestMethod.GET)
-	public String getRevOrder(HttpServletRequest request,HttpServletResponse response,MyPage page,Order order,String callback){
+	public String getRevOrder(HttpServletRequest request,HttpServletResponse response,MyPage page,RevOrder order,String callback){
 		return JsonpUtil.jsonpCllback(laundryService.getOrders(page, order),callback);
 	}
 	
-	@RequestMapping(value = "canclerevorder",method = RequestMethod.GET)
-	public String cancleRevOrder(HttpServletRequest request,HttpServletResponse response,RevOrder order,String callback){
-		laundryService.cancleRevOrder(order);
+	@RequestMapping(value = "modifystatus",method = RequestMethod.GET)
+	public String updaOrderStaus(HttpServletRequest request,HttpServletResponse response,RevOrder order,String callback){
+		laundryService.updaOrderStaus(order);
 		return JsonpUtil.jsonpCllback(new MyStatus().MyStatusSuccess(),callback);
 	}
 	
-	@RequestMapping(value = "modifystatus",method = RequestMethod.GET)
-	public String updaOrderStaus(HttpServletRequest request,HttpServletResponse response,Order order,String callback){
-		laundryService.updaOrderStaus(order);
+	@RequestMapping(value = "removeorder",method = RequestMethod.GET)
+	public String deleteOrder(HttpServletRequest request,HttpServletResponse response,RevOrder order,String callback){
+		laundryService.removeOrder(order);
 		return JsonpUtil.jsonpCllback(new MyStatus().MyStatusSuccess(),callback);
 	}
 }

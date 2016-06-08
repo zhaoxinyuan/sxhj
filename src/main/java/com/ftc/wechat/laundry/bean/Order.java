@@ -24,6 +24,8 @@ public class Order {
     private Integer orderStatusid;
     
     private String statusCode;
+    
+    private Integer orderPaytype;
 
     public Integer getOrderId() {
         return orderId;
@@ -112,4 +114,13 @@ public class Order {
 	public void setStatusCode(String statusCode) {
 		this.statusCode = statusCode;
 	}
+
+	public Integer getOrderPaytype() {
+		return orderPaytype;
+	}
+
+	public void setOrderPaytype(Integer orderPaytype) {
+		this.orderPaytype = orderPaytype;
+	}
+	
 }
