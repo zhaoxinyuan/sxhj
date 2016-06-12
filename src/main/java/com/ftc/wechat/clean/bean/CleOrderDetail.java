@@ -1,6 +1,6 @@
 package com.ftc.wechat.clean.bean;
 
-public class OrderDetail {
+public class CleOrderDetail {
     private Integer detailId;
 
     private Integer detailOrderid;

@@ -12,7 +12,7 @@ import com.ftc.base.entity.MyPage;
 import com.ftc.base.util.OrderNoUtil;
 import com.ftc.wechat.account.bean.UserAddress;
 import com.ftc.wechat.laundry.bean.Laundry;
-import com.ftc.wechat.laundry.bean.Order;
+import com.ftc.wechat.laundry.bean.LadOrder;
 import com.ftc.wechat.laundry.bean.RevOrder;
 import com.ftc.wechat.laundry.service.LaundryService;
 import com.github.pagehelper.PageHelper;
@@ -71,7 +71,7 @@ public class LaundyServiceImpl implements LaundryService{
 		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", order.getStatusCode());
 		order.setOrderStatusid(orderStatus.getStatusId());
 		baseDao.modify(LAD_REV_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
-		Order o = new Order();
+		LadOrder o = new LadOrder();
 		o.setOrderStatusid(orderStatus.getStatusId());
 		o.setOrderRevorderid(order.getOrderId());
 		baseDao.modify(LAD_ORDER_NAMESPACE_INFOUSER + "updateByRevOrderIdSelective", o);

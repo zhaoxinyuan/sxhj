@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.ftc.background.sys.bean.Status;
 
-public class Order {
+public class StrOrder {
     private Integer orderId;
 
     private String orderNo;
@@ -55,7 +55,7 @@ public class Order {
 
     private Integer orderDeleted;
     
-    private List<OrderDetail> orderDetail;
+    private List<StrOrderDetail> orderDetail;
     
     private String statusCode;
     
@@ -263,11 +263,11 @@ public class Order {
         this.orderDeleted = orderDeleted;
     }
 
-	public List<OrderDetail> getOrderDetail() {
+	public List<StrOrderDetail> getOrderDetail() {
 		return orderDetail;
 	}
 
-	public void setOrderDetail(List<OrderDetail> orderDetail) {
+	public void setOrderDetail(List<StrOrderDetail> orderDetail) {
 		this.orderDetail = orderDetail;
 	}
 

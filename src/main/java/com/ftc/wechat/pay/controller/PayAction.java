@@ -27,5 +27,4 @@ public class PayAction {
 	public String platform(HttpServletRequest request,HttpServletResponse response,String callback){
 		return JsonpUtil.jsonpCllback(payService.getPlatforms(),callback);
 	}
-	
 }

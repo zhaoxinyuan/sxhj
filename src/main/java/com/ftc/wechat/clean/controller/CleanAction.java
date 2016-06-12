@@ -15,7 +15,7 @@ import com.ftc.base.entity.MyPage;
 import com.ftc.base.entity.MyStatus;
 import com.ftc.wechat.clean.bean.DifOrder;
 import com.ftc.wechat.clean.bean.NanOrder;
-import com.ftc.wechat.clean.bean.Order;
+import com.ftc.wechat.clean.bean.CleOrder;
 import com.ftc.wechat.clean.service.CleanService;
 import com.ftc.wechat.util.JsonpUtil;
 import com.google.gson.Gson;
@@ -52,7 +52,7 @@ public class CleanAction {
 	
 	@RequestMapping(value = "cleordersubmit",method = RequestMethod.GET)
 	public String cleanOrderSubmit(HttpServletRequest request,HttpServletResponse response,String order,String callback){
-		return JsonpUtil.jsonpCllback(cleanService.orderSubmit(new Gson().fromJson(order, Order.class)),callback);
+		return JsonpUtil.jsonpCllback(cleanService.orderSubmit(new Gson().fromJson(order, CleOrder.class)),callback);
 	}
 	
 	@RequestMapping(value = "nanordersubmit",method = RequestMethod.GET)
@@ -62,7 +62,7 @@ public class CleanAction {
 	
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "cleorders",method = RequestMethod.GET)
-	public String getCleOrders(HttpServletRequest request,HttpServletResponse response,MyPage page,Order order,String callback){
+	public String getCleOrders(HttpServletRequest request,HttpServletResponse response,MyPage page,CleOrder order,String callback){
 		return JsonpUtil.jsonpCllback(cleanService.getOrders(page, order),callback);
 	}
 	
@@ -88,13 +88,13 @@ public class CleanAction {
 	}
 	
 	@RequestMapping(value = "canclecleorder",method = RequestMethod.GET)
-	public String cancleCleOrder(HttpServletRequest request,HttpServletResponse response,Order order,String callback){
+	public String cancleCleOrder(HttpServletRequest request,HttpServletResponse response,CleOrder order,String callback){
 		cleanService.cancelCleOrder(order);
 		return JsonpUtil.jsonpCllback(new MyStatus().MyStatusSuccess(),callback);
 	}
 	
 	@RequestMapping(value = "removelecleorder",method = RequestMethod.GET)
-	public String removeCleOrder(HttpServletRequest request,HttpServletResponse response,Order order,String callback){
+	public String removeCleOrder(HttpServletRequest request,HttpServletResponse response,CleOrder order,String callback){
 		cleanService.delateCleOrder(order);
 		return JsonpUtil.jsonpCllback(new MyStatus().MyStatusSuccess(),callback);
 	}

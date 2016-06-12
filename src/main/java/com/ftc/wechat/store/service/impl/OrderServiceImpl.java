@@ -16,8 +16,8 @@ import com.ftc.base.util.OrderNoUtil;
 import com.ftc.wechat.account.bean.UserAddress;
 import com.ftc.wechat.account.service.UserAddressService;
 import com.ftc.wechat.store.bean.Invoice;
-import com.ftc.wechat.store.bean.Order;
-import com.ftc.wechat.store.bean.OrderDetail;
+import com.ftc.wechat.store.bean.StrOrder;
+import com.ftc.wechat.store.bean.StrOrderDetail;
 import com.ftc.wechat.store.bean.Store;
 import com.ftc.wechat.store.entity.OrderTemp;
 import com.ftc.wechat.store.entity.ShoppingCartTemp;
@@ -51,7 +51,7 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	public Order submitOrder(OrderTemp orderTemp,Order order,String invoiceTitle) {
+	public StrOrder submitOrder(OrderTemp orderTemp,StrOrder order,String invoiceTitle) {
 		UUID tempId = UUID.randomUUID();
 		Invoice invoice = null;
 		if(invoiceTitle != null && invoiceTitle != ""){
@@ -88,10 +88,10 @@ public class OrderServiceImpl implements OrderService{
 		baseDao.insert(ORDER_NAMESPACE_INFOUSER + "insertSelective", order);
 		order = baseDao.selectOne(ORDER_NAMESPACE_INFOUSER + "selectByOrderNo",order.getOrderNo());
 		
-		List<OrderDetail> orderDetail = new ArrayList<OrderDetail>();
+		List<StrOrderDetail> orderDetail = new ArrayList<StrOrderDetail>();
 		
 		for (ShoppingCartTemp cart : orderTemp.getCart()) {
-			OrderDetail detail = new OrderDetail();
+			StrOrderDetail detail = new StrOrderDetail();
 			detail.setDetailOrderid(order.getOrderId());
 			detail.setDetailOrderno(order.getOrderNo());
 			detail.setDetailProductid(cart.getProductId());
@@ -109,14 +109,14 @@ public class OrderServiceImpl implements OrderService{
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public MyPage getOrders(MyPage page, Order order) {
+	public MyPage getOrders(MyPage page, StrOrder order) {
 		PageHelper.startPage(page.getCurrent(), page.getRowCount()).setOrderBy("order_id desc");
 		MyPage myPage = new MyPage().init(baseDao.selectList(ORDER_NAMESPACE_INFOUSER + "selectByOrderStatus", order));
 		if(myPage.getRows().size() >= 1){
-			List<OrderDetail> details = baseDao.selectList(ORDER_DETAIL_NAMESPACE_INFOUSER + "selectByOrderIds", myPage.getRows());
+			List<StrOrderDetail> details = baseDao.selectList(ORDER_DETAIL_NAMESPACE_INFOUSER + "selectByOrderIds", myPage.getRows());
 			for (Object obj : myPage.getRows()) {
-				Order odr = (Order)obj;
-				for (OrderDetail det : details) {
+				StrOrder odr = (StrOrder)obj;
+				for (StrOrderDetail det : details) {
 					if(odr.getOrderId() == det.getDetailOrderid()){
 						odr.getOrderDetail().add(det);
 					}
@@ -127,19 +127,19 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	public Order getOrder(Integer orderId) {
+	public StrOrder getOrder(Integer orderId) {
 		return baseDao.selectOne(ORDER_NAMESPACE_INFOUSER + "selectByPrimaryKey", orderId);
 	}
 
 	@Override
-	public void updateOrderStatus(Order order) {
+	public void updateOrderStatus(StrOrder order) {
 		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", order.getStatusCode());
 		order.setOrderStatusid(orderStatus.getStatusId());
 		baseDao.modify(ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
 	}
 
 	@Override
-	public void removeOrderStatus(Order order) {
+	public void removeOrderStatus(StrOrder order) {
 		baseDao.modify(ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
 	}
 

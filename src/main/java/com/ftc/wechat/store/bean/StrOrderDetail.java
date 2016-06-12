@@ -1,6 +1,6 @@
 package com.ftc.wechat.store.bean;
 
-public class OrderDetail {
+public class StrOrderDetail {
     private Integer detailId;
 
     private Integer detailOrderid;

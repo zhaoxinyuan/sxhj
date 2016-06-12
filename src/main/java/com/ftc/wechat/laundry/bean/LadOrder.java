@@ -2,7 +2,7 @@ package com.ftc.wechat.laundry.bean;
 
 import com.ftc.background.sys.bean.Status;
 
-public class Order {
+public class LadOrder {
     private Integer orderId;
 
     private String orderNo;

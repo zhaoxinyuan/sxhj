@@ -35,7 +35,7 @@ public class RevOrder {
     
     private String statusCode;
     
-    private Order order;
+    private LadOrder order;
 
     public Integer getOrderId() {
         return orderId;
@@ -165,11 +165,11 @@ public class RevOrder {
 		this.statusCode = statusCode;
 	}
 
-	public Order getOrder() {
+	public LadOrder getOrder() {
 		return order;
 	}
 
-	public void setOrder(Order order) {
+	public void setOrder(LadOrder order) {
 		this.order = order;
 	}
 }

@@ -15,8 +15,8 @@ import com.ftc.wechat.account.bean.UserAddress;
 import com.ftc.wechat.clean.bean.Category;
 import com.ftc.wechat.clean.bean.DifOrder;
 import com.ftc.wechat.clean.bean.NanOrder;
-import com.ftc.wechat.clean.bean.Order;
-import com.ftc.wechat.clean.bean.OrderDetail;
+import com.ftc.wechat.clean.bean.CleOrder;
+import com.ftc.wechat.clean.bean.CleOrderDetail;
 import com.ftc.wechat.clean.bean.Staff;
 import com.ftc.wechat.clean.service.CleanService;
 import com.github.pagehelper.PageHelper;
@@ -58,7 +58,7 @@ public class CleanServiceImpl implements CleanService{
 	}
 
 	@Override
-	public Order orderSubmit(Order order) {
+	public CleOrder orderSubmit(CleOrder order) {
 		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "cle_001");
 		UserAddress address = baseDao.selectOne(ADDRESS_NAMESPACE_INFOUSER + "selectByPrimaryKey",order.getOrderAddressid());
 		OrderNoUtil orderNoUtil = (OrderNoUtil)baseDao.selectOne(CLEAN_ORDER_NAMESPACE_INFOUSER + "selectSerial");
@@ -75,10 +75,10 @@ public class CleanServiceImpl implements CleanService{
 		order.setOrderAddressmobile(address.getAddressMobile());
 		
 		baseDao.insert(CLEAN_ORDER_NAMESPACE_INFOUSER + "insertSelective", order);
-		List<OrderDetail> detailList = order.getOrderDetail();
+		List<CleOrderDetail> detailList = order.getOrderDetail();
 		order = baseDao.selectOne(CLEAN_ORDER_NAMESPACE_INFOUSER + "selectByOrderNo",order.getOrderNo());
 		
-		for (OrderDetail detail : detailList) {
+		for (CleOrderDetail detail : detailList) {
 			detail.setDetailOrderid(order.getOrderId());
 			detail.setDetailOrderno(order.getOrderNo());
 		}
@@ -107,20 +107,20 @@ public class CleanServiceImpl implements CleanService{
 	}
 
 	@Override
-	public List<OrderDetail> getStaffTimeOccupancy(Integer detailStaffid) {
+	public List<CleOrderDetail> getStaffTimeOccupancy(Integer detailStaffid) {
 		return baseDao.selectList(CLEAN_ORDER_DETAIL_NAMESPACE_INFOUSER + "selectStaffTimeOccupancy", detailStaffid);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public MyPage getOrders(MyPage page, Order order) {
+	public MyPage getOrders(MyPage page, CleOrder order) {
 		PageHelper.startPage(page.getCurrent(), page.getRowCount()).setOrderBy("order_id desc");;
 		MyPage myPage = new MyPage().init(baseDao.selectList(CLEAN_ORDER_NAMESPACE_INFOUSER + "selectByOrderStatus", order));
 		if(myPage.getRows().size() >= 1){
-			List<OrderDetail> details = baseDao.selectList(CLEAN_ORDER_DETAIL_NAMESPACE_INFOUSER + "selectByOrderIds", myPage.getRows());
+			List<CleOrderDetail> details = baseDao.selectList(CLEAN_ORDER_DETAIL_NAMESPACE_INFOUSER + "selectByOrderIds", myPage.getRows());
 			for (Object obj : myPage.getRows()) {
-				Order odr = (Order)obj;
-				for (OrderDetail det : details) {
+				CleOrder odr = (CleOrder)obj;
+				for (CleOrderDetail det : details) {
 					if(odr.getOrderId() == det.getDetailOrderid()){
 						odr.getOrderDetail().add(det);
 					}
@@ -139,7 +139,7 @@ public class CleanServiceImpl implements CleanService{
 	}
 
 	@Override
-	public Order getOrder(Integer orderId) {
+	public CleOrder getOrder(Integer orderId) {
 		return baseDao.selectOne(CLEAN_ORDER_NAMESPACE_INFOUSER + "selectByPrimaryKey", orderId);
 	}
 
@@ -149,14 +149,14 @@ public class CleanServiceImpl implements CleanService{
 	}
 
 	@Override
-	public void cancelCleOrder(Order order) {
+	public void cancelCleOrder(CleOrder order) {
 		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "odr_002");
 		order.setOrderStatusid(orderStatus.getStatusId());
 		baseDao.modify(CLEAN_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
 	}
 
 	@Override
-	public void delateCleOrder(Order order) {
+	public void delateCleOrder(CleOrder order) {
 		order.setOrderDeleted(1);
 		baseDao.modify(CLEAN_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
 	}

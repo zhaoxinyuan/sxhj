@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ftc.wechat.laundry.dao.OrderMapper" >
-  <resultMap id="BaseResultMap" type="com.ftc.wechat.laundry.bean.Order" >
+  <resultMap id="BaseResultMap" type="com.ftc.wechat.laundry.bean.LadOrder" >
     <id column="order_id" property="orderId" jdbcType="INTEGER" />
     <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
     <result column="order_datetime" property="orderDatetime" jdbcType="VARCHAR" />
@@ -27,7 +27,7 @@
      LEFT JOIN sys_status b ON a.order_statusid = b.status_id
     where order_id = #{orderId,jdbcType=INTEGER}
   </select>
-  <select id="selectByOrderStatus" resultMap="BaseResultMap" parameterType="com.ftc.wechat.laundry.bean.Order" >
+  <select id="selectByOrderStatus" resultMap="BaseResultMap" parameterType="com.ftc.wechat.laundry.bean.LadOrder" >
     select a.*,b.*
     from lad_order a
     LEFT JOIN sys_status b ON a.order_statusid = b.status_id
@@ -50,7 +50,7 @@
     delete from lad_order
     where order_id = #{orderId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.ftc.wechat.laundry.bean.Order" >
+  <insert id="insert" parameterType="com.ftc.wechat.laundry.bean.LadOrder" >
     insert into lad_order (order_id, order_no, order_datetime, 
       order_revorderid, order_orderno, order_amount, 
       order_qty, order_finished, order_statusid,order_paytype
@@ -61,7 +61,7 @@
       #{orderPaytype,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.ftc.wechat.laundry.bean.Order" >
+  <insert id="insertSelective" parameterType="com.ftc.wechat.laundry.bean.LadOrder" >
     insert into lad_order
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="orderId != null" >
@@ -128,7 +128,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ftc.wechat.laundry.bean.Order" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.ftc.wechat.laundry.bean.LadOrder" >
     update lad_order
     <set >
       <if test="orderNo != null" >
@@ -161,7 +161,7 @@
     </set>
     where order_id = #{orderId,jdbcType=INTEGER}
   </update>
-  <update id="updateByRevOrderIdSelective" parameterType="com.ftc.wechat.laundry.bean.Order" >
+  <update id="updateByRevOrderIdSelective" parameterType="com.ftc.wechat.laundry.bean.LadOrder" >
     update lad_order
     <set >
       <if test="orderNo != null" >
@@ -191,7 +191,7 @@
     </set>
     where order_revorderid = #{orderRevorderid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ftc.wechat.laundry.bean.Order" >
+  <update id="updateByPrimaryKey" parameterType="com.ftc.wechat.laundry.bean.LadOrder" >
     update lad_order
     set order_no = #{orderNo,jdbcType=VARCHAR},
       order_datetime = #{orderDatetime,jdbcType=VARCHAR},
