@@ -8,6 +8,6 @@ public interface AccountService {
 	public UserAccount getUserAmount(Integer accountUserid);
 	
 	@SuppressWarnings("rawtypes")
-	public MyPage getUserAccount(MyPage myPage, Integer accountUserid);
+	public MyPage getUserAccount(MyPage myPage, UserAccount account);
 	
 }

@@ -24,9 +24,9 @@ public class AccountServiceImpl implements AccountService{
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public MyPage getUserAccount(MyPage myPage, Integer accountUserid) {
+	public MyPage getUserAccount(MyPage myPage,UserAccount account) {
 		PageHelper.startPage(myPage.getCurrent(), myPage.getRowCount()).setOrderBy("account_id desc");
-		return new MyPage().init(baseDao.selectList(ACCOUNT_NAMESPACE_INFOUSER + "selectByUserId", accountUserid));
+		return new MyPage().init(baseDao.selectList(ACCOUNT_NAMESPACE_INFOUSER + "selectByUserId", account));
 	}
 
 }

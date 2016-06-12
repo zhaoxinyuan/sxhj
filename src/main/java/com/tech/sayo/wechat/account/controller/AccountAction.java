@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tech.sayo.base.entity.MyPage;
+import com.tech.sayo.wechat.account.bean.UserAccount;
 import com.tech.sayo.wechat.account.service.AccountService;
 import com.tech.sayo.wechat.util.JsonpUtil;
 
@@ -32,8 +33,8 @@ public class AccountAction {
 	
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "details",method = RequestMethod.GET)
-	public String getUserDetail(HttpServletRequest request,HttpServletResponse response, MyPage myPage,Integer accountUserid,String callback){
-		return JsonpUtil.jsonpCllback(accountService.getUserAccount(myPage, accountUserid),callback);
+	public String getUserDetail(HttpServletRequest request,HttpServletResponse response, MyPage myPage,UserAccount account,String callback){
+		return JsonpUtil.jsonpCllback(accountService.getUserAccount(myPage, account),callback);
 	}
 	
 }
