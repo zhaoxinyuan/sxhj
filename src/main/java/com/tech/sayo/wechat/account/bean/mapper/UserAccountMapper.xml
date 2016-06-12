@@ -33,37 +33,44 @@
     from act_user_account
     where account_id = #{accountId,jdbcType=INTEGER}
   </select>
-  <select id="selectByUserId" resultMap="OrderResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByUserId" resultMap="OrderResultMap" parameterType="com.tech.sayo.wechat.account.bean.UserAccount" >
     SELECT a.account_id,
-       a.account_datetime,
-       a.account_typeid,
-       a.account_amounts,
-       a.account_userid,
-       a.account_payid,
-       a.account_refundid,
-       a.account_orderno,
-       CASE WHEN b.order_id IS NOT NULL THEN b.order_id ELSE
-	    CASE WHEN d.order_id IS NOT NULL THEN d.order_id ELSE 
-		 CASE WHEN e.order_id IS NOT NULL THEN e.order_id ELSE NULL END
-    	    END
-       END AS orderid,
-       CASE WHEN a.account_payid IS NOT NULL THEN 'refill' ELSE 
-            CASE WHEN b.order_id IS NOT NULL THEN c.category_code ELSE
-		 CASE WHEN d.order_id IS NOT NULL THEN 'store' ELSE
-		      CASE WHEN e.order_id IS NOT NULL THEN 'laundry' ELSE 
-			   CASE WHEN a.account_refundid IS NOT NULL THEN 'refund' ELSE NULL END 
-		      END
-		 END
-            END
-       END AS ordercategory     		      
-
+	       a.account_datetime,
+	       a.account_typeid,
+	       a.account_amounts,
+	       a.account_userid,
+	       a.account_payid,
+	       a.account_refundid,
+	       a.account_orderno,
+	       CASE WHEN b.order_id IS NOT NULL THEN b.order_id ELSE
+		    CASE WHEN d.order_id IS NOT NULL THEN d.order_id ELSE 
+			 CASE WHEN e.order_id IS NOT NULL THEN e.order_id ELSE 
+				CASE WHEN f.order_id IS NOT NULL THEN f.order_id ELSE NULL END
+			 END
+	    	    END
+	       END AS orderid,
+	       CASE WHEN a.account_payid IS NOT NULL THEN 'refill' ELSE 
+	            CASE WHEN b.order_id IS NOT NULL THEN c.category_code ELSE
+			 CASE WHEN d.order_id IS NOT NULL THEN 'store' ELSE
+			      CASE WHEN e.order_id IS NOT NULL THEN 'laundry' ELSE 
+				   CASE WHEN a.account_refundid IS NOT NULL THEN 'refund' ELSE 
+				        CASE WHEN f.order_id IS NOT NULL THEN 'difference' ELSE NULL END 
+				   END 
+			      END
+			 END
+	            END
+	       END AS ordercategory     		      
 	FROM act_user_account a
 	LEFT JOIN cle_order b ON a.account_orderno = b.order_no
 	LEFT JOIN cle_category c ON b.order_categoryid = c.category_id
 	LEFT JOIN str_order d ON a.account_orderno = d.order_no
 	LEFT JOIN lad_order e ON a.account_orderno = e.order_no
-
+	LEFT JOIN cle_dif_order f ON a.account_orderno = f.order_no
+	LEFT JOIN act_account_type g ON a.account_typeid = g.type_id
     where a.account_userid = #{accountUserid,jdbcType=INTEGER}
+    <if test="typeCode != null and typeCode != ''">
+    	and g.type_code = #{typeCode,jdbcType=VARCHAR}
+    </if>
   </select>
   <select id="selectAmount" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 

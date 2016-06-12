@@ -20,6 +20,8 @@ public class UserAccount {
     private Integer orderid;
     
     private String ordercategory;
+    
+    private String typeCode;
 
     public Integer getAccountId() {
         return accountId;
@@ -99,5 +101,13 @@ public class UserAccount {
 
 	public void setOrdercategory(String ordercategory) {
 		this.ordercategory = ordercategory;
+	}
+
+	public String getTypeCode() {
+		return typeCode;
+	}
+
+	public void setTypeCode(String typeCode) {
+		this.typeCode = typeCode;
 	}
 }
