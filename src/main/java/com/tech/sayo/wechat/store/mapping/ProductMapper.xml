@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tech.sayo.wechat.store.dao.ProductMapper" >
+  <resultMap id="BaseResultMap" type="com.tech.sayo.wechat.store.bean.Product" >
+    <id column="product_id" property="productId" jdbcType="INTEGER" />
+    <result column="product_store_id" property="productStoreId" jdbcType="INTEGER" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="product_price" property="productPrice" jdbcType="DOUBLE" />
+    <result column="product_costprice" property="productCostprice" jdbcType="DOUBLE" />
+    <result column="product_brand" property="productBrand" jdbcType="VARCHAR" />
+    <result column="product_spec" property="productSpec" jdbcType="VARCHAR" />
+    <result column="product_info" property="productInfo" jdbcType="VARCHAR" />
+    <result column="product_image" property="productImage" jdbcType="VARCHAR" />
+    <result column="product_categoryid" property="productCategoryid" jdbcType="INTEGER" />
+    <result column="product_shelves" property="productShelves" jdbcType="INTEGER" />
+    <result column="productSales" property="productSales" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select a.*,
+           IFNULL(b.sales_qty,0) as productSales
+    from str_product a
+    left join str_product_monthsales b on a.product_id =  b.sales_productid and YEAR(DATE_FORMAT(NOW(),'%Y-%m-%d')) = b.sales_year and MONTH(DATE_FORMAT(NOW(),'%Y-%m-%d')) = b.sales_month 
+    where product_id = #{productId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByStore" resultMap="BaseResultMap" parameterType="com.tech.sayo.wechat.store.bean.Product" >
+   select a.*,
+           IFNULL(b.sales_qty,0) as productSales
+    from str_product a
+    left join str_product_monthsales b on a.product_id =  b.sales_productid and YEAR(DATE_FORMAT(NOW(),'%Y-%m-%d')) = b.sales_year and MONTH(DATE_FORMAT(NOW(),'%Y-%m-%d')) = b.sales_month
+    where product_store_id = #{productStoreId,jdbcType=INTEGER}
+    <if test="productCategoryid != null" >
+       and product_categoryid = #{productCategoryid,jdbcType=INTEGER}
+    </if>
+     <if test="productName != null" >
+       and product_name like CONCAT('%',#{productName,jdbcType=VARCHAR},'%')
+    </if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from str_product
+    where product_id = #{productId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tech.sayo.wechat.store.bean.Product" >
+    insert into str_product (product_id, product_store_id, product_name, 
+      product_price, product_costprice, product_brand, 
+      product_spec, product_info, product_image, 
+      product_categoryid, product_shelves)
+    values (#{productId,jdbcType=INTEGER}, #{productStoreId,jdbcType=INTEGER}, #{productName,jdbcType=VARCHAR}, 
+      #{productPrice,jdbcType=DOUBLE}, #{productCostprice,jdbcType=DOUBLE}, #{productBrand,jdbcType=VARCHAR}, 
+      #{productSpec,jdbcType=VARCHAR}, #{productInfo,jdbcType=VARCHAR}, #{productImage,jdbcType=VARCHAR}, 
+      #{productCategoryid,jdbcType=INTEGER}, #{productShelves,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tech.sayo.wechat.store.bean.Product" >
+    insert into str_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="productStoreId != null" >
+        product_store_id,
+      </if>
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="productPrice != null" >
+        product_price,
+      </if>
+      <if test="productCostprice != null" >
+        product_costprice,
+      </if>
+      <if test="productBrand != null" >
+        product_brand,
+      </if>
+      <if test="productSpec != null" >
+        product_spec,
+      </if>
+      <if test="productInfo != null" >
+        product_info,
+      </if>
+      <if test="productImage != null" >
+        product_image,
+      </if>
+      <if test="productCategoryid != null" >
+        product_categoryid,
+      </if>
+      <if test="productShelves != null" >
+        product_shelves,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="productId != null" >
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productStoreId != null" >
+        #{productStoreId,jdbcType=INTEGER},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrice != null" >
+        #{productPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="productCostprice != null" >
+        #{productCostprice,jdbcType=DOUBLE},
+      </if>
+      <if test="productBrand != null" >
+        #{productBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="productSpec != null" >
+        #{productSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="productInfo != null" >
+        #{productInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="productImage != null" >
+        #{productImage,jdbcType=VARCHAR},
+      </if>
+      <if test="productCategoryid != null" >
+        #{productCategoryid,jdbcType=INTEGER},
+      </if>
+      <if test="productShelves != null" >
+        #{productShelves,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tech.sayo.wechat.store.bean.Product" >
+    update str_product
+    <set >
+      <if test="productStoreId != null" >
+        product_store_id = #{productStoreId,jdbcType=INTEGER},
+      </if>
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrice != null" >
+        product_price = #{productPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="productCostprice != null" >
+        product_costprice = #{productCostprice,jdbcType=DOUBLE},
+      </if>
+      <if test="productBrand != null" >
+        product_brand = #{productBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="productSpec != null" >
+        product_spec = #{productSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="productInfo != null" >
+        product_info = #{productInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="productImage != null" >
+        product_image = #{productImage,jdbcType=VARCHAR},
+      </if>
+      <if test="productCategoryid != null" >
+        product_categoryid = #{productCategoryid,jdbcType=INTEGER},
+      </if>
+      <if test="productShelves != null" >
+        product_shelves = #{productShelves,jdbcType=INTEGER},
+      </if>
+    </set>
+    where product_id = #{productId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tech.sayo.wechat.store.bean.Product" >
+    update str_product
+    set product_store_id = #{productStoreId,jdbcType=INTEGER},
+      product_name = #{productName,jdbcType=VARCHAR},
+      product_price = #{productPrice,jdbcType=DOUBLE},
+      product_costprice = #{productCostprice,jdbcType=DOUBLE},
+      product_brand = #{productBrand,jdbcType=VARCHAR},
+      product_spec = #{productSpec,jdbcType=VARCHAR},
+      product_info = #{productInfo,jdbcType=VARCHAR},
+      product_image = #{productImage,jdbcType=VARCHAR},
+      product_categoryid = #{productCategoryid,jdbcType=INTEGER},
+      product_shelves = #{productShelves,jdbcType=INTEGER}
+    where product_id = #{productId,jdbcType=INTEGER}
+  </update>
+</mapper>

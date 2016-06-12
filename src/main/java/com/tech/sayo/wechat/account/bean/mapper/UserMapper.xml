@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tech.sayo.wechat.account.bean.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.tech.sayo.wechat.account.bean.User" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_wechatid" property="userWechatid" jdbcType="VARCHAR" />
+    <result column="user_mobile" property="userMobile" jdbcType="VARCHAR" />
+    <result column="user_nickname" property="userNickname" jdbcType="VARCHAR" />
+    <result column="user_head" property="userHead" jdbcType="VARCHAR" />
+    <result column="user_sex" property="userSex" jdbcType="INTEGER" />
+    <result column="user_birthday" property="userBirthday" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    user_id, user_wechatid, user_mobile, user_nickname, 
+    user_head, user_sex, user_birthday
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="com.tech.sayo.wechat.account.bean.User">
+    select 
+    <include refid="Base_Column_List" />
+    from act_user
+    <where>
+	    <if test="userMobile != null and userMobile!= ''" >
+	       user_mobile like CONCAT('%',#{userMobile,jdbcType=VARCHAR},'%')
+	    </if>
+	    <if test="userNickname != null and userNickname != ''" >
+	      	and  user_nickname like CONCAT('%',#{userNickname,jdbcType=VARCHAR},'%')
+	    </if>
+	    <if test="userSex == 1 or userSex == 2" >
+	       	and user_sex = #{userSex,jdbcType=INTEGER}
+	    </if>
+	    <if test="userBirthday != null and userBirthday != ''" >
+	     	and  user_birthday like CONCAT('%',#{userBirthday,jdbcType=VARCHAR},'%')
+	    </if>
+	    <if test="userWechatid == '1'.toString() " >
+	    	and user_wechatid != ''
+	    </if>
+	    <if test="userWechatid == '-1'.toString() " >
+	    	and user_wechatid = ''
+	    </if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from act_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByWechatId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from act_user
+    where user_wechatid = #{userWechatid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from act_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tech.sayo.wechat.account.bean.User" >
+    insert into act_user (user_id,user_wechatid, user_mobile, user_nickname, user_head, user_sex, user_birthday )
+    values (#{userId,jdbcType=INTEGER}, #{userWechatid,jdbcType=VARCHAR}, #{userMobile,jdbcType=VARCHAR}, #{userNickname,jdbcType=VARCHAR}, 
+      #{userHead,jdbcType=VARCHAR}, #{userSex,jdbcType=INTEGER}, #{userBirthday,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tech.sayo.wechat.account.bean.User" >
+    insert into act_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userWechatid != null" >
+        user_wechatid,
+      </if>
+      <if test="userMobile != null" >
+        user_mobile,
+      </if>
+      <if test="userNickname != null" >
+        user_nickname,
+      </if>
+      <if test="userHead != null" >
+        user_head,
+      </if>
+      <if test="userSex != null" >
+        user_sex,
+      </if>
+      <if test="userBirthday != null" >
+        user_birthday,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userWechatid != null" >
+        #{userWechatid,jdbcType=VARCHAR},
+      </if>
+      <if test="userMobile != null" >
+        #{userMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="userNickname != null" >
+        #{userNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="userHead != null" >
+        #{userHead,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        #{userSex,jdbcType=INTEGER},
+      </if>
+      <if test="userBirthday != null" >
+        #{userBirthday,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tech.sayo.wechat.account.bean.User" >
+    update act_user
+    <set >
+      <if test="userWechatid != null" >
+        user_wechatid = #{userWechatid,jdbcType=VARCHAR},
+      </if>
+      <if test="userMobile != null" >
+        user_mobile = #{userMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="userNickname != null" >
+        user_nickname = #{userNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="userHead != null" >
+        user_head = #{userHead,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        user_sex = #{userSex,jdbcType=INTEGER},
+      </if>
+      <if test="userBirthday != null" >
+        user_birthday = #{userBirthday,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tech.sayo.wechat.account.bean.User" >
+    update act_user
+    set user_accountname = #{userAccountname,jdbcType=VARCHAR},
+      user_mobile = #{userMobile,jdbcType=VARCHAR},
+      user_nickname = #{userNickname,jdbcType=VARCHAR},
+      user_head = #{userHead,jdbcType=VARCHAR},
+      user_sex = #{userSex,jdbcType=INTEGER},
+      user_birthday = #{userBirthday,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

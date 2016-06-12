@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tech.sayo.wechat.account.bean.mapper.UserAddressMapper" >
+  <resultMap id="BaseResultMap" type="com.tech.sayo.wechat.account.bean.UserAddress" >
+    <id column="address_id" property="addressId" jdbcType="INTEGER" />
+    <result column="address_userid" property="addressUserid" jdbcType="INTEGER" />
+    <result column="address_consignee" property="addressConsignee" jdbcType="VARCHAR" />
+    <result column="address_mobile" property="addressMobile" jdbcType="VARCHAR" />
+    <result column="address_province" property="addressProvince" jdbcType="VARCHAR" />
+    <result column="address_city" property="addressCity" jdbcType="VARCHAR" />
+    <result column="address_county" property="addressCounty" jdbcType="VARCHAR" />
+    <result column="address_street" property="addressStreet" jdbcType="VARCHAR" />
+    <result column="address_default" property="addressDefault" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    address_id, address_userid, address_consignee, address_mobile, address_province, 
+    address_city, address_county, address_street, address_default
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from act_user_address
+    where address_userid = #{addressUserid,jdbcType=INTEGER}
+    order by address_default desc
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from act_user_address
+    where address_id = #{addressId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByLast" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from act_user_address
+    where address_userid = #{addressUserid,jdbcType=INTEGER}
+    order by address_id desc
+    LIMIT 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from act_user_address
+    where address_id = #{addressId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tech.sayo.wechat.account.bean.UserAddress" >
+    insert into act_user_address (address_id, address_userid, address_consignee, 
+      address_mobile, address_province, address_city, 
+      address_county, address_street, address_default
+      )
+    values (#{addressId,jdbcType=INTEGER}, #{addressUserid,jdbcType=INTEGER}, #{addressConsignee,jdbcType=VARCHAR}, 
+      #{addressMobile,jdbcType=VARCHAR}, #{addressProvince,jdbcType=VARCHAR}, #{addressCity,jdbcType=VARCHAR}, 
+      #{addressCounty,jdbcType=VARCHAR}, #{addressStreet,jdbcType=VARCHAR}, #{addressDefault,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tech.sayo.wechat.account.bean.UserAddress" >
+    insert into act_user_address
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="addressId != null" >
+        address_id,
+      </if>
+      <if test="addressUserid != null" >
+        address_userid,
+      </if>
+      <if test="addressConsignee != null" >
+        address_consignee,
+      </if>
+      <if test="addressMobile != null" >
+        address_mobile,
+      </if>
+      <if test="addressProvince != null" >
+        address_province,
+      </if>
+      <if test="addressCity != null" >
+        address_city,
+      </if>
+      <if test="addressCounty != null" >
+        address_county,
+      </if>
+      <if test="addressStreet != null" >
+        address_street,
+      </if>
+      <if test="addressDefault != null" >
+        address_default,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="addressId != null" >
+        #{addressId,jdbcType=INTEGER},
+      </if>
+      <if test="addressUserid != null" >
+        #{addressUserid,jdbcType=INTEGER},
+      </if>
+      <if test="addressConsignee != null" >
+        #{addressConsignee,jdbcType=VARCHAR},
+      </if>
+      <if test="addressMobile != null" >
+        #{addressMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="addressProvince != null" >
+        #{addressProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="addressCity != null" >
+        #{addressCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addressCounty != null" >
+        #{addressCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="addressStreet != null" >
+        #{addressStreet,jdbcType=VARCHAR},
+      </if>
+      <if test="addressDefault != null" >
+        #{addressDefault,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tech.sayo.wechat.account.bean.UserAddress" >
+    update act_user_address
+    <set >
+      <if test="addressUserid != null" >
+        address_userid = #{addressUserid,jdbcType=INTEGER},
+      </if>
+      <if test="addressConsignee != null" >
+        address_consignee = #{addressConsignee,jdbcType=VARCHAR},
+      </if>
+      <if test="addressMobile != null" >
+        address_mobile = #{addressMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="addressProvince != null" >
+        address_province = #{addressProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="addressCity != null" >
+        address_city = #{addressCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addressCounty != null" >
+        address_county = #{addressCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="addressStreet != null" >
+        address_street = #{addressStreet,jdbcType=VARCHAR},
+      </if>
+      <if test="addressDefault != null" >
+        address_default = #{addressDefault,jdbcType=INTEGER},
+      </if>
+    </set>
+    where address_id = #{addressId,jdbcType=INTEGER}
+  </update>
+  <update id="updateBySelective" parameterType="com.tech.sayo.wechat.account.bean.UserAddress" >
+    update act_user_address
+    <set >
+      <if test="addressUserid != null" >
+        address_userid = #{addressUserid,jdbcType=INTEGER},
+      </if>
+      <if test="addressConsignee != null" >
+        address_consignee = #{addressConsignee,jdbcType=VARCHAR},
+      </if>
+      <if test="addressMobile != null" >
+        address_mobile = #{addressMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="addressProvince != null" >
+        address_province = #{addressProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="addressCity != null" >
+        address_city = #{addressCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addressCounty != null" >
+        address_county = #{addressCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="addressStreet != null" >
+        address_street = #{addressStreet,jdbcType=VARCHAR},
+      </if>
+      <if test="addressDefault != null" >
+        address_default = #{addressDefault,jdbcType=INTEGER},
+      </if>
+    </set>
+  </update>  
+  <update id="updateByPrimaryKey" parameterType="com.tech.sayo.wechat.account.bean.UserAddress" >
+    update act_user_address
+    set address_userid = #{addressUserid,jdbcType=INTEGER},
+      address_consignee = #{addressConsignee,jdbcType=VARCHAR},
+      address_mobile = #{addressMobile,jdbcType=VARCHAR},
+      address_province = #{addressProvince,jdbcType=VARCHAR},
+      address_city = #{addressCity,jdbcType=VARCHAR},
+      address_county = #{addressCounty,jdbcType=VARCHAR},
+      address_street = #{addressStreet,jdbcType=VARCHAR},
+      address_default = #{addressDefault,jdbcType=INTEGER}
+    where address_id = #{addressId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -10,7 +10,7 @@
                         http://www.springframework.org/schema/mvc    
                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">  
     <!-- 自动扫描 -->  
-    <context:component-scan base-package="com.ftc" />  
+    <context:component-scan base-package="com.tech.sayo" />  
     <!-- 引入配置文件 -->  
     <bean id="propertyConfigurer"  
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
@@ -39,7 +39,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
         <property name="dataSource" ref="dataSource" />  
         <!-- 自动扫描mapping.xml文件 -->  
-        <property name="mapperLocations" value="classpath:com/ftc/**/*Mapper.xml"></property>
+        <property name="mapperLocations" value="classpath:com/tech/sayo/**/*Mapper.xml"></property>
         <property name="plugins">
     		<array>
       			<bean class="com.github.pagehelper.PageHelper">
@@ -55,7 +55,7 @@
     
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="annotationClass" value="org.springframework.stereotype.Repository" />
-        <property name="basePackage" value="com.ftc" />
+        <property name="basePackage" value="com.tech.sayo" />
     </bean>
  
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">

@@ -59,7 +59,7 @@
 	
 	<filter>
 		<filter-name>loggerfilter</filter-name>
-		<filter-class>com.ftc.base.util.EncodingFilterUtil</filter-class>
+		<filter-class>com.tech.sayo.base.util.EncodingFilterUtil</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>loggerfilter</filter-name>
