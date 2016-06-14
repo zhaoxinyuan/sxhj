@@ -93,6 +93,11 @@ public class CleanAction {
 		return JsonpUtil.jsonpCllback(new MyStatus().MyStatusSuccess(),callback);
 	}
 	
+	@RequestMapping(value = "cleorderbydiff",method = RequestMethod.GET)
+	public String cleOrderByDiff(HttpServletRequest request,HttpServletResponse response,Integer orderId,String callback){
+		return JsonpUtil.jsonpCllback(cleanService.getOrderByDiff(orderId),callback);
+	}
+	
 	@RequestMapping(value = "removelecleorder",method = RequestMethod.GET)
 	public String removeCleOrder(HttpServletRequest request,HttpServletResponse response,CleOrder order,String callback){
 		cleanService.delateCleOrder(order);

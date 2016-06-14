@@ -114,22 +114,22 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.tech.sayo.wechat.account.bean.User" >
     update act_user
     <set >
-      <if test="userWechatid != null" >
+      <if test="userWechatid != null and userWechatid != ''" >
         user_wechatid = #{userWechatid,jdbcType=VARCHAR},
       </if>
-      <if test="userMobile != null" >
+      <if test="userMobile != null and userMobile != ''" >
         user_mobile = #{userMobile,jdbcType=VARCHAR},
       </if>
-      <if test="userNickname != null" >
+      <if test="userNickname != null and userNickname != ''" >
         user_nickname = #{userNickname,jdbcType=VARCHAR},
       </if>
-      <if test="userHead != null" >
+      <if test="userHead != null and userHead != ''" >
         user_head = #{userHead,jdbcType=VARCHAR},
       </if>
-      <if test="userSex != null" >
+      <if test="userSex != null and userSex != ''" >
         user_sex = #{userSex,jdbcType=INTEGER},
       </if>
-      <if test="userBirthday != null" >
+      <if test="userBirthday != null and userBirthday != ''" >
         user_birthday = #{userBirthday,jdbcType=VARCHAR},
       </if>
     </set>

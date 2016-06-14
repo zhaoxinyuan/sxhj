@@ -44,7 +44,7 @@
 	       a.account_orderno,
 	       CASE WHEN b.order_id IS NOT NULL THEN b.order_id ELSE
 		    CASE WHEN d.order_id IS NOT NULL THEN d.order_id ELSE 
-			 CASE WHEN e.order_id IS NOT NULL THEN e.order_id ELSE 
+			 CASE WHEN e.order_id IS NOT NULL THEN h.order_id ELSE 
 				CASE WHEN f.order_id IS NOT NULL THEN f.order_id ELSE NULL END
 			 END
 	    	    END
@@ -67,6 +67,7 @@
 	LEFT JOIN lad_order e ON a.account_orderno = e.order_no
 	LEFT JOIN cle_dif_order f ON a.account_orderno = f.order_no
 	LEFT JOIN act_account_type g ON a.account_typeid = g.type_id
+	LEFT JOIN lad_rev_order h ON e.order_revorderid = h.order_id
     where a.account_userid = #{accountUserid,jdbcType=INTEGER}
     <if test="typeCode != null and typeCode != ''">
     	and g.type_code = #{typeCode,jdbcType=VARCHAR}

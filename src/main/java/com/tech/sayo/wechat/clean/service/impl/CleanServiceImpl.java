@@ -198,4 +198,10 @@ public class CleanServiceImpl implements CleanService{
 		return baseDao.selectOne(DIF_ORDER_NAMESPACE_INFOUSER + "selectByPrimaryKey", orderId);
 	}
 
+	@Override
+	public CleOrder getOrderByDiff(Integer orderId) {
+		DifOrder order = baseDao.selectOne(DIF_ORDER_NAMESPACE_INFOUSER + "selectByPrimaryKey", orderId);
+		return baseDao.selectOne(CLEAN_ORDER_NAMESPACE_INFOUSER + "selectByPrimaryKey", order.getOrderCleOrderid());
+	}
+
 }

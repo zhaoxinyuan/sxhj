@@ -35,6 +35,8 @@ public interface CleanService {
 	
 	public CleOrder getOrder(Integer orderId);
 	
+	public CleOrder getOrderByDiff(Integer orderId);
+	
 	public NanOrder getNanOrder(Integer orderId);
 	
 	public void cancelCleOrder(CleOrder order);
