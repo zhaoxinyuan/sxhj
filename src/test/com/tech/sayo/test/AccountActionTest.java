@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;  
 /**
  * @author zo
- * @date 2016*06*14 10:50:26
+ * @date 2016-06-14 10:50:26
  * @Description ≤‚ ‘  controller AccountAction
  * */
 public class AccountActionTest extends BaseTest {
