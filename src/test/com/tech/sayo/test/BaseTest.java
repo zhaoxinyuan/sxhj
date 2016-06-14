@@ -2,6 +2,9 @@ package com.tech.sayo.test;
 
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
@@ -36,6 +40,16 @@ public class BaseTest {
 	 * */
 	@Before
 	public void setUp() {
-		this.mockMvc = webAppContextSetup(this.wac).build();  
+		this.mockMvc = webAppContextSetup(this.wac).build(); 
+	}
+	
+	public void PrintResponseBody(MvcResult result){
+		try {
+			System.out.println("ResponseBody:");
+			System.out.println(URLDecoder.decode("	" + result.getResponse().getContentAsString(), "utf-8") + "\n");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
