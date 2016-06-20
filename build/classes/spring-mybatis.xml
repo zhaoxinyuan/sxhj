@@ -33,6 +33,9 @@
         <property name="minIdle" value="${minIdle}"></property>  
         <!-- 获取连接最大等待时间 -->  
         <property name="maxWait" value="${maxWait}"></property>  
+        <property name="poolPingEnabled" value="true"/>
+        <property name="poolPingQuery" value="select now()"/>
+        <property name="poolPingQuery" value="3600000"/>
     </bean>  
   
     <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->  
