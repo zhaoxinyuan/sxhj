@@ -75,14 +75,19 @@ public class MenuRegisterUtil implements ServletContextAware{
 	private static Menu getMenu() throws UnsupportedEncodingException {
 		
 		ButtonView btn11 = new ButtonView();
-		btn11.setName("个人中心");
+		btn11.setName("首页");
 		btn11.setType("view"); 
-		btn11.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid="+SystemConfig.appId+"&redirect_uri="+(URLEncoder.encode(SystemConfig.localUrl + "forwardAction/forwardRequest?path=main/index.html?pageId=page_me", "utf-8"))+"&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect");
+		btn11.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid="+SystemConfig.appId+"&redirect_uri="+(URLEncoder.encode(SystemConfig.localUrl + "forwardAction/forwardRequest?path=main/index.html?pageId=page_index", "utf-8"))+"&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect");
+		
+		ButtonView btn21 = new ButtonView();
+		btn21.setName("个人中心");
+		btn21.setType("view"); 
+		btn21.setUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid="+SystemConfig.appId+"&redirect_uri="+(URLEncoder.encode(SystemConfig.localUrl + "forwardAction/forwardRequest?path=main/index.html?pageId=page_me", "utf-8"))+"&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect");
 		//btn11.setUrl(WechatConfig.localUrl+"home/index.jsp");
 		
 		ButtonComplex mainBtn1 = new ButtonComplex();
 		mainBtn1.setName("会员功能");
-		mainBtn1.setSub_button(new Button[] {btn11});
+		mainBtn1.setSub_button(new Button[] {btn11,btn21});
 		
   
 		Menu menu = new Menu();

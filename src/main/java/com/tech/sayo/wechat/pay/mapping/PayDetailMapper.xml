@@ -19,6 +19,12 @@
     from pay_paydetail
     where pay_id = #{payId,jdbcType=INTEGER}
   </select>
+  <select id="selectByOrderNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from pay_paydetail
+    where pay_orderno = #{payOrderno,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from pay_paydetail
     where pay_id = #{payId,jdbcType=INTEGER}

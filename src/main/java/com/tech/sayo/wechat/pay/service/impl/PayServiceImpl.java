@@ -1,23 +1,42 @@
 package com.tech.sayo.wechat.pay.service.impl;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tech.sayo.background.sys.bean.Status;
+import com.tech.sayo.base.config.SystemConfig;
 import com.tech.sayo.base.dao.BaseDao;
 import com.tech.sayo.base.entity.MyStatus;
+import com.tech.sayo.base.util.HttpUtil;
+import com.tech.sayo.base.util.MapToXmlUtil;
 import com.tech.sayo.wechat.account.bean.AccountType;
 import com.tech.sayo.wechat.account.bean.UserAccount;
 import com.tech.sayo.wechat.clean.bean.CleOrder;
 import com.tech.sayo.wechat.clean.bean.DifOrder;
 import com.tech.sayo.wechat.laundry.bean.LadOrder;
+import com.tech.sayo.wechat.pay.bean.PayDetail;
 import com.tech.sayo.wechat.pay.bean.Platform;
+import com.tech.sayo.wechat.pay.entity.BaseOrder;
+import com.tech.sayo.wechat.pay.entity.UnifiedWeChatOrder;
 import com.tech.sayo.wechat.pay.service.PayService;
 import com.tech.sayo.wechat.store.bean.StrOrder;
+import com.tech.sayo.wechat.util.BrowserUtil;
+import com.tech.sayo.wechat.util.SignatureUtil;
 
 @Service
 public class PayServiceImpl implements PayService{
@@ -30,6 +49,7 @@ public class PayServiceImpl implements PayService{
 	private static final String LAUNDRY_ORDER_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.laundry.dao.OrderMapper.";
 	private static final String DIFFERENCE_ORDER_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.clean.dao.DifOrderMapper.";
 	private static final String ORDER_STATUS_NAMESPACE_INFOUSER = "com.tech.sayo.background.sys.bean.StatusMapper.";
+	private static final String PAYDETAIL_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.pay.dao.PayDetailMapper.";
 	
 	@Autowired
 	private BaseDao baseDao;
@@ -179,6 +199,146 @@ public class PayServiceImpl implements PayService{
 		baseDao.modify(DIFFERENCE_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
 		status.MyStatusSuccess();
 		return status;
+	}
+	
+	
+
+	@Override
+	public UnifiedWeChatOrder createWechatOrder(BaseOrder order, HttpServletRequest request,HttpServletResponse response, String wechatId) {
+		UnifiedWeChatOrder unifiedOrder = new UnifiedWeChatOrder();
+		unifiedOrder.setStatus(order.getStatus().getStatus());
+		if(order.getStatus().getStatus() == 0){
+			try {
+				
+				Map<String, Object> params = new HashMap<String, Object>();
+
+				params.put("appid", SystemConfig.appId);
+				params.put("mch_id", SystemConfig.wechatPayMchId);
+				params.put("nonce_str",RandomStringUtils.random(8, "123456789"));
+				params.put("body", order.getBody());
+				params.put("total_fee",  order.getTotal());
+				params.put("out_trade_no", order.getOrderNo());
+				params.put("spbill_create_ip", BrowserUtil.getIp(request));
+				params.put("notify_url", SystemConfig.wechatPayNotifyUrl + "payAction" + order.getCallback());
+				params.put("trade_type", "JSAPI");
+				params.put("openid", wechatId);
+				params.put("sign", SignatureUtil.encryptionByMD5(SignatureUtil.createSign(params, false) + "&key=" + SystemConfig.wechatPayPaternerKey, "utf-8", false));
+				
+				Map<String,Object> result = MapToXmlUtil.xmltoMap(HttpUtil.sendPost("https://api.mch.weixin.qq.com/pay/unifiedorder",new String(MapToXmlUtil.maptoXml(params).getBytes("utf-8"),"utf-8"),"xml"));
+				
+				String timeStamp =  System.currentTimeMillis() + "";
+				String nonceStr = RandomStringUtils.random(8, "123456789");
+				
+				Map<String, Object> payInfo = new HashMap<String, Object>();
+				payInfo.put("appId", SystemConfig.appId);
+				payInfo.put("timeStamp", timeStamp);
+				payInfo.put("nonceStr",nonceStr);
+				payInfo.put("package", "prepay_id=" + (String)result.get("prepay_id"));
+				payInfo.put("signType", "MD5");
+				
+				unifiedOrder.setOrderNo(order.getOrderNo());
+				unifiedOrder.setAppid(SystemConfig.appId);
+				unifiedOrder.setNonceStr(nonceStr);
+				unifiedOrder.setPaySign(SignatureUtil.encryptionByMD5(SignatureUtil.createSign(payInfo, false) + "&key=" + SystemConfig.wechatPayPaternerKey, "utf-8", false));
+				unifiedOrder.setPrepayId("prepay_id=" + (String)result.get("prepay_id"));
+				unifiedOrder.setSignType("MD5");
+				unifiedOrder.setTimeStamp(timeStamp);
+				
+				return unifiedOrder;
+
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Map<String, Object> wechatPayCallback(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			PrintWriter out = response.getWriter();
+			StringBuffer sb = new StringBuffer();
+			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
+			String s = "";
+			while ((s = br.readLine()) != null) {
+				sb.append(s);
+			}
+			
+			Map<String, Object> params = MapToXmlUtil.xmltoMap(sb.toString());
+			
+			if(params.get("return_code").toString().equals("SUCCESS") && params.get("result_code").toString().equals("SUCCESS")){
+				out.print(createWechatPayCallbackXml("SUCCESS", "OK"));
+				return params;
+			}else{
+				out.print(createWechatPayCallbackXml("FAIL", "交易失败"));
+				return null;
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public UnifiedWeChatOrder PayStoreByWechat(HttpServletRequest request, HttpServletResponse response,StrOrder order,String wechatId) {
+		BaseOrder base = new BaseOrder();
+		MyStatus status = new MyStatus();
+		if(order.getOrderStatus().getStatusCode().equals("str_002") || order.getOrderStatus().getStatusCode().equals("str_003") || order.getOrderStatus().getStatusCode().equals("odr_001")){
+			status.setStatus(-1);
+			status.setMessage("该订单已支付");
+		}else if(order.getOrderStatus().getStatusCode().equals("odr_002")){
+			status.setStatus(-2);
+			status.setMessage("该订单已取消");
+		}else{
+			status.setStatus(0);
+			status.setMessage("SUCCESS");
+			base.setBody("舒心汇佳-订单号:" + order.getOrderNo());
+			base.setOrderBusiness("store");
+			base.setOrderId(order.getOrderId());
+			base.setOrderNo(order.getOrderNo());
+			base.setTotal((int)(order.getOrderRealpayamount() * 100));
+			base.setCallback("/storeordercallback");
+		}
+		base.setStatus(status);
+		return createWechatOrder(base, request, response, wechatId) ;
+	}
+
+	@Override
+	public UnifiedWeChatOrder PayCleanByWechat(HttpServletRequest request, HttpServletResponse response,CleOrder order,String wechatId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UnifiedWeChatOrder PayLaundryByWechat(HttpServletRequest request, HttpServletResponse response,LadOrder order,String wechatId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UnifiedWeChatOrder PayDifferenceByWechat(HttpServletRequest request, HttpServletResponse response,DifOrder order,String wechatId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String createWechatPayCallbackXml(String returnCode,String returnMsg){
+		return "<xml><return_code><![CDATA[" + returnCode + "]]></return_code><return_msg><![CDATA[" + returnMsg + "]]></return_msg></xml>";
+	}
+
+	@Override
+	public void insertPayDetailForWechat(Map<String, Object> map,Integer orderId) {
+		PayDetail detail = baseDao.selectOne(PAYDETAIL_NAMESPACE_INFOUSER + "selectByOrderNo", map.get("out_trade_no").toString());
+		if(detail == null){
+			detail = new  PayDetail();
+			detail.setPayAmount(Double.parseDouble(map.get("total_fee").toString()));
+			detail.setPayDatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			detail.setPayOrderid(orderId);
+			detail.setPayOrderno(map.get("out_trade_no").toString());
+			detail.setPayPlatformid(((Platform)(baseDao.selectOne(PLATFROM_NAMESPACE_INFOUSER + "selectByCode", "wechatpay"))).getPlatformId());
+			detail.setPayPlatformTradeno(map.get("transaction_id").toString());
+			baseDao.insert(PAYDETAIL_NAMESPACE_INFOUSER + "insertSelective", detail);
+		}
 	}
 
 }

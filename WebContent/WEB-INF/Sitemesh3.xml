@@ -5,6 +5,8 @@
    <mapping path="/error*" decorator="/decorators/other-theme.jsp" />
    
    
-   <mapping path="/test/a.html" exclue="true" />
-   
+   <mapping path="/authenticationServerAction*" exclue="true" />
+   <mapping path="/forwardAction*" exclue="true" />
+   <mapping path="/wechatJSConfigAction*" exclue="true" />
+   <mapping path="/payAction/*callback*" exclue="true" />
 </sitemesh>  

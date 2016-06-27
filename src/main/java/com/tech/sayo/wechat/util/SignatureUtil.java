@@ -124,10 +124,10 @@ public class SignatureUtil {
 				}
 				resultSb.append(hexDigits[n / 16] + hexDigits[n % 16]);
 			}
-			tmpStr = resultSb.toString();	
+			tmpStr = resultSb.toString();
 					
 		} catch (Exception exception) {
 		}
-		return tmpStr;
+		return toUpperCase ? tmpStr.toUpperCase() : tmpStr;
 	}
 }

@@ -21,7 +21,7 @@ import com.tech.sayo.wechat.store.bean.Store;
 import com.tech.sayo.wechat.store.bean.StrOrder;
 import com.tech.sayo.wechat.store.entity.OrderTemp;
 import com.tech.sayo.wechat.store.entity.ShoppingCartTemp;
-import com.tech.sayo.wechat.store.service.OrderService;
+import com.tech.sayo.wechat.store.service.StoreOrderService;
 import com.tech.sayo.wechat.util.JsonpUtil;
 
 @Controller 
@@ -31,7 +31,7 @@ import com.tech.sayo.wechat.util.JsonpUtil;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class StoreOrderAction {
 	@Autowired
-	private OrderService orderService;
+	private StoreOrderService orderService;
 	
 	@RequestMapping(value = "creatOrder",method = RequestMethod.GET)
 	public String creatOrder(HttpServletRequest request,HttpServletResponse response,String cart, Integer userId,Store store,Integer addressId,String callback){

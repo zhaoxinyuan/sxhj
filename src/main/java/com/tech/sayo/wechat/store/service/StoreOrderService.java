@@ -8,7 +8,7 @@ import com.tech.sayo.wechat.store.bean.StrOrder;
 import com.tech.sayo.wechat.store.entity.OrderTemp;
 import com.tech.sayo.wechat.store.entity.ShoppingCartTemp;
 
-public interface OrderService {
+public interface StoreOrderService {
 
 	public OrderTemp creatOrder(List<ShoppingCartTemp> cart,Integer userId,Store store,Integer addressId);
 	
@@ -18,6 +18,8 @@ public interface OrderService {
 	public MyPage getOrders(MyPage page,StrOrder order);
 
 	public StrOrder getOrder(Integer orderId);
+	
+	public  StrOrder getOrder(String orderNo);
 	
 	public void updateOrderStatus(StrOrder order);
 	

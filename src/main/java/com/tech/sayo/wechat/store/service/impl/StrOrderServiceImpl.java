@@ -22,10 +22,10 @@ import com.tech.sayo.wechat.store.bean.StrOrder;
 import com.tech.sayo.wechat.store.bean.StrOrderDetail;
 import com.tech.sayo.wechat.store.entity.OrderTemp;
 import com.tech.sayo.wechat.store.entity.ShoppingCartTemp;
-import com.tech.sayo.wechat.store.service.OrderService;
+import com.tech.sayo.wechat.store.service.StoreOrderService;
 
 @Service
-public class OrderServiceImpl implements OrderService{
+public class StrOrderServiceImpl implements StoreOrderService{
 	
 	private static final String ORDER_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.store.dao.OrderMapper.";
 	private static final String ORDER_STATUS_NAMESPACE_INFOUSER = "com.tech.sayo.background.sys.bean.StatusMapper.";
@@ -141,6 +141,11 @@ public class OrderServiceImpl implements OrderService{
 	@Override
 	public void removeOrderStatus(StrOrder order) {
 		baseDao.modify(ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
+	}
+
+	@Override
+	public StrOrder getOrder(String orderNo) {
+		return baseDao.selectOne(ORDER_NAMESPACE_INFOUSER + "selectByOrderNo", orderNo);
 	}
 
 }

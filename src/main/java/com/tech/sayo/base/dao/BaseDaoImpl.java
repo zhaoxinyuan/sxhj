@@ -2,7 +2,7 @@ package com.tech.sayo.base.dao;
 
 import java.util.List;
 import java.util.Map;
- 
+
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
@@ -32,8 +32,10 @@ public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
     public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
         super.setSqlSessionTemplate(sqlSessionTemplate);
     }
- 
-    public <T> T getMapper(Class<T> clazz) {
+
+
+
+	public <T> T getMapper(Class<T> clazz) {
         return getSqlSession().getMapper(clazz);
     }
  

@@ -18,6 +18,12 @@
     from pay_platform
     where platform_id = #{platformId,jdbcType=INTEGER}
   </select>
+  <select id="selectByCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from pay_platform
+    where platform_code = #{platformCode,jdbcType=VARCHAR}
+  </select>
   <select id="selectAll" resultMap="BaseResultMap" >
     select 
     <include refid="Base_Column_List" />

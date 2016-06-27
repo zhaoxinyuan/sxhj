@@ -31,7 +31,7 @@ public class MapToXmlUtil {
 			XMLWriter writer = new XMLWriter(out, format);
 			writer.write(document);
 			s = out.toString("UTF-8");
-			return s + "</xml>";
+			return s ;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
