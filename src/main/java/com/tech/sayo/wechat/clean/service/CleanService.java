@@ -35,11 +35,13 @@ public interface CleanService {
 	
 	public CleOrder getOrder(Integer orderId);
 	
+	public CleOrder getOrder(String orderNo);
+	
 	public CleOrder getOrderByDiff(Integer orderId);
 	
 	public NanOrder getNanOrder(Integer orderId);
 	
-	public void cancelCleOrder(CleOrder order);
+	public void updateCleOrderStatus(CleOrder order);
 	
 	public void delateCleOrder(CleOrder order);
 	
@@ -50,4 +52,8 @@ public interface CleanService {
 	public DifOrder orderSubmit(DifOrder order);
 	
 	public DifOrder getDifOrder(Integer orderId);
+	
+	public DifOrder getDifOrder(String orderNo);
+	
+	public DifOrder updateDifOrderStatus(DifOrder order);
 }

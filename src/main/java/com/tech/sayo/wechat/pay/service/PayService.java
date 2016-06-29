@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.tech.sayo.base.entity.MyStatus;
 import com.tech.sayo.wechat.clean.bean.CleOrder;
 import com.tech.sayo.wechat.clean.bean.DifOrder;
-import com.tech.sayo.wechat.laundry.bean.LadOrder;
+import com.tech.sayo.wechat.laundry.bean.RevOrder;
 import com.tech.sayo.wechat.pay.bean.Platform;
 import com.tech.sayo.wechat.pay.entity.BaseOrder;
 import com.tech.sayo.wechat.pay.entity.UnifiedWeChatOrder;
@@ -31,7 +31,7 @@ public interface PayService {
 	
 	public UnifiedWeChatOrder PayCleanByWechat(HttpServletRequest request, HttpServletResponse response,CleOrder order,String wechatId);
 	
-	public UnifiedWeChatOrder PayLaundryByWechat(HttpServletRequest request, HttpServletResponse response,LadOrder order,String wechatId);
+	public UnifiedWeChatOrder PayLaundryByWechat(HttpServletRequest request, HttpServletResponse response,RevOrder revOrder,String wechatId);
 	
 	public UnifiedWeChatOrder PayDifferenceByWechat(HttpServletRequest request, HttpServletResponse response,DifOrder order,String wechatId);
 	
@@ -40,4 +40,8 @@ public interface PayService {
 	public Map<String, Object> wechatPayCallback(HttpServletRequest request,HttpServletResponse response);
 	
 	public void insertPayDetailForWechat(Map<String, Object> map,Integer orderId);
+	
+	public UnifiedWeChatOrder refillAccountWechat(HttpServletRequest request, HttpServletResponse response,double amount,String wechatId);
+	
+	public void insertAccountForWechat(Map<String, Object> map);
 }

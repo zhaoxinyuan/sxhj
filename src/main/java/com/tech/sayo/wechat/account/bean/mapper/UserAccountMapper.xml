@@ -79,6 +79,9 @@
     from act_user_account
     where account_userid = #{accountUserid,jdbcType=INTEGER}
   </select>
+  <select id="selectOrderNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	select * from act_user_account where account_orderno = #{accountOrderno,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from act_user_account
     where account_id = #{accountId,jdbcType=INTEGER}

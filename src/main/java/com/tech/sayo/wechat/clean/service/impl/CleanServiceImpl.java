@@ -149,8 +149,8 @@ public class CleanServiceImpl implements CleanService{
 	}
 
 	@Override
-	public void cancelCleOrder(CleOrder order) {
-		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "odr_002");
+	public void updateCleOrderStatus(CleOrder order) {
+		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", order.getStatusCode());
 		order.setOrderStatusid(orderStatus.getStatusId());
 		baseDao.modify(CLEAN_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
 	}
@@ -202,6 +202,24 @@ public class CleanServiceImpl implements CleanService{
 	public CleOrder getOrderByDiff(Integer orderId) {
 		DifOrder order = baseDao.selectOne(DIF_ORDER_NAMESPACE_INFOUSER + "selectByPrimaryKey", orderId);
 		return baseDao.selectOne(CLEAN_ORDER_NAMESPACE_INFOUSER + "selectByPrimaryKey", order.getOrderCleOrderid());
+	}
+
+	@Override
+	public CleOrder getOrder(String orderNo) {
+		return baseDao.selectOne(CLEAN_ORDER_NAMESPACE_INFOUSER + "selectByOrderNo", orderNo);
+	}
+
+	@Override
+	public DifOrder updateDifOrderStatus(DifOrder order) {
+		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", order.getStatusCode());
+		order.setOrderStatusid(orderStatus.getStatusId());
+		baseDao.modify(DIF_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
+		return null;
+	}
+
+	@Override
+	public DifOrder getDifOrder(String orderNo) {
+		return baseDao.selectOne(DIF_ORDER_NAMESPACE_INFOUSER + "selectByOrderNo", orderNo);
 	}
 
 }

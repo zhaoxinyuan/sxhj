@@ -20,6 +20,8 @@ public class DifOrder {
     private Status orderStatus;
     
     private Integer orderPaytype;
+    
+    private String statusCode;
 
     public Integer getOrderId() {
         return orderId;
@@ -91,5 +93,13 @@ public class DifOrder {
 
 	public void setOrderPaytype(Integer orderPaytype) {
 		this.orderPaytype = orderPaytype;
+	}
+
+	public String getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(String statusCode) {
+		this.statusCode = statusCode;
 	}
 }

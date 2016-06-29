@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,10 +26,12 @@ import com.tech.sayo.base.entity.MyStatus;
 import com.tech.sayo.base.util.HttpUtil;
 import com.tech.sayo.base.util.MapToXmlUtil;
 import com.tech.sayo.wechat.account.bean.AccountType;
+import com.tech.sayo.wechat.account.bean.User;
 import com.tech.sayo.wechat.account.bean.UserAccount;
 import com.tech.sayo.wechat.clean.bean.CleOrder;
 import com.tech.sayo.wechat.clean.bean.DifOrder;
 import com.tech.sayo.wechat.laundry.bean.LadOrder;
+import com.tech.sayo.wechat.laundry.bean.RevOrder;
 import com.tech.sayo.wechat.pay.bean.PayDetail;
 import com.tech.sayo.wechat.pay.bean.Platform;
 import com.tech.sayo.wechat.pay.entity.BaseOrder;
@@ -50,6 +53,7 @@ public class PayServiceImpl implements PayService{
 	private static final String DIFFERENCE_ORDER_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.clean.dao.DifOrderMapper.";
 	private static final String ORDER_STATUS_NAMESPACE_INFOUSER = "com.tech.sayo.background.sys.bean.StatusMapper.";
 	private static final String PAYDETAIL_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.pay.dao.PayDetailMapper.";
+	private static final String NAMESPACE_INFOUSER  = "com.tech.sayo.wechat.account.bean.mapper.UserMapper.";
 	
 	@Autowired
 	private BaseDao baseDao;
@@ -206,8 +210,8 @@ public class PayServiceImpl implements PayService{
 	@Override
 	public UnifiedWeChatOrder createWechatOrder(BaseOrder order, HttpServletRequest request,HttpServletResponse response, String wechatId) {
 		UnifiedWeChatOrder unifiedOrder = new UnifiedWeChatOrder();
-		unifiedOrder.setStatus(order.getStatus().getStatus());
-		if(order.getStatus().getStatus() == 0){
+		unifiedOrder.setStatus(order.getStatus() == null ? null : order.getStatus().getStatus());
+		if(order.getStatus() == null || order.getStatus().getStatus() == 0){
 			try {
 				
 				Map<String, Object> params = new HashMap<String, Object>();
@@ -298,7 +302,7 @@ public class PayServiceImpl implements PayService{
 			base.setOrderId(order.getOrderId());
 			base.setOrderNo(order.getOrderNo());
 			base.setTotal((int)(order.getOrderRealpayamount() * 100));
-			base.setCallback("/storeordercallback");
+			base.setCallback("/storeordercallbackwechat");
 		}
 		base.setStatus(status);
 		return createWechatOrder(base, request, response, wechatId) ;
@@ -306,20 +310,76 @@ public class PayServiceImpl implements PayService{
 
 	@Override
 	public UnifiedWeChatOrder PayCleanByWechat(HttpServletRequest request, HttpServletResponse response,CleOrder order,String wechatId) {
-		// TODO Auto-generated method stub
-		return null;
+		BaseOrder base = new BaseOrder();
+		MyStatus status = new MyStatus();
+		if(order.getOrderStatus().getStatusCode().equals("cle_002") || order.getOrderStatus().getStatusCode().equals("cle_003") || order.getOrderStatus().getStatusCode().equals("odr_001")){
+			status.setStatus(-1);
+			status.setMessage("该订单已支付");
+		}else if(order.getOrderStatus().getStatusCode().equals("odr_002")){
+			status.setStatus(-2);
+			status.setMessage("该订单已取消");
+		}else{
+			status.setStatus(0);
+			status.setMessage("SUCCESS");
+			base.setBody("舒心汇佳-订单号:" + order.getOrderNo());
+			base.setOrderBusiness("clean");
+			base.setOrderId(order.getOrderId());
+			base.setOrderNo(order.getOrderNo());
+			base.setTotal((int)(order.getOrderRealpayamount() * 100));
+			base.setCallback("/cleanordercallbackwechat");
+		}
+		base.setStatus(status);
+		return createWechatOrder(base, request, response, wechatId) ;
 	}
 
 	@Override
-	public UnifiedWeChatOrder PayLaundryByWechat(HttpServletRequest request, HttpServletResponse response,LadOrder order,String wechatId) {
-		// TODO Auto-generated method stub
-		return null;
+	public UnifiedWeChatOrder PayLaundryByWechat(HttpServletRequest request, HttpServletResponse response,RevOrder order,String wechatId) {
+		BaseOrder base = new BaseOrder();
+		MyStatus status = new MyStatus();
+		if(order.getOrderStatus().getStatusCode().equals("lad_003") || order.getOrderStatus().getStatusCode().equals("lad_004") || order.getOrderStatus().getStatusCode().equals("odr_001")){
+			status.setStatus(-1);
+			status.setMessage("该订单已支付");
+		}else if(order.getOrderStatus().getStatusCode().equals("odr_002")){
+			status.setStatus(-2);
+			status.setMessage("该订单已取消");
+		}else{
+			status.setStatus(0);
+			status.setMessage("SUCCESS");
+			base.setBody("舒心汇佳-订单号:" + order.getOrderNo());
+			base.setOrderBusiness("store");
+			base.setOrderId(order.getOrderId());
+			base.setOrderNo(order.getOrderNo());
+			base.setTotal((int)(order.getOrder().getOrderAmount() * 100));
+			base.setCallback("/laundryordercallbackwechat");
+			
+			
+			LadOrder ladorder = baseDao.selectOne(LAUNDRY_ORDER_NAMESPACE_INFOUSER + "selectByRevOrderid", order.getOrderId());
+			ladorder.setOrderPaytype(0);
+			baseDao.modify(LAUNDRY_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", ladorder);
+		}
+		base.setStatus(status);
+		return createWechatOrder(base, request, response, wechatId) ;
 	}
 
 	@Override
 	public UnifiedWeChatOrder PayDifferenceByWechat(HttpServletRequest request, HttpServletResponse response,DifOrder order,String wechatId) {
-		// TODO Auto-generated method stub
-		return null;
+		BaseOrder base = new BaseOrder();
+		MyStatus status = new MyStatus();
+		if(order.getOrderStatus().getStatusCode().equals("dif_002")){
+			status.setStatus(-1);
+			status.setMessage("该订单已支付");
+		}else{
+			status.setStatus(0);
+			status.setMessage("SUCCESS");
+			base.setBody("舒心汇佳-订单号:" + order.getOrderNo());
+			base.setOrderBusiness("dif");
+			base.setOrderId(order.getOrderId());
+			base.setOrderNo(order.getOrderNo());
+			base.setTotal((int)(order.getOrderAmount() * 100));
+			base.setCallback("/difordercallbackwechat");
+		}
+		base.setStatus(status);
+		return createWechatOrder(base, request, response, wechatId) ;
 	}
 
 	public String createWechatPayCallbackXml(String returnCode,String returnMsg){
@@ -331,7 +391,7 @@ public class PayServiceImpl implements PayService{
 		PayDetail detail = baseDao.selectOne(PAYDETAIL_NAMESPACE_INFOUSER + "selectByOrderNo", map.get("out_trade_no").toString());
 		if(detail == null){
 			detail = new  PayDetail();
-			detail.setPayAmount(Double.parseDouble(map.get("total_fee").toString()));
+			detail.setPayAmount(Double.parseDouble(map.get("total_fee").toString()) / 100);
 			detail.setPayDatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 			detail.setPayOrderid(orderId);
 			detail.setPayOrderno(map.get("out_trade_no").toString());
@@ -340,5 +400,36 @@ public class PayServiceImpl implements PayService{
 			baseDao.insert(PAYDETAIL_NAMESPACE_INFOUSER + "insertSelective", detail);
 		}
 	}
+
+	@Override
+	public UnifiedWeChatOrder refillAccountWechat(HttpServletRequest request, HttpServletResponse response,double amount,String wechatId) {
+		BaseOrder base = new BaseOrder();
+		String uuid = UUID.randomUUID().toString().trim().replaceAll("-", "");    
+		base.setBody("舒心汇佳-订单号:" + uuid.toString());
+		base.setOrderBusiness("dif");
+		base.setOrderNo(uuid.toString());
+		base.setTotal((int)(amount * 100));
+		base.setCallback("/accountcallbackwechat");
+		return createWechatOrder(base, request, response, wechatId) ;
+	}
+
+	@Override
+	public void insertAccountForWechat(Map<String, Object> map) {
+		UserAccount account = baseDao.selectOne(ACCOUNT_NAMESPACE_INFOUSER + "selectOrderNo", map.get("out_trade_no").toString());
+		if(account == null){
+			PayDetail detail = baseDao.selectOne(PAYDETAIL_NAMESPACE_INFOUSER + "selectByOrderNo", map.get("out_trade_no").toString());
+			AccountType type = baseDao.selectOne(ACCOUNT_TYPE_NAMESPACE_INFOUSER + "selectByCode","type_001");
+			User user = baseDao.selectOne(NAMESPACE_INFOUSER + "selectByWechatId", map.get("openid").toString());
+			account = new UserAccount();
+			account.setAccountAmounts(Double.parseDouble(map.get("total_fee").toString()) / 100);
+			account.setAccountDatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			account.setAccountOrderno(map.get("out_trade_no").toString());
+			account.setAccountPayid(detail.getPayId());
+			account.setAccountTypeid(type.getTypeId());
+			account.setAccountUserid(user.getUserId());
+			baseDao.insert(ACCOUNT_NAMESPACE_INFOUSER + "insertSelective", account);
+		}
+	}
+	
 
 }

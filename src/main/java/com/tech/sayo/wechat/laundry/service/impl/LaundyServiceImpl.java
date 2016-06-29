@@ -62,7 +62,7 @@ public class LaundyServiceImpl implements LaundryService{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public MyPage getOrders(MyPage page, RevOrder order) {
-		PageHelper.startPage(page.getCurrent(), page.getRowCount()).setOrderBy("order_id desc");
+		PageHelper.startPage(page.getCurrent(), page.getRowCount()).setOrderBy("a.order_id desc");
 		return new MyPage().init(baseDao.selectList(LAD_REV_ORDER_NAMESPACE_INFOUSER + "selectByOrderStatus", order));
 	}
 
@@ -81,6 +81,11 @@ public class LaundyServiceImpl implements LaundryService{
 	public void removeOrder(RevOrder order) {
 		order.setOrderDeleted(1);
 		baseDao.modify(LAD_REV_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
+	}
+
+	@Override
+	public RevOrder getOrder(String orderNo) {
+		return baseDao.selectOne(LAD_REV_ORDER_NAMESPACE_INFOUSER + "selectByOrderNo", orderNo);
 	}
 
 }

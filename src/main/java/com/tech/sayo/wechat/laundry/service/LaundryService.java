@@ -12,6 +12,8 @@ public interface LaundryService {
 	
 	public RevOrder getOrder(Integer orderId);
 	
+	public RevOrder getOrder(String orderNo);
+	
 	@SuppressWarnings("rawtypes")
 	public MyPage getOrders(MyPage page,RevOrder order);
 	

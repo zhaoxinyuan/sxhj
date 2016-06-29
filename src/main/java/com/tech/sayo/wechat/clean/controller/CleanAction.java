@@ -87,9 +87,9 @@ public class CleanAction {
 		return JsonpUtil.jsonpCllback(cleanService.getStaffTimeOccupancy(staffId),callback);
 	}
 	
-	@RequestMapping(value = "canclecleorder",method = RequestMethod.GET)
-	public String cancleCleOrder(HttpServletRequest request,HttpServletResponse response,CleOrder order,String callback){
-		cleanService.cancelCleOrder(order);
+	@RequestMapping(value = "modifyclestatus",method = RequestMethod.GET)
+	public String modifyCleStatus(HttpServletRequest request,HttpServletResponse response,CleOrder order,String callback){
+		cleanService.updateCleOrderStatus(order);
 		return JsonpUtil.jsonpCllback(new MyStatus().MyStatusSuccess(),callback);
 	}
 	
@@ -124,5 +124,10 @@ public class CleanAction {
 	@RequestMapping(value = "diforder",method = RequestMethod.GET)
 	public String getDifOrder(HttpServletRequest request,HttpServletResponse response,Integer orderId,String callback){
 		return JsonpUtil.jsonpCllback(cleanService.getDifOrder(orderId),callback);
+	}
+	
+	@RequestMapping(value = "modifydifstatus",method = RequestMethod.GET)
+	public String modifyDifstatus(HttpServletRequest request,HttpServletResponse response,DifOrder order,String callback){
+		return JsonpUtil.jsonpCllback(cleanService.updateDifOrderStatus(order),callback);
 	}
 }
