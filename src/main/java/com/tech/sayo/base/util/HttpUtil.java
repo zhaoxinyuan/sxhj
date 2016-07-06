@@ -151,12 +151,12 @@ public class HttpUtil {
 			// 读取到的数据长度
 			int len;
 			// 输出的文件流
-			File sf = new File(request.getSession().getServletContext().getRealPath("\\"));
+			File sf = new File(request.getSession().getServletContext().getRealPath(savePath));
 			if (!sf.exists()) {
 				sf.mkdirs();
 			}
 			String newFileName = System.currentTimeMillis() + "." + suffix;
-			OutputStream os = new FileOutputStream(sf.getPath() + "\\" + savePath + "\\" + newFileName);
+			OutputStream os = new FileOutputStream(sf.getPath() + "//" + newFileName);
 			// 开始读取
 			while ((len = is.read(bs)) != -1) {
 				os.write(bs, 0, len);
@@ -165,7 +165,7 @@ public class HttpUtil {
 			os.close();
 			is.close();
 
-			return SystemConfig.localUrl + savePath + "/" + newFileName;
+			return SystemConfig.localUrl + savePath.replaceAll("//", "/") + newFileName;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

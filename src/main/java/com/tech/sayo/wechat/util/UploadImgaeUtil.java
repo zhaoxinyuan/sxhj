@@ -13,6 +13,6 @@ public class UploadImgaeUtil {
 	public static Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 	
 	public static String getWechatImgPath(String mediaId,HttpServletRequest request){
-		return HttpUtil.download(menu_create_url + AccessTokenUtil.getAccessToken().getAccess_token() + "&media_id=" + mediaId, "user/headimages", "png",request);
+		return HttpUtil.download(menu_create_url + AccessTokenUtil.getAccessToken().getAccess_token() + "&media_id=" + mediaId, "//user//headimages//", "png",request);
 	}
 }

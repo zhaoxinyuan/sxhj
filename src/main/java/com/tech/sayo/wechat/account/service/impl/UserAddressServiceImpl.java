@@ -33,7 +33,7 @@ public class UserAddressServiceImpl implements UserAddressService{
 			UserAddress addressToDefault = new UserAddress();
 			addressToDefault.setAddressUserid(address.getAddressUserid());
 			addressToDefault.setAddressDefault(0);
-			baseDao.modify(NAMESPACE_INFOUSER + "updateBySelective", addressToDefault);
+			baseDao.modify(NAMESPACE_INFOUSER + "updatedDefaultByUser", addressToDefault);
 		}
 		baseDao.insert(NAMESPACE_INFOUSER + "insertSelective", address);
 		return baseDao.selectOne(NAMESPACE_INFOUSER + "selectByLast", address.getAddressUserid());
@@ -54,7 +54,7 @@ public class UserAddressServiceImpl implements UserAddressService{
 		UserAddress addressToDefault = new UserAddress();
 		addressToDefault.setAddressUserid(address.getAddressUserid());
 		addressToDefault.setAddressDefault(0);
-		baseDao.modify(NAMESPACE_INFOUSER + "updateBySelective", addressToDefault);
+		baseDao.modify(NAMESPACE_INFOUSER + "updatedDefaultByUser", addressToDefault);
 		baseDao.modify(NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", address);
 	}
 

@@ -142,34 +142,10 @@
     </set>
     where address_id = #{addressId,jdbcType=INTEGER}
   </update>
-  <update id="updateBySelective" parameterType="com.tech.sayo.wechat.account.bean.UserAddress" >
+  <update id="updatedDefaultByUser" parameterType="com.tech.sayo.wechat.account.bean.UserAddress" >
     update act_user_address
-    <set >
-      <if test="addressUserid != null" >
-        address_userid = #{addressUserid,jdbcType=INTEGER},
-      </if>
-      <if test="addressConsignee != null" >
-        address_consignee = #{addressConsignee,jdbcType=VARCHAR},
-      </if>
-      <if test="addressMobile != null" >
-        address_mobile = #{addressMobile,jdbcType=VARCHAR},
-      </if>
-      <if test="addressProvince != null" >
-        address_province = #{addressProvince,jdbcType=VARCHAR},
-      </if>
-      <if test="addressCity != null" >
-        address_city = #{addressCity,jdbcType=VARCHAR},
-      </if>
-      <if test="addressCounty != null" >
-        address_county = #{addressCounty,jdbcType=VARCHAR},
-      </if>
-      <if test="addressStreet != null" >
-        address_street = #{addressStreet,jdbcType=VARCHAR},
-      </if>
-      <if test="addressDefault != null" >
-        address_default = #{addressDefault,jdbcType=INTEGER},
-      </if>
-    </set>
+    set	address_default = #{addressDefault,jdbcType=INTEGER}
+    where address_userid = #{addressUserid,jdbcType=INTEGER}
   </update>  
   <update id="updateByPrimaryKey" parameterType="com.tech.sayo.wechat.account.bean.UserAddress" >
     update act_user_address
