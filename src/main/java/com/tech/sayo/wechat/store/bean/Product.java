@@ -4,6 +4,8 @@ public class Product {
     private Integer productId;
 
     private Integer productStoreId;
+    
+    private String productCode;
 
     private String productName;
 
@@ -41,7 +43,15 @@ public class Product {
         this.productStoreId = productStoreId;
     }
 
-    public String getProductName() {
+    public String getProductCode() {
+		return productCode;
+	}
+
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
+	}
+
+	public String getProductName() {
         return productName;
     }
 

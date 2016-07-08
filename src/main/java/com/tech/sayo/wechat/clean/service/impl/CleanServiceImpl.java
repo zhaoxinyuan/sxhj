@@ -59,12 +59,11 @@ public class CleanServiceImpl implements CleanService{
 
 	@Override
 	public CleOrder orderSubmit(CleOrder order) {
-		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "cle_001");
 		UserAddress address = baseDao.selectOne(ADDRESS_NAMESPACE_INFOUSER + "selectByPrimaryKey",order.getOrderAddressid());
 		OrderNoUtil orderNoUtil = (OrderNoUtil)baseDao.selectOne(CLEAN_ORDER_NAMESPACE_INFOUSER + "selectSerial");
 		
 		order.setOrderNo(orderNoUtil.createOrderNo("CLE"));
-		order.setOrderStatusid(orderStatus.getStatusId());
+		order.setOrderStatusval(1);
 		order.setOrderDatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 		order.setOrderServiceNumber(order.getOrderDetail().size());
 		order.setOrderAddressprovince(address.getAddressProvince());
@@ -114,7 +113,7 @@ public class CleanServiceImpl implements CleanService{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public MyPage getOrders(MyPage page, CleOrder order) {
-		PageHelper.startPage(page.getCurrent(), page.getRowCount()).setOrderBy("order_id desc");;
+		PageHelper.startPage(page.getCurrent(), page.getRowCount()).setOrderBy("order_id desc");
 		MyPage myPage = new MyPage().init(baseDao.selectList(CLEAN_ORDER_NAMESPACE_INFOUSER + "selectByOrderStatus", order));
 		if(myPage.getRows().size() >= 1){
 			List<CleOrderDetail> details = baseDao.selectList(CLEAN_ORDER_DETAIL_NAMESPACE_INFOUSER + "selectByOrderIds", myPage.getRows());
@@ -150,8 +149,6 @@ public class CleanServiceImpl implements CleanService{
 
 	@Override
 	public void updateCleOrderStatus(CleOrder order) {
-		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", order.getStatusCode());
-		order.setOrderStatusid(orderStatus.getStatusId());
 		baseDao.modify(CLEAN_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
 	}
 
@@ -163,8 +160,6 @@ public class CleanServiceImpl implements CleanService{
 
 	@Override
 	public void cancelNanOrder(NanOrder order) {
-		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "odr_002");
-		order.setOrderStatusid(orderStatus.getStatusId());
 		baseDao.modify(NAN_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
 	}
 
@@ -182,11 +177,10 @@ public class CleanServiceImpl implements CleanService{
 			baseDao.modify(DIF_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", odr);
 			return odr;
 		}else{
-			Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "dif_001");
 			OrderNoUtil orderNoUtil = (OrderNoUtil)baseDao.selectOne(DIF_ORDER_NAMESPACE_INFOUSER + "selectSerial");
 			
 			order.setOrderNo(orderNoUtil.createOrderNo("DIF"));
-			order.setOrderStatusid(orderStatus.getStatusId());
+			order.setOrderStatusval(1);
 			order.setOrderDatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 			baseDao.insert(DIF_ORDER_NAMESPACE_INFOUSER + "insertSelective", order);
 			return baseDao.selectOne(DIF_ORDER_NAMESPACE_INFOUSER + "selectByOrderNo", order.getOrderNo());
@@ -211,8 +205,6 @@ public class CleanServiceImpl implements CleanService{
 
 	@Override
 	public DifOrder updateDifOrderStatus(DifOrder order) {
-		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", order.getStatusCode());
-		order.setOrderStatusid(orderStatus.getStatusId());
 		baseDao.modify(DIF_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
 		return null;
 	}

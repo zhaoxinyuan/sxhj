@@ -1,6 +1,6 @@
 package com.tech.sayo.wechat.laundry.bean;
 
-import com.tech.sayo.background.sys.bean.Status;
+import com.tech.sayo.background.sys.bean.SDictionary;
 
 public class RevOrder {
     private Integer orderId;
@@ -9,9 +9,9 @@ public class RevOrder {
 
     private String orderDatetime;
 
-    private Status orderStatus;
+    private SDictionary orderStatus;
     
-    private Integer orderStatusid;
+    private Integer orderStatusval;
 
     private Integer orderUserid;
 
@@ -61,23 +61,23 @@ public class RevOrder {
         this.orderDatetime = orderDatetime == null ? null : orderDatetime.trim();
     }
 
-    public Status getOrderStatus() {
+    public SDictionary getOrderStatus() {
 		return orderStatus;
 	}
 
-	public void setOrderStatus(Status orderStatus) {
+	public void setOrderStatus(SDictionary orderStatus) {
 		this.orderStatus = orderStatus;
 	}
 
-	public Integer getOrderStatusid() {
-        return orderStatusid;
-    }
+	public Integer getOrderStatusval() {
+		return orderStatusval;
+	}
 
-    public void setOrderStatusid(Integer orderStatusid) {
-        this.orderStatusid = orderStatusid;
-    }
+	public void setOrderStatusval(Integer orderStatusval) {
+		this.orderStatusval = orderStatusval;
+	}
 
-    public Integer getOrderUserid() {
+	public Integer getOrderUserid() {
         return orderUserid;
     }
 

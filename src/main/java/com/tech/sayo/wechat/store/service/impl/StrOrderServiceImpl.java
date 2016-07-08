@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
-import com.tech.sayo.background.sys.bean.Status;
 import com.tech.sayo.base.dao.BaseDao;
 import com.tech.sayo.base.entity.MyPage;
 import com.tech.sayo.base.util.OrderNoUtil;
@@ -28,7 +27,6 @@ import com.tech.sayo.wechat.store.service.StoreOrderService;
 public class StrOrderServiceImpl implements StoreOrderService{
 	
 	private static final String ORDER_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.store.dao.OrderMapper.";
-	private static final String ORDER_STATUS_NAMESPACE_INFOUSER = "com.tech.sayo.background.sys.bean.StatusMapper.";
 	private static final String ORDER_DETAIL_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.store.dao.OrderDetailMapper.";
 	private static final String INVOICE_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.store.dao.InvoiceMapper.";
 	
@@ -65,12 +63,10 @@ public class StrOrderServiceImpl implements StoreOrderService{
 			invoice = baseDao.selectOne(INVOICE_NAMESPACE_INFOUSER + "selectByTempId",tempId.toString());
 		}
 		
-		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "str_001") ;
-		
 		OrderNoUtil orderNoUtil = (OrderNoUtil)baseDao.selectOne(ORDER_NAMESPACE_INFOUSER + "selectSerial");
 		order.setOrderNo(orderNoUtil.createOrderNo("MKT"));
 		order.setOrderDatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-		order.setOrderStatusid(orderStatus.getStatusId());
+		order.setOrderStatusval(1);
 		order.setOrderPayableamount(orderTemp.getOrderAmount());
 		order.setOrderRealpayamount(orderTemp.getOrderAmount());
 		order.setOrderAmount(orderTemp.getProductAmount());
@@ -95,6 +91,7 @@ public class StrOrderServiceImpl implements StoreOrderService{
 			detail.setDetailOrderid(order.getOrderId());
 			detail.setDetailOrderno(order.getOrderNo());
 			detail.setDetailProductid(cart.getProductId());
+			detail.setDetailProductcode(cart.getProductCode());
 			detail.setDetailProductname(cart.getProductName());
 			detail.setDetailProductprice(cart.getProductPrice());
 			detail.setDetailProductimage(cart.getProductImage());
@@ -133,8 +130,6 @@ public class StrOrderServiceImpl implements StoreOrderService{
 
 	@Override
 	public void updateOrderStatus(StrOrder order) {
-		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", order.getStatusCode());
-		order.setOrderStatusid(orderStatus.getStatusId());
 		baseDao.modify(ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
 	}
 

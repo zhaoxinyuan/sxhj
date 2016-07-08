@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tech.sayo.wechat.account.dao.UserAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.tech.sayo.wechat.account.bean.UserAccount" >
+    <id column="account_id" property="accountId" jdbcType="INTEGER" />
+    <result column="account_datetime" property="accountDatetime" jdbcType="VARCHAR" />
+    <result column="account_typeid" property="accountTypeid" jdbcType="INTEGER" />
+    <result column="account_amounts" property="accountAmounts" jdbcType="DOUBLE" />
+    <result column="account_userid" property="accountUserid" jdbcType="INTEGER" />
+    <result column="account_payid" property="accountPayid" jdbcType="INTEGER" />
+    <result column="account_refundid" property="accountRefundid" jdbcType="INTEGER" />
+    <result column="account_orderno" property="accountOrderno" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="OrderResultMap" type="com.tech.sayo.wechat.account.bean.UserAccount" >
+    <id column="account_id" property="accountId" jdbcType="INTEGER" />
+    <result column="account_datetime" property="accountDatetime" jdbcType="VARCHAR" />
+    <result column="account_typeid" property="accountTypeid" jdbcType="INTEGER" />
+    <result column="account_amounts" property="accountAmounts" jdbcType="DOUBLE" />
+    <result column="account_userid" property="accountUserid" jdbcType="INTEGER" />
+    <result column="account_payid" property="accountPayid" jdbcType="INTEGER" />
+    <result column="account_refundid" property="accountRefundid" jdbcType="INTEGER" />
+    <result column="account_orderno" property="accountOrderno" jdbcType="VARCHAR" />
+    <result column="orderid" property="orderid" jdbcType="INTEGER" />
+    <result column="ordercategory" property="ordercategory" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    account_id, account_datetime, account_typeid, account_amounts, account_userid, account_payid, 
+    account_refundid, account_orderno
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from act_user_account
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserId" resultMap="OrderResultMap" parameterType="com.tech.sayo.wechat.account.bean.UserAccount" >
+    SELECT a.account_id,
+	       a.account_datetime,
+	       a.account_typeid,
+	       a.account_amounts,
+	       a.account_userid,
+	       a.account_payid,
+	       a.account_refundid,
+	       a.account_orderno,
+	       CASE WHEN b.order_id IS NOT NULL THEN b.order_id ELSE
+		    CASE WHEN d.order_id IS NOT NULL THEN d.order_id ELSE 
+			 CASE WHEN e.order_id IS NOT NULL THEN h.order_id ELSE 
+				CASE WHEN f.order_id IS NOT NULL THEN f.order_id ELSE NULL END
+			 END
+	    	    END
+	       END AS orderid,
+	       CASE WHEN a.account_payid IS NOT NULL THEN 'refill' ELSE 
+	            CASE WHEN b.order_id IS NOT NULL THEN c.category_code ELSE
+			 CASE WHEN d.order_id IS NOT NULL THEN 'store' ELSE
+			      CASE WHEN e.order_id IS NOT NULL THEN 'laundry' ELSE 
+				   CASE WHEN a.account_refundid IS NOT NULL THEN 'refund' ELSE 
+				        CASE WHEN f.order_id IS NOT NULL THEN 'difference' ELSE NULL END 
+				   END 
+			      END
+			 END
+	            END
+	       END AS ordercategory     		      
+	FROM act_user_account a
+	LEFT JOIN cle_order b ON a.account_orderno = b.order_no
+	LEFT JOIN cle_category c ON b.order_categoryid = c.category_id
+	LEFT JOIN str_order d ON a.account_orderno = d.order_no
+	LEFT JOIN lad_order e ON a.account_orderno = e.order_no
+	LEFT JOIN cle_dif_order f ON a.account_orderno = f.order_no
+	LEFT JOIN act_account_type g ON a.account_typeid = g.type_id
+	LEFT JOIN lad_rev_order h ON e.order_revorderid = h.order_id
+    where a.account_userid = #{accountUserid,jdbcType=INTEGER}
+    <if test="typeCode != null and typeCode != ''">
+    	and g.type_code = #{typeCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectAmount" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    sum(account_amounts) as account_amounts
+    from act_user_account
+    where account_userid = #{accountUserid,jdbcType=INTEGER}
+  </select>
+  <select id="selectOrderNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	select * from act_user_account where account_orderno = #{accountOrderno,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from act_user_account
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tech.sayo.wechat.account.bean.UserAccount" >
+    insert into act_user_account (account_id, account_datetime, account_typeid, 
+      account_amounts, account_userid, account_payid, 
+      account_refundid, account_orderno)
+    values (#{accountId,jdbcType=INTEGER}, #{accountDatetime,jdbcType=VARCHAR}, #{accountTypeid,jdbcType=INTEGER}, 
+      #{accountAmounts,jdbcType=DOUBLE}, #{accountUserid,jdbcType=INTEGER}, #{accountPayid,jdbcType=INTEGER}, 
+      #{accountRefundid,jdbcType=INTEGER}, #{accountOrderno,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tech.sayo.wechat.account.bean.UserAccount" >
+    insert into act_user_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="accountId != null" >
+        account_id,
+      </if>
+      <if test="accountDatetime != null" >
+        account_datetime,
+      </if>
+      <if test="accountTypeid != null" >
+        account_typeid,
+      </if>
+      <if test="accountAmounts != null" >
+        account_amounts,
+      </if>
+      <if test="accountUserid != null" >
+        account_userid,
+      </if>
+      <if test="accountPayid != null" >
+        account_payid,
+      </if>
+      <if test="accountRefundid != null" >
+        account_refundid,
+      </if>
+      <if test="accountOrderno != null" >
+        account_orderno,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="accountId != null" >
+        #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="accountDatetime != null" >
+        #{accountDatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="accountTypeid != null" >
+        #{accountTypeid,jdbcType=INTEGER},
+      </if>
+      <if test="accountAmounts != null" >
+        #{accountAmounts,jdbcType=DOUBLE},
+      </if>
+      <if test="accountUserid != null" >
+        #{accountUserid,jdbcType=INTEGER},
+      </if>
+      <if test="accountPayid != null" >
+        #{accountPayid,jdbcType=INTEGER},
+      </if>
+      <if test="accountRefundid != null" >
+        #{accountRefundid,jdbcType=INTEGER},
+      </if>
+      <if test="accountOrderno != null" >
+        #{accountOrderno,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tech.sayo.wechat.account.bean.UserAccount" >
+    update act_user_account
+    <set >
+      <if test="accountDatetime != null" >
+        account_datetime = #{accountDatetime,jdbcType=VARCHAR},
+      </if>
+      <if test="accountTypeid != null" >
+        account_typeid = #{accountTypeid,jdbcType=INTEGER},
+      </if>
+      <if test="accountAmounts != null" >
+        account_amounts = #{accountAmounts,jdbcType=DOUBLE},
+      </if>
+      <if test="accountUserid != null" >
+        account_userid = #{accountUserid,jdbcType=INTEGER},
+      </if>
+      <if test="accountPayid != null" >
+        account_payid = #{accountPayid,jdbcType=INTEGER},
+      </if>
+      <if test="accountRefundid != null" >
+        account_refundid = #{accountRefundid,jdbcType=INTEGER},
+      </if>
+      <if test="accountOrderno != null" >
+        account_orderno = #{accountOrderno,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tech.sayo.wechat.account.bean.UserAccount" >
+    update act_user_account
+    set account_datetime = #{accountDatetime,jdbcType=VARCHAR},
+      account_typeid = #{accountTypeid,jdbcType=INTEGER},
+      account_amounts = #{accountAmounts,jdbcType=DOUBLE},
+      account_userid = #{accountUserid,jdbcType=INTEGER},
+      account_payid = #{accountPayid,jdbcType=INTEGER},
+      account_refundid = #{accountRefundid,jdbcType=INTEGER},
+      account_orderno = #{accountOrderno,jdbcType=VARCHAR}
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </update>
+</mapper>

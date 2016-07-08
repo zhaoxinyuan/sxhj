@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
-import com.tech.sayo.background.sys.bean.Status;
 import com.tech.sayo.base.dao.BaseDao;
 import com.tech.sayo.base.entity.MyPage;
 import com.tech.sayo.base.util.OrderNoUtil;
@@ -23,7 +22,6 @@ public class LaundyServiceImpl implements LaundryService{
 	private static final String LAUNDRY_ORDER_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.laundry.dao.LaundryMapper.";
 	private static final String LAD_REV_ORDER_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.laundry.dao.RevOrderMapper.";
 	private static final String LAD_ORDER_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.laundry.dao.OrderMapper.";
-	private static final String ORDER_STATUS_NAMESPACE_INFOUSER = "com.tech.sayo.background.sys.bean.StatusMapper.";
 	private static final String ADDRESS_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.account.bean.mapper.UserAddressMapper.";
 	
 	@Autowired
@@ -36,12 +34,11 @@ public class LaundyServiceImpl implements LaundryService{
 
 	@Override
 	public RevOrder submiRevtOrder(RevOrder order) {
-		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "lad_001");
 		UserAddress address = baseDao.selectOne(ADDRESS_NAMESPACE_INFOUSER + "selectByPrimaryKey",order.getOrderAddressid());
 		OrderNoUtil orderNoUtil = (OrderNoUtil)baseDao.selectOne(LAD_REV_ORDER_NAMESPACE_INFOUSER + "selectSerial");
 		
 		order.setOrderNo(orderNoUtil.createOrderNo("REVLAD"));
-		order.setOrderStatusid(orderStatus.getStatusId());
+		order.setOrderStatusval(5);
 		order.setOrderDatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 		order.setOrderAddressprovince(address.getAddressProvince());
 		order.setOrderAddresscity(address.getAddressCity());
@@ -68,11 +65,9 @@ public class LaundyServiceImpl implements LaundryService{
 
 	@Override
 	public void updaOrderStaus(RevOrder order) {
-		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", order.getStatusCode());
-		order.setOrderStatusid(orderStatus.getStatusId());
 		baseDao.modify(LAD_REV_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
 		LadOrder o = new LadOrder();
-		o.setOrderStatusid(orderStatus.getStatusId());
+		o.setOrderStatusval(order.getOrderStatusval());
 		o.setOrderRevorderid(order.getOrderId());
 		baseDao.modify(LAD_ORDER_NAMESPACE_INFOUSER + "updateByRevOrderIdSelective", o);
 	}

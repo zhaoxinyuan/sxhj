@@ -19,7 +19,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tech.sayo.background.sys.bean.Status;
 import com.tech.sayo.base.config.SystemConfig;
 import com.tech.sayo.base.dao.BaseDao;
 import com.tech.sayo.base.entity.MyStatus;
@@ -51,7 +50,6 @@ public class PayServiceImpl implements PayService{
 	private static final String CLEAN_ORDER_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.clean.dao.OrderMapper.";
 	private static final String LAUNDRY_ORDER_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.laundry.dao.OrderMapper.";
 	private static final String DIFFERENCE_ORDER_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.clean.dao.DifOrderMapper.";
-	private static final String ORDER_STATUS_NAMESPACE_INFOUSER = "com.tech.sayo.background.sys.bean.StatusMapper.";
 	private static final String PAYDETAIL_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.pay.dao.PayDetailMapper.";
 	private static final String NAMESPACE_INFOUSER  = "com.tech.sayo.wechat.account.bean.mapper.UserMapper.";
 	
@@ -67,11 +65,11 @@ public class PayServiceImpl implements PayService{
 	public MyStatus PayStoreByAccount(Integer orderId, Integer accountUserid) {
 		MyStatus status = new MyStatus();
 		StrOrder order = baseDao.selectOne(STORE_ORDER_NAMESPACE_INFOUSER + "selectByPrimaryKey", orderId);
-		if(order.getOrderStatus().getStatusCode().equals("str_002") || order.getOrderStatus().getStatusCode().equals("str_003") || order.getOrderStatus().getStatusCode().equals("odr_001")){
+		if(order.getOrderStatus().getValue() == 2 || order.getOrderStatus().getValue() == 3 || order.getOrderStatus().getValue() == 6 ){
 			status.setStatus(-1);
 			status.setMessage("该订单已支付");
 			return status;
-		}else if(order.getOrderStatus().getStatusCode().equals("odr_002")){
+		}else if(order.getOrderStatus().getValue() == 7){
 			status.setStatus(-2);
 			status.setMessage("该订单已取消");
 			return status;
@@ -89,9 +87,7 @@ public class PayServiceImpl implements PayService{
 		account.setAccountDatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 		account.setAccountTypeid(type.getTypeId());
 		account.setAccountOrderno(order.getOrderNo());
-		
-		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "str_002");
-		order.setOrderStatusid(orderStatus.getStatusId());
+		order.setOrderStatusval(2);
 		
 		baseDao.insert(ACCOUNT_NAMESPACE_INFOUSER + "insertSelective", account);
 		baseDao.modify(STORE_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
@@ -103,11 +99,11 @@ public class PayServiceImpl implements PayService{
 	public MyStatus PayCleanByAccount(Integer orderId, Integer accountUserid) {
 		MyStatus status = new MyStatus();
 		CleOrder order = baseDao.selectOne(CLEAN_ORDER_NAMESPACE_INFOUSER + "selectByPrimaryKey", orderId);
-		if(order.getOrderStatus().getStatusCode().equals("cle_002") || order.getOrderStatus().getStatusCode().equals("cle_003") || order.getOrderStatus().getStatusCode().equals("odr_001")){
+		if(order.getOrderStatus().getValue() == 2 || order.getOrderStatus().getValue() == 3 || order.getOrderStatus().getValue() == 6 ){
 			status.setStatus(-1);
 			status.setMessage("该订单已支付");
 			return status;
-		}else if(order.getOrderStatus().getStatusCode().equals("odr_002")){
+		}else if(order.getOrderStatus().getValue() == 7){
 			status.setStatus(-2);
 			status.setMessage("该订单已取消");
 			return status;
@@ -125,9 +121,7 @@ public class PayServiceImpl implements PayService{
 		account.setAccountDatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 		account.setAccountTypeid(type.getTypeId());
 		account.setAccountOrderno(order.getOrderNo());
-		
-		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "cle_002");
-		order.setOrderStatusid(orderStatus.getStatusId());
+		order.setOrderStatusval(2);
 		
 		baseDao.insert(ACCOUNT_NAMESPACE_INFOUSER + "insertSelective", account);
 		baseDao.modify(CLEAN_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
@@ -139,11 +133,11 @@ public class PayServiceImpl implements PayService{
 	public MyStatus PayLaundryByAccount(Integer orderId, Integer accountUserid) {
 		MyStatus status = new MyStatus();
 		LadOrder order = baseDao.selectOne(LAUNDRY_ORDER_NAMESPACE_INFOUSER + "selectByRevOrderid", orderId);
-		if(order.getOrderStatus().getStatusCode().equals("lad_003") || order.getOrderStatus().getStatusCode().equals("lad_004") || order.getOrderStatus().getStatusCode().equals("odr_001")){
+		if(order.getOrderStatus().getValue() == 2 || order.getOrderStatus().getValue() == 4 || order.getOrderStatus().getValue() == 6 ){
 			status.setStatus(-1);
 			status.setMessage("该订单已支付");
 			return status;
-		}else if(order.getOrderStatus().getStatusCode().equals("odr_002")){
+		}else if(order.getOrderStatus().getValue() == 7){
 			status.setStatus(-2);
 			status.setMessage("该订单已取消");
 			return status;
@@ -162,8 +156,7 @@ public class PayServiceImpl implements PayService{
 		account.setAccountTypeid(type.getTypeId());
 		account.setAccountOrderno(order.getOrderNo());
 		
-		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "lad_003");
-		order.setOrderStatusid(orderStatus.getStatusId());
+		order.setOrderStatusval(2);
 		order.setOrderPaytype(1);
 		
 		baseDao.insert(ACCOUNT_NAMESPACE_INFOUSER + "insertSelective", account);
@@ -176,7 +169,7 @@ public class PayServiceImpl implements PayService{
 	public MyStatus PayDifferenceByAccount(Integer orderId, Integer accountUserid) {
 		MyStatus status = new MyStatus();
 		DifOrder order = baseDao.selectOne(DIFFERENCE_ORDER_NAMESPACE_INFOUSER + "selectByPrimaryKey", orderId);
-		if(order.getOrderStatus().getStatusCode().equals("dif_002")){
+		if(order.getOrderStatus().getValue() == 2){
 			status.setStatus(-1);
 			status.setMessage("该订单已支付");
 			return status;
@@ -195,8 +188,7 @@ public class PayServiceImpl implements PayService{
 		account.setAccountTypeid(type.getTypeId());
 		account.setAccountOrderno(order.getOrderNo());
 		
-		Status orderStatus = baseDao.selectOne(ORDER_STATUS_NAMESPACE_INFOUSER + "selectByStatusCode", "dif_002");
-		order.setOrderStatusid(orderStatus.getStatusId());
+		order.setOrderStatusval(2);
 		order.setOrderPaytype(1);
 		
 		baseDao.insert(ACCOUNT_NAMESPACE_INFOUSER + "insertSelective", account);
@@ -288,10 +280,10 @@ public class PayServiceImpl implements PayService{
 	public UnifiedWeChatOrder PayStoreByWechat(HttpServletRequest request, HttpServletResponse response,StrOrder order,String wechatId) {
 		BaseOrder base = new BaseOrder();
 		MyStatus status = new MyStatus();
-		if(order.getOrderStatus().getStatusCode().equals("str_002") || order.getOrderStatus().getStatusCode().equals("str_003") || order.getOrderStatus().getStatusCode().equals("odr_001")){
+		if(order.getOrderStatus().getValue() == 2 || order.getOrderStatus().getValue() == 3 || order.getStatusValue() == 6 ){
 			status.setStatus(-1);
 			status.setMessage("该订单已支付");
-		}else if(order.getOrderStatus().getStatusCode().equals("odr_002")){
+		}else if(order.getOrderStatus().getValue() == 7){
 			status.setStatus(-2);
 			status.setMessage("该订单已取消");
 		}else{
@@ -312,10 +304,10 @@ public class PayServiceImpl implements PayService{
 	public UnifiedWeChatOrder PayCleanByWechat(HttpServletRequest request, HttpServletResponse response,CleOrder order,String wechatId) {
 		BaseOrder base = new BaseOrder();
 		MyStatus status = new MyStatus();
-		if(order.getOrderStatus().getStatusCode().equals("cle_002") || order.getOrderStatus().getStatusCode().equals("cle_003") || order.getOrderStatus().getStatusCode().equals("odr_001")){
+		if(order.getOrderStatus().getValue() == 2 || order.getOrderStatus().getValue() == 3 || order.getOrderStatus().getValue() == 6 ){
 			status.setStatus(-1);
 			status.setMessage("该订单已支付");
-		}else if(order.getOrderStatus().getStatusCode().equals("odr_002")){
+		}else if(order.getOrderStatus().getValue() == 7){
 			status.setStatus(-2);
 			status.setMessage("该订单已取消");
 		}else{
@@ -336,10 +328,10 @@ public class PayServiceImpl implements PayService{
 	public UnifiedWeChatOrder PayLaundryByWechat(HttpServletRequest request, HttpServletResponse response,RevOrder order,String wechatId) {
 		BaseOrder base = new BaseOrder();
 		MyStatus status = new MyStatus();
-		if(order.getOrderStatus().getStatusCode().equals("lad_003") || order.getOrderStatus().getStatusCode().equals("lad_004") || order.getOrderStatus().getStatusCode().equals("odr_001")){
+		if(order.getOrderStatus().getValue() == 2 || order.getOrderStatus().getValue() == 4 || order.getOrderStatus().getValue() == 6 ){
 			status.setStatus(-1);
 			status.setMessage("该订单已支付");
-		}else if(order.getOrderStatus().getStatusCode().equals("odr_002")){
+		}else if(order.getOrderStatus().getValue() == 7){
 			status.setStatus(-2);
 			status.setMessage("该订单已取消");
 		}else{
@@ -365,7 +357,7 @@ public class PayServiceImpl implements PayService{
 	public UnifiedWeChatOrder PayDifferenceByWechat(HttpServletRequest request, HttpServletResponse response,DifOrder order,String wechatId) {
 		BaseOrder base = new BaseOrder();
 		MyStatus status = new MyStatus();
-		if(order.getOrderStatus().getStatusCode().equals("dif_002")){
+		if(order.getOrderStatus().getValue() == 2){
 			status.setStatus(-1);
 			status.setMessage("该订单已支付");
 		}else{

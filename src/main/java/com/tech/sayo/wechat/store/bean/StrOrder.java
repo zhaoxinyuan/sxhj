@@ -2,188 +2,188 @@ package com.tech.sayo.wechat.store.bean;
 
 import java.util.List;
 
-import com.tech.sayo.background.sys.bean.Status;
+import com.tech.sayo.background.sys.bean.SDictionary;
 
 public class StrOrder {
-    private Integer orderId;
+	private Integer orderId;
 
-    private String orderNo;
+	private String orderNo;
 
-    private String orderDatetime;
-    
-    private Integer orderStatusid;
-    
-    private Status orderStatus;
+	private String orderDatetime;
 
-    private Double orderPayableamount;
+	private Integer orderStatusval;
 
-    private Double orderRealpayamount;
+	private SDictionary orderStatus;
 
-    private Double orderAmount;
+	private Double orderPayableamount;
 
-    private Double orderDiscountamount;
+	private Double orderRealpayamount;
 
-    private String orderDiscountinfo;
+	private Double orderAmount;
 
-    private Integer orderPaytype;
+	private Double orderDiscountamount;
 
-    private Integer orderPayid;
+	private String orderDiscountinfo;
 
-    private String orderDeliverytime;
+	private Integer orderPaytype;
 
-    private Double orderDeliveryamount;
+	private Integer orderPayid;
 
-    private Integer orderInvoiceid;
-    
-    private Invoice orderInvoice;
+	private String orderDeliverytime;
 
-    private Integer orderUserid;
+	private Double orderDeliveryamount;
 
-    private Integer orderAddressid;
+	private Integer orderInvoiceid;
 
-    private String orderAddressprovince;
+	private Invoice orderInvoice;
 
-    private String orderAddresscity;
+	private Integer orderUserid;
 
-    private String orderAddresscounty;
+	private Integer orderAddressid;
 
-    private String orderAddressstreet;
+	private String orderAddressprovince;
 
-    private String orderAddressconsignee;
+	private String orderAddresscity;
 
-    private String orderAddressmobile;
+	private String orderAddresscounty;
 
-    private Integer orderDeleted;
-    
-    private List<StrOrderDetail> orderDetail;
-    
-    private String statusCode;
-    
-    private Integer orderStoreId;
-    
-    private Store orderStore;
+	private String orderAddressstreet;
 
-    public Integer getOrderId() {
-        return orderId;
-    }
+	private String orderAddressconsignee;
 
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
-    }
+	private String orderAddressmobile;
 
-    public String getOrderNo() {
-        return orderNo;
-    }
+	private Integer orderDeleted;
 
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo == null ? null : orderNo.trim();
-    }
+	private List<StrOrderDetail> orderDetail;
 
-    public String getOrderDatetime() {
-        return orderDatetime;
-    }
+	private int statusValue;
 
-    public void setOrderDatetime(String orderDatetime) {
-        this.orderDatetime = orderDatetime == null ? null : orderDatetime.trim();
-    }
+	private Integer orderStoreId;
 
-    public Integer getOrderStatusid() {
-		return orderStatusid;
+	private Store orderStore;
+
+	public Integer getOrderId() {
+		return orderId;
 	}
 
-	public void setOrderStatusid(Integer orderStatusid) {
-		this.orderStatusid = orderStatusid;
+	public void setOrderId(Integer orderId) {
+		this.orderId = orderId;
 	}
-	
-	public Status getOrderStatus() {
+
+	public String getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo == null ? null : orderNo.trim();
+	}
+
+	public String getOrderDatetime() {
+		return orderDatetime;
+	}
+
+	public void setOrderDatetime(String orderDatetime) {
+		this.orderDatetime = orderDatetime == null ? null : orderDatetime.trim();
+	}
+
+	public Integer getOrderStatusval() {
+		return orderStatusval;
+	}
+
+	public void setOrderStatusval(Integer orderStatusval) {
+		this.orderStatusval = orderStatusval;
+	}
+
+	public SDictionary getOrderStatus() {
 		return orderStatus;
 	}
 
-	public void setOrderStatus(Status orderStatus) {
+	public void setOrderStatus(SDictionary orderStatus) {
 		this.orderStatus = orderStatus;
 	}
 
 	public Double getOrderPayableamount() {
-        return orderPayableamount;
-    }
+		return orderPayableamount;
+	}
 
-    public void setOrderPayableamount(Double orderPayableamount) {
-        this.orderPayableamount = orderPayableamount;
-    }
+	public void setOrderPayableamount(Double orderPayableamount) {
+		this.orderPayableamount = orderPayableamount;
+	}
 
-    public Double getOrderRealpayamount() {
-        return orderRealpayamount;
-    }
+	public Double getOrderRealpayamount() {
+		return orderRealpayamount;
+	}
 
-    public void setOrderRealpayamount(Double orderRealpayamount) {
-        this.orderRealpayamount = orderRealpayamount;
-    }
+	public void setOrderRealpayamount(Double orderRealpayamount) {
+		this.orderRealpayamount = orderRealpayamount;
+	}
 
-    public Double getOrderAmount() {
-        return orderAmount;
-    }
+	public Double getOrderAmount() {
+		return orderAmount;
+	}
 
-    public void setOrderAmount(Double orderAmount) {
-        this.orderAmount = orderAmount;
-    }
+	public void setOrderAmount(Double orderAmount) {
+		this.orderAmount = orderAmount;
+	}
 
-    public Double getOrderDiscountamount() {
-        return orderDiscountamount;
-    }
+	public Double getOrderDiscountamount() {
+		return orderDiscountamount;
+	}
 
-    public void setOrderDiscountamount(Double orderDiscountamount) {
-        this.orderDiscountamount = orderDiscountamount;
-    }
+	public void setOrderDiscountamount(Double orderDiscountamount) {
+		this.orderDiscountamount = orderDiscountamount;
+	}
 
-    public String getOrderDiscountinfo() {
-        return orderDiscountinfo;
-    }
+	public String getOrderDiscountinfo() {
+		return orderDiscountinfo;
+	}
 
-    public void setOrderDiscountinfo(String orderDiscountinfo) {
-        this.orderDiscountinfo = orderDiscountinfo == null ? null : orderDiscountinfo.trim();
-    }
+	public void setOrderDiscountinfo(String orderDiscountinfo) {
+		this.orderDiscountinfo = orderDiscountinfo == null ? null : orderDiscountinfo.trim();
+	}
 
-    public Integer getOrderPaytype() {
-        return orderPaytype;
-    }
+	public Integer getOrderPaytype() {
+		return orderPaytype;
+	}
 
-    public void setOrderPaytype(Integer orderPaytype) {
-        this.orderPaytype = orderPaytype;
-    }
+	public void setOrderPaytype(Integer orderPaytype) {
+		this.orderPaytype = orderPaytype;
+	}
 
-    public Integer getOrderPayid() {
-        return orderPayid;
-    }
+	public Integer getOrderPayid() {
+		return orderPayid;
+	}
 
-    public void setOrderPayid(Integer orderPayid) {
-        this.orderPayid = orderPayid;
-    }
+	public void setOrderPayid(Integer orderPayid) {
+		this.orderPayid = orderPayid;
+	}
 
-    public String getOrderDeliverytime() {
-        return orderDeliverytime;
-    }
+	public String getOrderDeliverytime() {
+		return orderDeliverytime;
+	}
 
-    public void setOrderDeliverytime(String orderDeliverytime) {
-        this.orderDeliverytime = orderDeliverytime == null ? null : orderDeliverytime.trim();
-    }
+	public void setOrderDeliverytime(String orderDeliverytime) {
+		this.orderDeliverytime = orderDeliverytime == null ? null : orderDeliverytime.trim();
+	}
 
-    public Double getOrderDeliveryamount() {
-        return orderDeliveryamount;
-    }
+	public Double getOrderDeliveryamount() {
+		return orderDeliveryamount;
+	}
 
-    public void setOrderDeliveryamount(Double orderDeliveryamount) {
-        this.orderDeliveryamount = orderDeliveryamount;
-    }
+	public void setOrderDeliveryamount(Double orderDeliveryamount) {
+		this.orderDeliveryamount = orderDeliveryamount;
+	}
 
-    public Integer getOrderInvoiceid() {
-        return orderInvoiceid;
-    }
+	public Integer getOrderInvoiceid() {
+		return orderInvoiceid;
+	}
 
-    public void setOrderInvoiceid(Integer orderInvoiceid) {
-        this.orderInvoiceid = orderInvoiceid;
-    }
-    
-    public Invoice getOrderInvoice() {
+	public void setOrderInvoiceid(Integer orderInvoiceid) {
+		this.orderInvoiceid = orderInvoiceid;
+	}
+
+	public Invoice getOrderInvoice() {
 		return orderInvoice;
 	}
 
@@ -192,76 +192,76 @@ public class StrOrder {
 	}
 
 	public Integer getOrderUserid() {
-        return orderUserid;
-    }
+		return orderUserid;
+	}
 
-    public void setOrderUserid(Integer orderUserid) {
-        this.orderUserid = orderUserid;
-    }
+	public void setOrderUserid(Integer orderUserid) {
+		this.orderUserid = orderUserid;
+	}
 
-    public Integer getOrderAddressid() {
-        return orderAddressid;
-    }
+	public Integer getOrderAddressid() {
+		return orderAddressid;
+	}
 
-    public void setOrderAddressid(Integer orderAddressid) {
-        this.orderAddressid = orderAddressid;
-    }
+	public void setOrderAddressid(Integer orderAddressid) {
+		this.orderAddressid = orderAddressid;
+	}
 
-    public String getOrderAddressprovince() {
-        return orderAddressprovince;
-    }
+	public String getOrderAddressprovince() {
+		return orderAddressprovince;
+	}
 
-    public void setOrderAddressprovince(String orderAddressprovince) {
-        this.orderAddressprovince = orderAddressprovince == null ? null : orderAddressprovince.trim();
-    }
+	public void setOrderAddressprovince(String orderAddressprovince) {
+		this.orderAddressprovince = orderAddressprovince == null ? null : orderAddressprovince.trim();
+	}
 
-    public String getOrderAddresscity() {
-        return orderAddresscity;
-    }
+	public String getOrderAddresscity() {
+		return orderAddresscity;
+	}
 
-    public void setOrderAddresscity(String orderAddresscity) {
-        this.orderAddresscity = orderAddresscity == null ? null : orderAddresscity.trim();
-    }
+	public void setOrderAddresscity(String orderAddresscity) {
+		this.orderAddresscity = orderAddresscity == null ? null : orderAddresscity.trim();
+	}
 
-    public String getOrderAddresscounty() {
-        return orderAddresscounty;
-    }
+	public String getOrderAddresscounty() {
+		return orderAddresscounty;
+	}
 
-    public void setOrderAddresscounty(String orderAddresscounty) {
-        this.orderAddresscounty = orderAddresscounty == null ? null : orderAddresscounty.trim();
-    }
+	public void setOrderAddresscounty(String orderAddresscounty) {
+		this.orderAddresscounty = orderAddresscounty == null ? null : orderAddresscounty.trim();
+	}
 
-    public String getOrderAddressstreet() {
-        return orderAddressstreet;
-    }
+	public String getOrderAddressstreet() {
+		return orderAddressstreet;
+	}
 
-    public void setOrderAddressstreet(String orderAddressstreet) {
-        this.orderAddressstreet = orderAddressstreet == null ? null : orderAddressstreet.trim();
-    }
+	public void setOrderAddressstreet(String orderAddressstreet) {
+		this.orderAddressstreet = orderAddressstreet == null ? null : orderAddressstreet.trim();
+	}
 
-    public String getOrderAddressconsignee() {
-        return orderAddressconsignee;
-    }
+	public String getOrderAddressconsignee() {
+		return orderAddressconsignee;
+	}
 
-    public void setOrderAddressconsignee(String orderAddressconsignee) {
-        this.orderAddressconsignee = orderAddressconsignee == null ? null : orderAddressconsignee.trim();
-    }
+	public void setOrderAddressconsignee(String orderAddressconsignee) {
+		this.orderAddressconsignee = orderAddressconsignee == null ? null : orderAddressconsignee.trim();
+	}
 
-    public String getOrderAddressmobile() {
-        return orderAddressmobile;
-    }
+	public String getOrderAddressmobile() {
+		return orderAddressmobile;
+	}
 
-    public void setOrderAddressmobile(String orderAddressmobile) {
-        this.orderAddressmobile = orderAddressmobile == null ? null : orderAddressmobile.trim();
-    }
+	public void setOrderAddressmobile(String orderAddressmobile) {
+		this.orderAddressmobile = orderAddressmobile == null ? null : orderAddressmobile.trim();
+	}
 
-    public Integer getOrderDeleted() {
-        return orderDeleted;
-    }
+	public Integer getOrderDeleted() {
+		return orderDeleted;
+	}
 
-    public void setOrderDeleted(Integer orderDeleted) {
-        this.orderDeleted = orderDeleted;
-    }
+	public void setOrderDeleted(Integer orderDeleted) {
+		this.orderDeleted = orderDeleted;
+	}
 
 	public List<StrOrderDetail> getOrderDetail() {
 		return orderDetail;
@@ -271,12 +271,12 @@ public class StrOrder {
 		this.orderDetail = orderDetail;
 	}
 
-	public String getStatusCode() {
-		return statusCode;
+	public int getStatusValue() {
+		return statusValue;
 	}
 
-	public void setStatusCode(String statusCode) {
-		this.statusCode = statusCode;
+	public void setStatusValue(int statusValue) {
+		this.statusValue = statusValue;
 	}
 
 	public Integer getOrderStoreId() {

@@ -2,7 +2,7 @@ package com.tech.sayo.wechat.clean.bean;
 
 import java.util.List;
 
-import com.tech.sayo.background.sys.bean.Status;
+import com.tech.sayo.background.sys.bean.SDictionary;
 
 public class CleOrder {
     private Integer orderId;
@@ -17,9 +17,9 @@ public class CleOrder {
 
     private Integer orderServiceNumber;
     
-    private Status orderStatus;
+    private SDictionary orderStatus;
 
-    private Integer orderStatusid;
+    private Integer orderStatusval;
 
     private Double orderPayableamount;
 
@@ -58,8 +58,6 @@ public class CleOrder {
     private List<CleOrderDetail> orderDetail;
     
     private DifOrder order;
-    
-    private String statusCode;
 
     public Integer getOrderId() {
         return orderId;
@@ -109,23 +107,23 @@ public class CleOrder {
         this.orderServiceNumber = orderServiceNumber;
     }
     
-    public Status getOrderStatus() {
+    public SDictionary getOrderStatus() {
 		return orderStatus;
 	}
 
-	public void setOrderStatus(Status orderStatus) {
+	public void setOrderStatus(SDictionary orderStatus) {
 		this.orderStatus = orderStatus;
 	}
 
-	public Integer getOrderStatusid() {
-        return orderStatusid;
-    }
+    public Integer getOrderStatusval() {
+		return orderStatusval;
+	}
 
-    public void setOrderStatusid(Integer orderStatusid) {
-        this.orderStatusid = orderStatusid;
-    }
+	public void setOrderStatusval(Integer orderStatusval) {
+		this.orderStatusval = orderStatusval;
+	}
 
-    public Double getOrderPayableamount() {
+	public Double getOrderPayableamount() {
         return orderPayableamount;
     }
 
@@ -267,14 +265,6 @@ public class CleOrder {
 
 	public void setOrderStaffid(Integer orderStaffid) {
 		this.orderStaffid = orderStaffid;
-	}
-
-	public String getStatusCode() {
-		return statusCode;
-	}
-
-	public void setStatusCode(String statusCode) {
-		this.statusCode = statusCode;
 	}
 
 	public DifOrder getOrder() {

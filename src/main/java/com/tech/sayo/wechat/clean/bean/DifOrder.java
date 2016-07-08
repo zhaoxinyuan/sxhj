@@ -1,6 +1,6 @@
 package com.tech.sayo.wechat.clean.bean;
 
-import com.tech.sayo.background.sys.bean.Status;
+import com.tech.sayo.background.sys.bean.SDictionary;
 
 public class DifOrder {
     private Integer orderId;
@@ -15,9 +15,9 @@ public class DifOrder {
 
     private Double orderAmount;
 
-    private Integer orderStatusid;
+    private Integer orderStatusval;
     
-    private Status orderStatus;
+    private SDictionary orderStatus;
     
     private Integer orderPaytype;
     
@@ -70,20 +70,20 @@ public class DifOrder {
     public void setOrderAmount(Double orderAmount) {
         this.orderAmount = orderAmount;
     }
+    
+	public Integer getOrderStatusval() {
+		return orderStatusval;
+	}
 
-    public Integer getOrderStatusid() {
-        return orderStatusid;
-    }
+	public void setOrderStatusval(Integer orderStatusval) {
+		this.orderStatusval = orderStatusval;
+	}
 
-    public void setOrderStatusid(Integer orderStatusid) {
-        this.orderStatusid = orderStatusid;
-    }
-
-	public Status getOrderStatus() {
+	public SDictionary getOrderStatus() {
 		return orderStatus;
 	}
 
-	public void setOrderStatus(Status orderStatus) {
+	public void setOrderStatus(SDictionary orderStatus) {
 		this.orderStatus = orderStatus;
 	}
 

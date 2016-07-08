@@ -4,6 +4,7 @@ public class ShoppingCartTemp {
 
 	private Integer productId;
 	private String productName;
+	private String productCode;
 	private String productImage;
 	private Double productPrice;
 	private Integer productQty;
@@ -23,6 +24,14 @@ public class ShoppingCartTemp {
 
 	public void setProductName(String productName) {
 		this.productName = productName;
+	}
+
+	public String getProductCode() {
+		return productCode;
+	}
+
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
 	}
 
 	public String getProductImage() {

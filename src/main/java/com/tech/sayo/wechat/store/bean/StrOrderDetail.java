@@ -13,6 +13,8 @@ public class StrOrderDetail {
 
     private Double detailAmount;
 
+    private String detailProductcode;
+    
     private String detailProductname;
 
     private Double detailProductprice;
@@ -71,7 +73,15 @@ public class StrOrderDetail {
         this.detailAmount = detailAmount;
     }
 
-    public String getDetailProductname() {
+    public String getDetailProductcode() {
+		return detailProductcode;
+	}
+
+	public void setDetailProductcode(String detailProductcode) {
+		this.detailProductcode = detailProductcode;
+	}
+
+	public String getDetailProductname() {
         return detailProductname;
     }
 

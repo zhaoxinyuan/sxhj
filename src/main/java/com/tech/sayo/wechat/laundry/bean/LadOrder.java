@@ -1,6 +1,6 @@
 package com.tech.sayo.wechat.laundry.bean;
 
-import com.tech.sayo.background.sys.bean.Status;
+import com.tech.sayo.background.sys.bean.SDictionary;
 
 public class LadOrder {
     private Integer orderId;
@@ -19,9 +19,9 @@ public class LadOrder {
 
     private String orderFinished;
 
-    private Status orderStatus;
+    private SDictionary orderStatus;
     
-    private Integer orderStatusid;
+    private Integer orderStatusval;
     
     private String statusCode;
     
@@ -51,15 +51,23 @@ public class LadOrder {
         this.orderDatetime = orderDatetime == null ? null : orderDatetime.trim();
     }
 
-    public Integer getOrderRevorderid() {
-        return orderRevorderid;
-    }
+	public Integer getOrderRevorderid() {
+		return orderRevorderid;
+	}
 
-    public void setOrderRevorderid(Integer orderRevorderid) {
-        this.orderRevorderid = orderRevorderid;
-    }
+	public void setOrderRevorderid(Integer orderRevorderid) {
+		this.orderRevorderid = orderRevorderid;
+	}
 
-    public String getOrderOrderno() {
+	public Integer getOrderStatusval() {
+		return orderStatusval;
+	}
+
+	public void setOrderStatusval(Integer orderStatusval) {
+		this.orderStatusval = orderStatusval;
+	}
+
+	public String getOrderOrderno() {
         return orderOrderno;
     }
 
@@ -91,19 +99,11 @@ public class LadOrder {
         this.orderFinished = orderFinished == null ? null : orderFinished.trim();
     }
 
-    public Integer getOrderStatusid() {
-        return orderStatusid;
-    }
-
-    public void setOrderStatusid(Integer orderStatusid) {
-        this.orderStatusid = orderStatusid;
-    }
-
-	public Status getOrderStatus() {
+	public SDictionary getOrderStatus() {
 		return orderStatus;
 	}
 
-	public void setOrderStatus(Status orderStatus) {
+	public void setOrderStatus(SDictionary orderStatus) {
 		this.orderStatus = orderStatus;
 	}
 

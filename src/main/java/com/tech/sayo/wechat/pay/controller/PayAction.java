@@ -56,7 +56,7 @@ public class PayAction {
 		Map<String, Object> map =  payService.wechatPayCallback(request, response);
 		if(map != null){
 			StrOrder order = strService.getOrder(map.get("out_trade_no").toString());
-			order.setStatusCode("str_002");
+			order.setOrderStatusval(2);
 			strService.updateOrderStatus(order);
 			payService.insertPayDetailForWechat(map,order.getOrderId());
 		}
@@ -73,7 +73,7 @@ public class PayAction {
 		Map<String, Object> map =  payService.wechatPayCallback(request, response);
 		if(map != null){
 			CleOrder order = cleService.getOrder(map.get("out_trade_no").toString());
-			order.setStatusCode("cle_002");
+			order.setOrderStatusval(2);
 			cleService.updateCleOrderStatus(order);
 			payService.insertPayDetailForWechat(map,order.getOrderId());
 		}

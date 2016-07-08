@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tech.sayo.wechat.store.dao.StoreMapper" >
+   <resultMap id="BaseResultMap" type="com.tech.sayo.wechat.store.bean.Store" >
+    <id column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="store_name" property="storeName" jdbcType="VARCHAR" />
+    <result column="store_servicetime_from" property="storeServicetimeFrom" jdbcType="VARCHAR" />
+    <result column="store_servicetime_to" property="storeServicetimeTo" jdbcType="VARCHAR" />
+    <result column="store_address" property="storeAddress" jdbcType="VARCHAR" />
+    <result column="store_number" property="storeNumber" jdbcType="VARCHAR" />
+    <result column="store_minimums" property="storeMinimums" jdbcType="DOUBLE" />
+    <result column="store_deliveryamount" property="storeDeliveryamount" jdbcType="DOUBLE" />
+    <result column="store_image" property="storeImage" jdbcType="VARCHAR" />
+    <result column="store_bmap_lng" property="storeBmapLng" jdbcType="VARCHAR" />
+    <result column="store_bmap_lat" property="storeBmapLat" jdbcType="VARCHAR" />
+  </resultMap>  
+   	
+  <resultMap id="InfoResultMap" type="com.tech.sayo.wechat.store.bean.Store" >
+    <id column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="store_name" property="storeName" jdbcType="VARCHAR" />
+    <result column="store_servicetime_from" property="storeServicetimeFrom" jdbcType="VARCHAR" />
+    <result column="store_servicetime_to" property="storeServicetimeTo" jdbcType="VARCHAR" />
+    <result column="store_address" property="storeAddress" jdbcType="VARCHAR" />
+    <result column="store_number" property="storeNumber" jdbcType="VARCHAR" />
+    <result column="store_minimums" property="storeMinimums" jdbcType="DOUBLE" />
+    <result column="store_deliveryamount" property="storeDeliveryamount" jdbcType="DOUBLE" />
+    <result column="store_image" property="storeImage" jdbcType="VARCHAR" />
+    <result column="store_bmap_lng" property="storeBmapLng" jdbcType="VARCHAR" />
+    <result column="store_bmap_lat" property="storeBmapLat" jdbcType="VARCHAR" />
+    <collection column="category_id" property="categories" ofType="com.tech.sayo.wechat.store.bean.Category">
+  		<id column="category_id" property="categoryId" jdbcType="INTEGER" />
+	    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+	    <result column="category_storeid" property="categoryStoreid" jdbcType="INTEGER" />
+	    <result column="category_updatetime" property="categoryUpdatetime" jdbcType="VARCHAR" />
+	    <result column="category_index" property="categoryIndex" jdbcType="INTEGER" />
+  	</collection>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    store_id, store_name, store_servicetime_from, store_servicetime_to, store_address, store_number, store_minimums, 
+    store_deliveryamount, store_image, store_bmap_lng, store_bmap_lat
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="InfoResultMap" parameterType="java.lang.Integer" >
+    select a.*,
+           b.*
+    from str_store a
+    left join str_category b on a.store_id = b.category_storeid
+    where a.store_id = #{storeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from str_store
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tech.sayo.wechat.store.bean.Store" >
+    insert into str_store (store_id, store_name, store_servicetime_from, store_servicetime_to
+      store_address, store_number, store_minimums, 
+      store_deliveryamount, store_image, store_bmap_lng, 
+      store_bmap_lat)
+    values (#{storeId,jdbcType=INTEGER}, #{storeName,jdbcType=VARCHAR}, #{storeServicetimeFrom,jdbcType=VARCHAR}, #{storeServicetimeTo,jdbcType=VARCHAR}, 
+      #{storeAddress,jdbcType=VARCHAR}, #{storeNumber,jdbcType=VARCHAR}, #{storeMinimums,jdbcType=DOUBLE}, 
+      #{storeDeliveryamount,jdbcType=DOUBLE}, #{storeImage,jdbcType=VARCHAR}, #{storeBmapLng,jdbcType=VARCHAR}, 
+      #{storeBmapLat,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tech.sayo.wechat.store.bean.Store" >
+    insert into str_store
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="storeName != null" >
+        store_name,
+      </if>
+      <if test="storeServicetimeFrom != null" >
+        store_servicetime_from,
+      </if>
+      <if test="storeServicetimeTo != null" >
+        store_servicetime_to,
+      </if>
+      <if test="storeAddress != null" >
+        store_address,
+      </if>
+      <if test="storeNumber != null" >
+        store_number,
+      </if>
+      <if test="storeMinimums != null" >
+        store_minimums,
+      </if>
+      <if test="storeDeliveryamount != null" >
+        store_deliveryamount,
+      </if>
+      <if test="storeImage != null" >
+        store_image,
+      </if>
+      <if test="storeBmapLng != null" >
+        store_bmap_lng,
+      </if>
+      <if test="storeBmapLat != null" >
+        store_bmap_lat,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="storeName != null" >
+        #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="storeServicetimeFrom != null" >
+        #{storeServicetimeFrom,jdbcType=VARCHAR},
+      </if>
+       <if test="storeServicetimeTo != null" >
+        #{storeServicetimeTo,jdbcType=VARCHAR},
+      </if>
+      <if test="storeAddress != null" >
+        #{storeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="storeNumber != null" >
+        #{storeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="storeMinimums != null" >
+        #{storeMinimums,jdbcType=DOUBLE},
+      </if>
+      <if test="storeDeliveryamount != null" >
+        #{storeDeliveryamount,jdbcType=DOUBLE},
+      </if>
+      <if test="storeImage != null" >
+        #{storeImage,jdbcType=VARCHAR},
+      </if>
+      <if test="storeBmapLng != null" >
+        #{storeBmapLng,jdbcType=VARCHAR},
+      </if>
+      <if test="storeBmapLat != null" >
+        #{storeBmapLat,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tech.sayo.wechat.store.bean.Store" >
+    update str_store
+    <set >
+      <if test="storeName != null" >
+        store_name = #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="storeServicetimeFrom != null" >
+        store_servicetime_from = #{storeServicetimeFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="storeServicetimeTo != null" >
+        store_servicetime_to = #{storeServicetimeTo,jdbcType=VARCHAR},
+      </if>
+      <if test="storeAddress != null" >
+        store_address = #{storeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="storeNumber != null" >
+        store_number = #{storeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="storeMinimums != null" >
+        store_minimums = #{storeMinimums,jdbcType=DOUBLE},
+      </if>
+      <if test="storeDeliveryamount != null" >
+        store_deliveryamount = #{storeDeliveryamount,jdbcType=DOUBLE},
+      </if>
+      <if test="storeImage != null" >
+        store_image = #{storeImage,jdbcType=VARCHAR},
+      </if>
+      <if test="storeBmapLng != null" >
+        store_bmap_lng = #{storeBmapLng,jdbcType=VARCHAR},
+      </if>
+      <if test="storeBmapLat != null" >
+        store_bmap_lat = #{storeBmapLat,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tech.sayo.wechat.store.bean.Store" >
+    update str_store
+    set store_name = #{storeName,jdbcType=VARCHAR},
+      store_servicetime_from = #{storeServicetimeFrom,jdbcType=VARCHAR},
+      store_servicetime_to = #{storeServicetimeTo,jdbcType=VARCHAR},
+      store_address = #{storeAddress,jdbcType=VARCHAR},
+      store_number = #{storeNumber,jdbcType=VARCHAR},
+      store_minimums = #{storeMinimums,jdbcType=DOUBLE},
+      store_deliveryamount = #{storeDeliveryamount,jdbcType=DOUBLE},
+      store_image = #{storeImage,jdbcType=VARCHAR},
+      store_bmap_lng = #{storeBmapLng,jdbcType=VARCHAR},
+      store_bmap_lat = #{storeBmapLat,jdbcType=VARCHAR}
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </update>
+</mapper>
