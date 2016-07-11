@@ -17,7 +17,7 @@ public class Staff {
 
     private String staffMobile;
 
-    private Integer staffStatusId;
+    private Integer staffStatusVal;
     
     private Integer staffServceQty;
 
@@ -85,12 +85,12 @@ public class Staff {
         this.staffMobile = staffMobile == null ? null : staffMobile.trim();
     }
 
-	public Integer getStaffStatusId() {
-		return staffStatusId;
+	public Integer getStaffStatusVal() {
+		return staffStatusVal;
 	}
 
-	public void setStaffStatusId(Integer staffStatusId) {
-		this.staffStatusId = staffStatusId;
+	public void setStaffStatusVal(Integer staffStatusVal) {
+		this.staffStatusVal = staffStatusVal;
 	}
 
 	public Integer getStaffServceQty() {
