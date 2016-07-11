@@ -27,7 +27,7 @@
     left join sys_status c on b.staff_statusval = c.status_id
     LEFT JOIN s_dictionary c ON b.staff_statusval = c.value
     where a.category_id = #{categoryId,jdbcType=INTEGER}
-    and c.type = 'hr_status'
+    and c.type = 'hr_status' and c.value = 4
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from cle_staff
