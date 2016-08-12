@@ -16,6 +16,8 @@ public class RevOrder {
     private Integer orderUserid;
 
     private String orderHometime;
+    
+    private String orderBcktime;
 
     private Integer orderAddressid;
 
@@ -36,6 +38,8 @@ public class RevOrder {
     private String statusCode;
     
     private LadOrder order;
+    
+    private String status[];
 
     public Integer getOrderId() {
         return orderId;
@@ -85,7 +89,15 @@ public class RevOrder {
         this.orderUserid = orderUserid;
     }
 
-    public String getOrderHometime() {
+    public String getOrderBcktime() {
+		return orderBcktime;
+	}
+
+	public void setOrderBcktime(String orderBcktime) {
+		this.orderBcktime = orderBcktime;
+	}
+
+	public String getOrderHometime() {
         return orderHometime;
     }
 
@@ -171,5 +183,13 @@ public class RevOrder {
 
 	public void setOrder(LadOrder order) {
 		this.order = order;
+	}
+
+	public String[] getStatus() {
+		return status;
+	}
+
+	public void setStatus(String[] status) {
+		this.status = status;
 	}
 }

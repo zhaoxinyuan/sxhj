@@ -58,6 +58,8 @@ public class CleOrder {
     private List<CleOrderDetail> orderDetail;
     
     private DifOrder order;
+    
+    private CleTipOrder tipOrder;
 
     public Integer getOrderId() {
         return orderId;
@@ -273,5 +275,13 @@ public class CleOrder {
 
 	public void setOrder(DifOrder order) {
 		this.order = order;
+	}
+
+	public CleTipOrder getTipOrder() {
+		return tipOrder;
+	}
+
+	public void setTipOrder(CleTipOrder tipOrder) {
+		this.tipOrder = tipOrder;
 	}
 }

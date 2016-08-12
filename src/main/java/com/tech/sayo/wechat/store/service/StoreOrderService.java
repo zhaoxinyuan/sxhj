@@ -24,4 +24,5 @@ public interface StoreOrderService {
 	public void updateOrderStatus(StrOrder order);
 	
 	public void removeOrderStatus(StrOrder order);
+	
 }

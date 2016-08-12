@@ -58,6 +58,22 @@
 	    <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
 	    <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER" />
   	</association>
+  	<association column="order_cle_orderid" property="tipOrder" javaType="com.tech.sayo.wechat.clean.bean.CleTipOrder">
+  		<id column="tiporder_id" property="orderId" jdbcType="INTEGER" />
+	    <result column="tiporder_no" property="orderNo" jdbcType="VARCHAR" />
+	    <result column="tiporder_cle_orderid" property="orderCleOrderid" jdbcType="INTEGER" />
+	    <result column="tiporder_cle_orderno" property="orderCleOrderno" jdbcType="VARCHAR" />
+	    <result column="tiporder_datetime" property="orderDatetime" jdbcType="VARCHAR" />
+	    <result column="tiporder_statusval" property="orderStatusval" jdbcType="INTEGER" />
+	    <result column="tiporder_amount" property="orderAmount" jdbcType="DOUBLE" />
+	    <result column="tiporder_paytype" property="orderPaytype" jdbcType="INTEGER" />
+	    <result column="tiporder_userid" property="orderUserid" jdbcType="INTEGER" />
+	    <result column="tipcreated_date" property="createdDate" jdbcType="TIMESTAMP" />
+	    <result column="tipcreated_by" property="createdBy" jdbcType="VARCHAR" />
+	    <result column="tipupdated_date" property="updatedDate" jdbcType="TIMESTAMP" />
+	    <result column="tipupdated_by" property="updatedBy" jdbcType="VARCHAR" />
+	    <result column="tipdelete_flag" property="deleteFlag" jdbcType="INTEGER" />
+	</association>
     <collection column="detail_orderid" property="orderDetail" ofType="com.tech.sayo.wechat.clean.bean.CleOrderDetail">
   		 <id column="detail_id" property="detailId" jdbcType="INTEGER" />
 	    <result column="detail_orderid" property="detailOrderid" jdbcType="INTEGER" />
@@ -120,7 +136,14 @@
 	       g.created_by as difstatuscreated_by,
 	       g.updated_date as difstatusupdated_date,
 	       g.updated_by as difstatusupdated_by,
-	       g.delete_flag as difstatusdelete_flag
+	       g.delete_flag as difstatusdelete_flag,
+	       h.order_id as tiporder_id,
+	       h.order_no as tiporder_no,
+	       h.order_datetime as tiporder_datetime,
+	       h.order_cle_orderid as tiporder_cle_orderid,
+	       h.order_cle_orderno as tiporder_cle_orderno,
+	       h.order_amount as tiporder_amount,
+	       h.order_statusval as tiporder_statusval
 	FROM cle_order a
 	LEFT JOIN cle_staff b ON a.order_staffid = b.staff_id
 	LEFT JOIN s_dictionary c ON a.order_statusval = c.value
@@ -128,6 +151,7 @@
 	LEFT JOIN cle_category e ON a.order_categoryid = e.category_id
 	LEFT JOIN cle_dif_order f ON a.order_id = f.order_cle_orderid
 	LEFT JOIN s_dictionary g ON f.order_statusval = g.value
+	LEFT JOIN cle_tip_order h ON a.order_id = h.order_cle_orderid
 	WHERE a.order_id = #{orderId,jdbcType=INTEGER} and  c.type = 'orderStatus' and (g.type = 'orderStatus' or g.type is null)
   </select>
   <select id="selectByOrderNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -153,7 +177,14 @@
 	       g.created_by as difstatuscreated_by,
 	       g.updated_date as difstatusupdated_date,
 	       g.updated_by as difstatusupdated_by,
-	       g.delete_flag as difstatusdelete_flag
+	       g.delete_flag as difstatusdelete_flag,
+		   h.order_id as tiporder_id,
+	       h.order_no as tiporder_no,
+	       h.order_datetime as tiporder_datetime,
+	       h.order_cle_orderid as tiporder_cle_orderid,
+	       h.order_cle_orderno as tiporder_cle_orderno,
+	       h.order_amount as tiporder_amount,
+	       h.order_statusval as tiporder_statusval
 	FROM cle_order a
 	LEFT JOIN cle_staff b ON a.order_staffid = b.staff_id
 	LEFT JOIN s_dictionary c ON a.order_statusval = c.value
@@ -161,6 +192,7 @@
 	LEFT JOIN cle_category e ON a.order_categoryid = e.category_id
 	LEFT JOIN cle_dif_order f ON a.order_id = f.order_cle_orderid
 	LEFT JOIN s_dictionary g ON f.order_statusval = g.value
+	LEFT JOIN cle_tip_order h ON a.order_id = h.order_cle_orderid
 	WHERE a.order_no = #{orderNo,jdbcType=VARCHAR} and  c.type = 'orderStatus' and (g.type = 'orderStatus' or g.type is null)
   </select>
   <select id="selectByOrderStatus" resultMap="BaseResultMap" parameterType="com.tech.sayo.wechat.clean.bean.CleOrder" >
@@ -186,7 +218,14 @@
 	       g.created_by as difstatuscreated_by,
 	       g.updated_date as difstatusupdated_date,
 	       g.updated_by as difstatusupdated_by,
-	       g.delete_flag as difstatusdelete_flag
+	       g.delete_flag as difstatusdelete_flag,
+		   h.order_id as tiporder_id,
+	       h.order_no as tiporder_no,
+	       h.order_datetime as tiporder_datetime,
+	       h.order_cle_orderid as tiporder_cle_orderid,
+	       h.order_cle_orderno as tiporder_cle_orderno,
+	       h.order_amount as tiporder_amount,
+	       h.order_statusval as tiporder_statusval
 	FROM cle_order a
 	LEFT JOIN cle_staff b ON a.order_staffid = b.staff_id
 	LEFT JOIN s_dictionary c ON a.order_statusval = c.value
@@ -194,13 +233,14 @@
 	LEFT JOIN cle_category e ON a.order_categoryid = e.category_id
 	LEFT JOIN cle_dif_order f ON a.order_id = f.order_cle_orderid
 	LEFT JOIN s_dictionary g ON f.order_statusval = g.value
+	LEFT JOIN cle_tip_order h ON a.order_id = h.order_cle_orderid
 	WHERE c.type = 'orderStatus' and (g.type = 'orderStatus' or g.type is null)
 	<if test="orderStatusval != null">
 		and a.order_statusval = #{orderStatusval,jdbcType=INTEGER}
 	</if>
 	<if test="orderUserid != null" >
-        and order_userid = #{orderUserid,jdbcType=INTEGER}
-        and order_deleted is null
+        and a.order_userid = #{orderUserid,jdbcType=INTEGER}
+        and a.order_deleted is null
     </if>
   </select>
   <select id="selectSerial" resultMap="serialResultMap" >

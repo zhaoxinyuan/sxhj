@@ -8,6 +8,7 @@
     <result column="revorder_statusval" property="orderStatusval" jdbcType="INTEGER" />
     <result column="revorder_userid" property="orderUserid" jdbcType="INTEGER" />
     <result column="revorder_hometime" property="orderHometime" jdbcType="VARCHAR" />
+    <result column="revorder_backtime" property="orderBcktime" jdbcType="VARCHAR" />
     <result column="revorder_addressid" property="orderAddressid" jdbcType="INTEGER" />
     <result column="revorder_addressprovince" property="orderAddressprovince" jdbcType="VARCHAR" />
     <result column="revorder_addresscity" property="orderAddresscity" jdbcType="VARCHAR" />
@@ -66,6 +67,7 @@
            a.order_statusval as revorder_statusval,
            a.order_userid as revorder_userid,
            a.order_hometime as revorder_hometime,
+           a.order_backtime as revorder_backtime,
            a.order_addressid as revorder_addressid,
            a.order_addressprovince as revorder_addressprovince,
            a.order_addresscity as revorder_addresscity,
@@ -101,6 +103,7 @@
            a.order_statusval as revorder_statusval,
            a.order_userid as revorder_userid,
            a.order_hometime as revorder_hometime,
+           a.order_backtime as revorder_backtime,
            a.order_addressid as revorder_addressid,
            a.order_addressprovince as revorder_addressprovince,
            a.order_addresscity as revorder_addresscity,
@@ -127,8 +130,17 @@
     LEFT JOIN lad_order c ON a.order_id = c.order_revorderid
     LEFT JOIN s_dictionary d ON c.order_statusval = d.value
     WHERE b.type = 'orderStatus' and (d.type = 'orderStatus' or d.type is null)
-    <if test="orderStatusval != null">
-		and (a.order_statusval = #{orderStatusval,jdbcType=INTEGER} or c.order_statusval = #{orderStatusval,jdbcType=INTEGER})
+    <if test="statusCode != null and statusCode != ''">
+    	and ((a.order_statusval in 
+    	<foreach item="item" index="index" collection="status"  open="(" separator="," close=")">
+        	#{item}
+        </foreach>
+        and c.order_id is null) 
+		or c.order_statusval in 
+		<foreach item="item" index="index" collection="status"  open="(" separator="," close=")">
+        	#{item}
+        </foreach>
+		)
 	</if>
 	<if test="orderUserid != null" >
         and a.order_userid = #{orderUserid,jdbcType=INTEGER}
@@ -143,6 +155,7 @@
            a.order_statusval as revorder_statusval,
            a.order_userid as revorder_userid,
            a.order_hometime as revorder_hometime,
+           a.order_backtime as revorder_backtime,
            a.order_addressid as revorder_addressid,
            a.order_addressprovince as revorder_addressprovince,
            a.order_addresscity as revorder_addresscity,
@@ -182,13 +195,13 @@
   </delete>
   <insert id="insert" parameterType="com.tech.sayo.wechat.laundry.bean.RevOrder" >
     insert into lad_rev_order (order_id, order_no, order_datetime, 
-      order_statusval, order_userid, order_hometime, 
+      order_statusval, order_userid, order_hometime, order_backtime,
       order_addressid, order_addressprovince, order_addresscity, 
       order_addresscounty, order_addressstreet, 
       order_addressconsignee, order_addressmobile, 
       order_deleted)
     values (#{orderId,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{orderDatetime,jdbcType=VARCHAR}, 
-      #{orderStatusval,jdbcType=INTEGER}, #{orderUserid,jdbcType=INTEGER}, #{orderHometime,jdbcType=VARCHAR}, 
+      #{orderStatusval,jdbcType=INTEGER}, #{orderUserid,jdbcType=INTEGER}, #{orderHometime,jdbcType=VARCHAR},#{orderBcktime,jdbcType=VARCHAR}, 
       #{orderAddressid,jdbcType=INTEGER}, #{orderAddressprovince,jdbcType=VARCHAR}, #{orderAddresscity,jdbcType=VARCHAR}, 
       #{orderAddresscounty,jdbcType=VARCHAR}, #{orderAddressstreet,jdbcType=VARCHAR}, 
       #{orderAddressconsignee,jdbcType=VARCHAR}, #{orderAddressmobile,jdbcType=VARCHAR}, 
@@ -214,6 +227,9 @@
       </if>
       <if test="orderHometime != null" >
         order_hometime,
+      </if>
+      <if test="orderBcktime != null" >
+        order_backtime,
       </if>
       <if test="orderAddressid != null" >
         order_addressid,
@@ -259,6 +275,9 @@
       <if test="orderHometime != null" >
         #{orderHometime,jdbcType=VARCHAR},
       </if>
+      <if test="orderBcktime != null" >
+        #{orderBcktime,jdbcType=VARCHAR},
+      </if>
       <if test="orderAddressid != null" >
         #{orderAddressid,jdbcType=INTEGER},
       </if>
@@ -303,6 +322,9 @@
       <if test="orderHometime != null" >
         order_hometime = #{orderHometime,jdbcType=VARCHAR},
       </if>
+      <if test="orderBcktime != null" >
+        order_backtime = #{orderBcktime,jdbcType=VARCHAR},
+      </if>
       <if test="orderAddressid != null" >
         order_addressid = #{orderAddressid,jdbcType=INTEGER},
       </if>
@@ -337,6 +359,7 @@
       order_statusval = #{orderStatusval,jdbcType=INTEGER},
       order_userid = #{orderUserid,jdbcType=INTEGER},
       order_hometime = #{orderHometime,jdbcType=VARCHAR},
+      order_backtime = #{orderBcktime,jdbcType=VARCHAR},
       order_addressid = #{orderAddressid,jdbcType=INTEGER},
       order_addressprovince = #{orderAddressprovince,jdbcType=VARCHAR},
       order_addresscity = #{orderAddresscity,jdbcType=VARCHAR},

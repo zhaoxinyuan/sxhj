@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.tech.sayo.base.entity.MyPage;
 import com.tech.sayo.base.entity.MyStatus;
 import com.tech.sayo.wechat.clean.bean.CleOrder;
+import com.tech.sayo.wechat.clean.bean.CleTipOrder;
 import com.tech.sayo.wechat.clean.bean.DifOrder;
 import com.tech.sayo.wechat.clean.bean.NanOrder;
 import com.tech.sayo.wechat.clean.service.CleanService;
@@ -129,5 +130,21 @@ public class CleanAction {
 	@RequestMapping(value = "modifydifstatus",method = RequestMethod.GET)
 	public String modifyDifstatus(HttpServletRequest request,HttpServletResponse response,DifOrder order,String callback){
 		return JsonpUtil.jsonpCllback(cleanService.updateDifOrderStatus(order),callback);
+	}
+	
+	@RequestMapping(value = "tiporder",method = RequestMethod.GET)
+	public String getTipOrder(HttpServletRequest request,HttpServletResponse response,Integer orderId,String callback){
+		return JsonpUtil.jsonpCllback(cleanService.getOrderByTip(orderId),callback);
+	}
+	
+	@RequestMapping(value = "tipordersubmit",method = RequestMethod.GET)
+	public String tipOrderSubmit(HttpServletRequest request,HttpServletResponse response,CleTipOrder order,String callback){
+		return JsonpUtil.jsonpCllback(cleanService.orderSubmit(order),callback);
+	}
+	
+	@RequestMapping(value = "modifytipstatus",method = RequestMethod.GET)
+	public String modifyTipstatus(HttpServletRequest request,HttpServletResponse response,CleTipOrder order,String callback){
+		cleanService.updateCleTipOrderStatus(order);
+		return JsonpUtil.jsonpCllback(new MyStatus().MyStatusSuccess(),callback);
 	}
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tech.sayo.wechat.clean.bean.CleOrder;
+import com.tech.sayo.wechat.clean.bean.CleTipOrder;
 import com.tech.sayo.wechat.clean.bean.DifOrder;
 import com.tech.sayo.wechat.clean.service.CleanService;
 import com.tech.sayo.wechat.laundry.bean.RevOrder;
@@ -90,7 +91,7 @@ public class PayAction {
 		Map<String, Object> map =  payService.wechatPayCallback(request, response);
 		if(map != null){
 			DifOrder order = cleService.getDifOrder(map.get("out_trade_no").toString());
-			order.setStatusCode("dif_002");
+			order.setOrderStatusval(2);
 			cleService.updateDifOrderStatus(order);
 			payService.insertPayDetailForWechat(map,order.getOrderId());
 		}
@@ -107,8 +108,25 @@ public class PayAction {
 		Map<String, Object> map =  payService.wechatPayCallback(request, response);
 		if(map != null){
 			RevOrder order = ladService.getOrder(map.get("out_trade_no").toString());
-			order.setStatusCode("lad_003");
+			order.setOrderStatusval(2);
 			ladService.updaOrderStaus(order);
+			payService.insertPayDetailForWechat(map,order.getOrderId());
+		}
+		return null;
+	}
+	
+	@RequestMapping(value = "tiporderwechat", method = RequestMethod.GET)
+	public String tipOrderWechat(HttpServletRequest request, HttpServletResponse response, Integer orderId,String wechatId, String callback) {
+		return JsonpUtil.jsonpCllback(payService.PayTipByWechat(request, response, cleService.getOrderByTip(orderId), wechatId), callback);
+	}
+	
+	@RequestMapping(value = "tipordercallbackwechat", method = RequestMethod.POST)
+	public String tipOrderCallBackWechat(HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> map =  payService.wechatPayCallback(request, response);
+		if(map != null){
+			CleTipOrder order = cleService.getOrderByTip(map.get("out_trade_no").toString());
+			order.setOrderStatusval(2);
+			cleService.updateCleTipOrderStatus(order);
 			payService.insertPayDetailForWechat(map,order.getOrderId());
 		}
 		return null;

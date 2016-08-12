@@ -107,7 +107,7 @@ public class CleanActionTest extends BaseTest {
 		
 		NanOrder order = new NanOrder();
 		order.setOrderCategoryid(4);
-		order.setOrderStaffid(4);
+		//order.setOrderStaffid(4);
 		order.setOrderInterviewtime("2016-06-14 18:00");
 		order.setOrderUserid(1);
 		order.setOrderUseraddressid(221);

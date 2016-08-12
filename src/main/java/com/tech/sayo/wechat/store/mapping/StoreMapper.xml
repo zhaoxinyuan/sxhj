@@ -44,7 +44,7 @@
            b.*
     from str_store a
     left join str_category b on a.store_id = b.category_storeid
-    where a.store_id = #{storeId,jdbcType=INTEGER}
+    where a.store_id = #{storeId,jdbcType=INTEGER} and b.delete_flag = 0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from str_store

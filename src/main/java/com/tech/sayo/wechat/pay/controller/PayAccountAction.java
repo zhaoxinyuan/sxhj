@@ -42,4 +42,9 @@ public class PayAccountAction {
 	public String PayDifferenceByAccount(HttpServletRequest request,HttpServletResponse response,Integer orderId, Integer accountUserid,String callback){
 		return JsonpUtil.jsonpCllback(payService.PayDifferenceByAccount(orderId, accountUserid),callback);
 	}
+	
+	@RequestMapping(value = "paytip",method = RequestMethod.GET)
+	public String PayTipByAccount(HttpServletRequest request,HttpServletResponse response,Integer orderId, Integer accountUserid,String callback){
+		return JsonpUtil.jsonpCllback(payService.PayTipByAccount(orderId, accountUserid),callback);
+	}
 }

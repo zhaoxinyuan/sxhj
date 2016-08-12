@@ -35,6 +35,11 @@ public class StoreAction {
 	public String getProducts(HttpServletRequest request,HttpServletResponse response,Product product,MyPage page,String callback){
 		return JsonpUtil.jsonpCllback(storeService.getProducts(page, product),callback);
 	}
+
+	@RequestMapping(value = "cartproducts",method = RequestMethod.GET)
+	public String cartProducts(HttpServletRequest request,HttpServletResponse response,String productIds,String callback){
+		return JsonpUtil.jsonpCllback(storeService.getProducts(productIds),callback);
+	}
 	
 	@RequestMapping(value = "product",method = RequestMethod.GET)
 	public String getProduct(HttpServletRequest request,HttpServletResponse response,Integer productId,String callback){

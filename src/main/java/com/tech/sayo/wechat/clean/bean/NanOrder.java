@@ -1,5 +1,7 @@
 package com.tech.sayo.wechat.clean.bean;
 
+import java.util.List;
+
 import com.tech.sayo.background.sys.bean.Status;
 
 public class NanOrder {
@@ -16,11 +18,11 @@ public class NanOrder {
     private Status orderStatus;
     
     private Integer orderStatusid;
-
-    private Staff staff;
     
-    private Integer orderStaffid;
+    private List<CleNanOrderStaff> orderStaff;
 
+    private Integer orderInterviewtype;
+    
     private String orderInterviewtime;
 
     private Integer orderUserid;
@@ -38,8 +40,12 @@ public class NanOrder {
     private String orderAddressconsignee;
 
     private String orderAddressmobile;
+    
+    private String orderAddresswechat;
 
     private Integer orderDeleted;
+    
+    private String staffIds;
 
     public Integer getOrderId() {
         return orderId;
@@ -89,14 +95,6 @@ public class NanOrder {
 		this.orderStatus = orderStatus;
 	}
 
-	public Staff getStaff() {
-		return staff;
-	}
-
-	public void setStaff(Staff staff) {
-		this.staff = staff;
-	}
-
 	public Integer getOrderStatusid() {
         return orderStatusid;
     }
@@ -104,16 +102,24 @@ public class NanOrder {
     public void setOrderStatusid(Integer orderStatusid) {
         this.orderStatusid = orderStatusid;
     }
+    
+    public Integer getOrderInterviewtype() {
+		return orderInterviewtype;
+	}
 
-    public Integer getOrderStaffid() {
-        return orderStaffid;
-    }
+	public void setOrderInterviewtype(Integer orderInterviewtype) {
+		this.orderInterviewtype = orderInterviewtype;
+	}
 
-    public void setOrderStaffid(Integer orderStaffid) {
-        this.orderStaffid = orderStaffid;
-    }
+	public List<CleNanOrderStaff> getOrderStaff() {
+		return orderStaff;
+	}
 
-    public String getOrderInterviewtime() {
+	public void setOrderStaff(List<CleNanOrderStaff> orderStaff) {
+		this.orderStaff = orderStaff;
+	}
+
+	public String getOrderInterviewtime() {
         return orderInterviewtime;
     }
 
@@ -177,7 +183,15 @@ public class NanOrder {
         this.orderAddressconsignee = orderAddressconsignee == null ? null : orderAddressconsignee.trim();
     }
 
-    public String getOrderAddressmobile() {
+    public String getOrderAddresswechat() {
+		return orderAddresswechat;
+	}
+
+	public void setOrderAddresswechat(String orderAddresswechat) {
+		this.orderAddresswechat = orderAddresswechat;
+	}
+
+	public String getOrderAddressmobile() {
         return orderAddressmobile;
     }
 
@@ -192,4 +206,12 @@ public class NanOrder {
     public void setOrderDeleted(Integer orderDeleted) {
         this.orderDeleted = orderDeleted;
     }
+
+	public String getStaffIds() {
+		return staffIds;
+	}
+
+	public void setStaffIds(String staffIds) {
+		this.staffIds = staffIds;
+	}
 }

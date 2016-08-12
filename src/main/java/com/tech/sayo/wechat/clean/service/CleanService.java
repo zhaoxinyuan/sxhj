@@ -6,6 +6,7 @@ import com.tech.sayo.base.entity.MyPage;
 import com.tech.sayo.wechat.clean.bean.Category;
 import com.tech.sayo.wechat.clean.bean.CleOrder;
 import com.tech.sayo.wechat.clean.bean.CleOrderDetail;
+import com.tech.sayo.wechat.clean.bean.CleTipOrder;
 import com.tech.sayo.wechat.clean.bean.DifOrder;
 import com.tech.sayo.wechat.clean.bean.NanOrder;
 import com.tech.sayo.wechat.clean.bean.Staff;
@@ -56,4 +57,12 @@ public interface CleanService {
 	public DifOrder getDifOrder(String orderNo);
 	
 	public DifOrder updateDifOrderStatus(DifOrder order);
+	
+	public CleTipOrder orderSubmit(CleTipOrder order);
+	
+	public CleTipOrder getOrderByTip(Integer orderId);
+	
+	public CleTipOrder getOrderByTip(String orderNo);
+	
+	public void updateCleTipOrderStatus(CleTipOrder order);
 }

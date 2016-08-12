@@ -1,5 +1,7 @@
 package com.tech.sayo.wechat.store.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,11 @@ public class StoreServiceImpl implements StoreService {
 	public MyPage getProducts(MyPage page, Product product) {
 		PageHelper.startPage(page.getCurrent(),page.getRowCount());
 		return new MyPage().init(baseDao.selectList(PRODUCT_NAMESPACE_INFOUSER + "selectByStore", product));
+	}
+	
+	@Override
+	public List<Product> getProducts(String productids) {
+		return baseDao.selectList(PRODUCT_NAMESPACE_INFOUSER + "selectByPrimaryKeys", productids.split(",")); 
 	}
 
 	@Override

@@ -28,6 +28,7 @@ import com.tech.sayo.wechat.account.bean.AccountType;
 import com.tech.sayo.wechat.account.bean.User;
 import com.tech.sayo.wechat.account.bean.UserAccount;
 import com.tech.sayo.wechat.clean.bean.CleOrder;
+import com.tech.sayo.wechat.clean.bean.CleTipOrder;
 import com.tech.sayo.wechat.clean.bean.DifOrder;
 import com.tech.sayo.wechat.laundry.bean.LadOrder;
 import com.tech.sayo.wechat.laundry.bean.RevOrder;
@@ -52,6 +53,7 @@ public class PayServiceImpl implements PayService{
 	private static final String DIFFERENCE_ORDER_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.clean.dao.DifOrderMapper.";
 	private static final String PAYDETAIL_NAMESPACE_INFOUSER = "com.tech.sayo.wechat.pay.dao.PayDetailMapper.";
 	private static final String NAMESPACE_INFOUSER  = "com.tech.sayo.wechat.account.bean.mapper.UserMapper.";
+	private static final String TIP_ORDER_NAMESPACE_INFOUSER = "com.ftc.wechat.account.dao.CleTipOrderMapper.";
 	
 	@Autowired
 	private BaseDao baseDao;
@@ -197,6 +199,60 @@ public class PayServiceImpl implements PayService{
 		return status;
 	}
 	
+	@Override
+	public MyStatus PayTipByAccount(Integer orderId, Integer accountUserid) {
+		MyStatus status = new MyStatus();
+		CleTipOrder order = baseDao.selectOne(TIP_ORDER_NAMESPACE_INFOUSER + "selectByPrimaryKey", orderId);
+		if(order.getOrderStatus().getValue() == 2){
+			status.setStatus(-1);
+			status.setMessage("该订单已支付");
+			return status;
+		}
+		UserAccount account = baseDao.selectOne(ACCOUNT_NAMESPACE_INFOUSER + "selectAmount", accountUserid);
+		if(account.getAccountAmounts() < order.getOrderAmount()){
+			status.setStatus(-3);
+			status.setMessage("账户余额不足");
+			return status;
+		}
+		
+		AccountType type = baseDao.selectOne(ACCOUNT_TYPE_NAMESPACE_INFOUSER + "selectByCode","type_002");
+		account.setAccountAmounts(order.getOrderAmount() - order.getOrderAmount() * 2);
+		account.setAccountUserid(accountUserid);
+		account.setAccountDatetime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+		account.setAccountTypeid(type.getTypeId());
+		account.setAccountOrderno(order.getOrderNo());
+		
+		order.setOrderStatusval(2);
+		
+		baseDao.insert(ACCOUNT_NAMESPACE_INFOUSER + "insertSelective", account);
+		baseDao.modify(TIP_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
+		status.MyStatusSuccess();
+		return status;
+	}
+
+	@Override
+	public UnifiedWeChatOrder PayTipByWechat(HttpServletRequest request, HttpServletResponse response,CleTipOrder order,String wechatId) {
+		BaseOrder base = new BaseOrder();
+		MyStatus status = new MyStatus();
+		if(order.getOrderStatus().getValue() == 2 || order.getOrderStatus().getValue() == 3 || order. getOrderStatus().getValue() == 6 ){
+			status.setStatus(-1);
+			status.setMessage("该订单已支付");
+		}else if(order.getOrderStatus().getValue() == 7){
+			status.setStatus(-2);
+			status.setMessage("该订单已取消");
+		}else{
+			status.setStatus(0);
+			status.setMessage("SUCCESS");
+			base.setBody("舒心汇佳-订单号:" + order.getOrderNo());
+			base.setOrderBusiness("store");
+			base.setOrderId(order.getOrderId());
+			base.setOrderNo(order.getOrderNo());
+			base.setTotal((int)(order.getOrderAmount() * 100));
+			base.setCallback("/tipordercallbackwechat");
+		}
+		base.setStatus(status);
+		return createWechatOrder(base, request, response, wechatId) ;
+	}
 	
 
 	@Override
@@ -280,7 +336,7 @@ public class PayServiceImpl implements PayService{
 	public UnifiedWeChatOrder PayStoreByWechat(HttpServletRequest request, HttpServletResponse response,StrOrder order,String wechatId) {
 		BaseOrder base = new BaseOrder();
 		MyStatus status = new MyStatus();
-		if(order.getOrderStatus().getValue() == 2 || order.getOrderStatus().getValue() == 3 || order.getStatusValue() == 6 ){
+		if(order.getOrderStatus().getValue() == 2 || order.getOrderStatus().getValue() == 3 || order.getOrderStatus().getValue() == 6 ){
 			status.setStatus(-1);
 			status.setMessage("该订单已支付");
 		}else if(order.getOrderStatus().getValue() == 7){
@@ -422,6 +478,4 @@ public class PayServiceImpl implements PayService{
 			baseDao.insert(ACCOUNT_NAMESPACE_INFOUSER + "insertSelective", account);
 		}
 	}
-	
-
 }

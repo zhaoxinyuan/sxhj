@@ -23,9 +23,9 @@
     select b.*,
            IFNULL(d.service_qty,0) as staffServceQty
     from cle_staff_category_mapping a
-    left join cle_staff b on a.staff_id = b.staff_id
-    left join sys_status c on b.staff_statusval = c.status_id
+    LEFT JOIN cle_staff b ON a.staff_id = b.staff_id
     LEFT JOIN s_dictionary c ON b.staff_statusval = c.value
+    LEFT JOIN cle_staff_service d ON d.service_staffid = a.staff_id
     where a.category_id = #{categoryId,jdbcType=INTEGER}
     and c.type = 'hr_status' and c.value = 4
   </select>
