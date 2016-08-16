@@ -22,6 +22,7 @@
     <result column="account_orderno" property="accountOrderno" jdbcType="VARCHAR" />
     <result column="orderid" property="orderid" jdbcType="INTEGER" />
     <result column="ordercategory" property="ordercategory" jdbcType="VARCHAR" />
+    <result column="account_remarks" property="accountRemarks" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     account_id, account_datetime, account_typeid, account_amounts, account_userid, account_payid, 
@@ -63,7 +64,8 @@
 			      END
 			 END
 	            END
-	       END AS ordercategory     		      
+	       END AS ordercategory,
+	       a.account_remarks   		      
 	FROM act_user_account a
 	LEFT JOIN cle_order b ON a.account_orderno = b.order_no
 	LEFT JOIN cle_category c ON b.order_categoryid = c.category_id

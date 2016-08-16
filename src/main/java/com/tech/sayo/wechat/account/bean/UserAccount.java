@@ -22,6 +22,8 @@ public class UserAccount {
     private String ordercategory;
     
     private String typeCode;
+    
+    private String accountRemarks;
 
     public Integer getAccountId() {
         return accountId;
@@ -109,5 +111,13 @@ public class UserAccount {
 
 	public void setTypeCode(String typeCode) {
 		this.typeCode = typeCode;
+	}
+
+	public String getAccountRemarks() {
+		return accountRemarks;
+	}
+
+	public void setAccountRemarks(String accountRemarks) {
+		this.accountRemarks = accountRemarks;
 	}
 }

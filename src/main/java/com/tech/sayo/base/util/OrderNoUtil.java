@@ -7,6 +7,7 @@ public class OrderNoUtil {
 
 	private Integer serial;
 	private String orderNo;
+	private String userCode;
 
 	public Integer getSerial() {
 		return serial;
@@ -22,5 +23,13 @@ public class OrderNoUtil {
 			this.orderNo += "0";
 		}
 		return this.orderNo + this.serial;
+	}
+	
+	public String createUserCode(){
+		this.userCode = "";
+		for (int i = 0; i < 8 - serial.toString().length(); i++) {
+			this.userCode += "0";
+		}
+		return this.userCode + this.serial;
 	}
 }

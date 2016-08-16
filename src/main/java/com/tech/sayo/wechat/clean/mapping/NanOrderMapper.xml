@@ -68,6 +68,7 @@
         and order_userid = #{orderUserid,jdbcType=INTEGER}
         and order_deleted is null
     </if>
+    order by a.order_id
   </select>
   <select id="selectSerial" resultMap="serialResultMap" >
    select 
@@ -81,7 +82,7 @@
   </delete>
   <insert id="insert" parameterType="com.tech.sayo.wechat.clean.bean.NanOrder" >
     insert into cle_nan_order (order_id, order_no, order_datetime, 
-      order_categoryid, order_statusid, order_staffid, 
+      order_categoryid, order_statusid,  
       order_interviewtime, order_interviewtype, order_userid,
       order_useraddressid, order_addressprovince, order_addresscity, 
       order_addresscounty, order_addressstreet, order_addresswechat,

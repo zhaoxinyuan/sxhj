@@ -37,13 +37,29 @@
     <association column="order_staffid" property="staff" javaType="com.tech.sayo.wechat.clean.bean.Staff">
   		<id column="staff_id" property="staffId" jdbcType="INTEGER" />
 	    <result column="staff_code" property="staffCode" jdbcType="VARCHAR" />
-	    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
-	    <result column="staff_age" property="staffAge" jdbcType="INTEGER" />
+	    <result column="staff_lastname" property="staffLastname" jdbcType="VARCHAR" />
+	    <result column="staff_fullname" property="staffFullname" jdbcType="VARCHAR" />
 	    <result column="staff_image" property="staffImage" jdbcType="VARCHAR" />
 	    <result column="staff_nativeplace" property="staffNativeplace" jdbcType="VARCHAR" />
 	    <result column="staff_idcode" property="staffIdcode" jdbcType="VARCHAR" />
 	    <result column="staff_mobile" property="staffMobile" jdbcType="VARCHAR" />
-	    <result column="staff_statusid" property="staffStatusId" jdbcType="INTEGER" />
+	    <result column="staff_birthday" property="staffBirthday" jdbcType="VARCHAR" />
+	    <result column="staff_worklong" property="staffWorklong" jdbcType="INTEGER" />
+	    <result column="staff_excel" property="staffExcel" jdbcType="VARCHAR" />
+	    <result column="staff_statusval" property="staffStatusval" jdbcType="INTEGER" />
+	    <result column="staff_eval_value1" property="staffEvalValue1" jdbcType="DOUBLE" />
+	    <result column="staff_eval_value2" property="staffEvalValue2" jdbcType="DOUBLE" />
+	    <result column="staff_eval_value3" property="staffEvalValue3" jdbcType="DOUBLE" />
+	    <result column="staff_eval_value4" property="staffEvalValue4" jdbcType="DOUBLE" />
+	    <result column="staff_eval_value5" property="staffEvalValue5" jdbcType="DOUBLE" />
+	    <result column="staff_eval_value6" property="staffEvalValue6" jdbcType="DOUBLE" />
+	    <result column="staff_eval_value7" property="staffEvalValue7" jdbcType="DOUBLE" />
+	    <result column="staff_eval_value8" property="staffEvalValue8" jdbcType="DOUBLE" />
+	    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+	    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+	    <result column="updated_date" property="updatedDate" jdbcType="TIMESTAMP" />
+	    <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
+	    <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER" />
   	</association>
   	<association column="order_statusval" property="orderStatus" javaType="com.tech.sayo.background.sys.bean.SDictionary">
   		<id column="id" property="id" jdbcType="INTEGER" />

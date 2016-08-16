@@ -6,17 +6,19 @@ import java.util.Map;
 public class User {
     private Integer userId;
 
-    private String userWechatid = "";
+    private String userWechatid;
+    
+    private String userCode;
 
-    private String userMobile = "";
+    private String userMobile;
 
-    private String userNickname = "";
+    private String userNickname;
 
-    private String userHead = "";
+    private String userHead;
 
-    private Integer userSex = 1;
+    private Integer userSex;
 
-    private String userBirthday = "";
+    private String userBirthday;
 
     public Integer getUserId() {
         return userId;
@@ -34,7 +36,15 @@ public class User {
         this.userWechatid = userWechatid == null ? null : userWechatid.trim();
     }
 
-    public String getUserMobile() {
+    public String getUserCode() {
+		return userCode;
+	}
+
+	public void setUserCode(String userCode) {
+		this.userCode = userCode;
+	}
+
+	public String getUserMobile() {
         return userMobile;
     }
 

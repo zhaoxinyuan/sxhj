@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import com.tech.sayo.base.dao.BaseDao;
 import com.tech.sayo.base.entity.MyPage;
 import com.tech.sayo.base.entity.MySort;
+import com.tech.sayo.base.util.OrderNoUtil;
 import com.tech.sayo.wechat.account.bean.User;
 import com.tech.sayo.wechat.account.service.UserService;
 
@@ -38,6 +39,8 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public void saveUser(User user) {
+		OrderNoUtil userCodeUtil = (OrderNoUtil)baseDao.selectOne(NAMESPACE_INFOUSER + "selectSerial");
+		user.setUserCode(userCodeUtil.createUserCode());
 		baseDao.insert(NAMESPACE_INFOUSER + "insertSelective", user);
 	}
 	

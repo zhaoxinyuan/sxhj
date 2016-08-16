@@ -4,14 +4,36 @@
   <resultMap id="BaseResultMap" type="com.tech.sayo.wechat.clean.bean.Staff" >
     <id column="staff_id" property="staffId" jdbcType="INTEGER" />
     <result column="staff_code" property="staffCode" jdbcType="VARCHAR" />
-    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
-    <result column="staff_age" property="staffAge" jdbcType="INTEGER" />
+    <result column="staff_lastname" property="staffLastname" jdbcType="VARCHAR" />
+    <result column="staff_fullname" property="staffFullname" jdbcType="VARCHAR" />
     <result column="staff_image" property="staffImage" jdbcType="VARCHAR" />
     <result column="staff_nativeplace" property="staffNativeplace" jdbcType="VARCHAR" />
     <result column="staff_idcode" property="staffIdcode" jdbcType="VARCHAR" />
     <result column="staff_mobile" property="staffMobile" jdbcType="VARCHAR" />
-    <result column="staff_statusval" property="staffStatusVal" jdbcType="INTEGER" />
+    <result column="staff_birthday" property="staffBirthday" jdbcType="VARCHAR" />
+    <result column="staff_worklong" property="staffWorklong" jdbcType="INTEGER" />
+    <result column="staff_excel" property="staffExcel" jdbcType="VARCHAR" />
+    <result column="staff_statusval" property="staffStatusval" jdbcType="INTEGER" />
+    <result column="staff_eval_value1" property="staffEvalValue1" jdbcType="DOUBLE" />
+    <result column="staff_eval_value2" property="staffEvalValue2" jdbcType="DOUBLE" />
+    <result column="staff_eval_value3" property="staffEvalValue3" jdbcType="DOUBLE" />
+    <result column="staff_eval_value4" property="staffEvalValue4" jdbcType="DOUBLE" />
+    <result column="staff_eval_value5" property="staffEvalValue5" jdbcType="DOUBLE" />
+    <result column="staff_eval_value6" property="staffEvalValue6" jdbcType="DOUBLE" />
+    <result column="staff_eval_value7" property="staffEvalValue7" jdbcType="DOUBLE" />
+    <result column="staff_eval_value8" property="staffEvalValue8" jdbcType="DOUBLE" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="updated_date" property="updatedDate" jdbcType="TIMESTAMP" />
+    <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER" />
+    <result column="staffServceQty" property="staffServceQty" jdbcType="INTEGER" />
   </resultMap>
+  <sql id="Base_Column_List" >
+    staff_id, staff_code, staff_lastname, staff_fullname, staff_image, staff_nativeplace, 
+    staff_idcode, staff_mobile, staff_birthday, staff_worklong, staff_excel, staff_statusval, 
+    created_date, created_by, updated_date, updated_by, delete_flag
+  </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select a.*,
            IFNULL(b.service_qty,0) as staffServceQty
@@ -34,14 +56,18 @@
     where staff_id = #{staffId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.tech.sayo.wechat.clean.bean.Staff" >
-    insert into cle_staff (staff_id, staff_code, staff_name, 
-      staff_age, staff_image, staff_nativeplace, 
-      staff_idcode, staff_mobile, staff_statusval
-      )
-    values (#{staffId,jdbcType=INTEGER}, #{staffCode,jdbcType=VARCHAR}, #{staffName,jdbcType=VARCHAR}, 
-      #{staffAge,jdbcType=INTEGER}, #{staffImage,jdbcType=VARCHAR}, #{staffNativeplace,jdbcType=VARCHAR}, 
-      #{staffIdcode,jdbcType=VARCHAR}, #{staffMobile,jdbcType=VARCHAR}, #{staffStatusVal,jdbcType=INTEGER}
-      )
+    insert into cle_staff (staff_id, staff_code, staff_lastname, 
+      staff_fullname, staff_image, staff_nativeplace, 
+      staff_idcode, staff_mobile, staff_birthday, 
+      staff_worklong, staff_excel, staff_statusval, 
+      created_date, created_by, updated_date, 
+      updated_by, delete_flag)
+    values (#{staffId,jdbcType=INTEGER}, #{staffCode,jdbcType=VARCHAR}, #{staffLastname,jdbcType=VARCHAR}, 
+      #{staffFullname,jdbcType=VARCHAR}, #{staffImage,jdbcType=VARCHAR}, #{staffNativeplace,jdbcType=VARCHAR}, 
+      #{staffIdcode,jdbcType=VARCHAR}, #{staffMobile,jdbcType=VARCHAR}, #{staffBirthday,jdbcType=VARCHAR}, 
+      #{staffWorklong,jdbcType=INTEGER}, #{staffExcel,jdbcType=VARCHAR}, #{staffStatusval,jdbcType=INTEGER}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, 
+      #{updatedBy,jdbcType=VARCHAR}, #{deleteFlag,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.tech.sayo.wechat.clean.bean.Staff" >
     insert into cle_staff
@@ -52,11 +78,11 @@
       <if test="staffCode != null" >
         staff_code,
       </if>
-      <if test="staffName != null" >
-        staff_name,
+      <if test="staffLastname != null" >
+        staff_lastname,
       </if>
-      <if test="staffAge != null" >
-        staff_age,
+      <if test="staffFullname != null" >
+        staff_fullname,
       </if>
       <if test="staffImage != null" >
         staff_image,
@@ -70,8 +96,32 @@
       <if test="staffMobile != null" >
         staff_mobile,
       </if>
-      <if test="staffStatusVal != null" >
+      <if test="staffBirthday != null" >
+        staff_birthday,
+      </if>
+      <if test="staffWorklong != null" >
+        staff_worklong,
+      </if>
+      <if test="staffExcel != null" >
+        staff_excel,
+      </if>
+      <if test="staffStatusval != null" >
         staff_statusval,
+      </if>
+      <if test="createdDate != null" >
+        created_date,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="updatedDate != null" >
+        updated_date,
+      </if>
+      <if test="updatedBy != null" >
+        updated_by,
+      </if>
+      <if test="deleteFlag != null" >
+        delete_flag,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -81,11 +131,11 @@
       <if test="staffCode != null" >
         #{staffCode,jdbcType=VARCHAR},
       </if>
-      <if test="staffName != null" >
-        #{staffName,jdbcType=VARCHAR},
+      <if test="staffLastname != null" >
+        #{staffLastname,jdbcType=VARCHAR},
       </if>
-      <if test="staffAge != null" >
-        #{staffAge,jdbcType=INTEGER},
+      <if test="staffFullname != null" >
+        #{staffFullname,jdbcType=VARCHAR},
       </if>
       <if test="staffImage != null" >
         #{staffImage,jdbcType=VARCHAR},
@@ -99,8 +149,32 @@
       <if test="staffMobile != null" >
         #{staffMobile,jdbcType=VARCHAR},
       </if>
-      <if test="staffStatusVal != null" >
-        #{staffStatusVal,jdbcType=INTEGER},
+      <if test="staffBirthday != null" >
+        #{staffBirthday,jdbcType=VARCHAR},
+      </if>
+      <if test="staffWorklong != null" >
+        #{staffWorklong,jdbcType=INTEGER},
+      </if>
+      <if test="staffExcel != null" >
+        #{staffExcel,jdbcType=VARCHAR},
+      </if>
+      <if test="staffStatusval != null" >
+        #{staffStatusval,jdbcType=INTEGER},
+      </if>
+      <if test="createdDate != null" >
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedDate != null" >
+        #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteFlag != null" >
+        #{deleteFlag,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -110,11 +184,11 @@
       <if test="staffCode != null" >
         staff_code = #{staffCode,jdbcType=VARCHAR},
       </if>
-      <if test="staffName != null" >
-        staff_name = #{staffName,jdbcType=VARCHAR},
+      <if test="staffLastname != null" >
+        staff_lastname = #{staffLastname,jdbcType=VARCHAR},
       </if>
-      <if test="staffAge != null" >
-        staff_age = #{staffAge,jdbcType=INTEGER},
+      <if test="staffFullname != null" >
+        staff_fullname = #{staffFullname,jdbcType=VARCHAR},
       </if>
       <if test="staffImage != null" >
         staff_image = #{staffImage,jdbcType=VARCHAR},
@@ -128,8 +202,32 @@
       <if test="staffMobile != null" >
         staff_mobile = #{staffMobile,jdbcType=VARCHAR},
       </if>
-      <if test="staffStatusVal != null" >
-        staff_statusval = #{staffStatusVal,jdbcType=INTEGER},
+      <if test="staffBirthday != null" >
+        staff_birthday = #{staffBirthday,jdbcType=VARCHAR},
+      </if>
+      <if test="staffWorklong != null" >
+        staff_worklong = #{staffWorklong,jdbcType=INTEGER},
+      </if>
+      <if test="staffExcel != null" >
+        staff_excel = #{staffExcel,jdbcType=VARCHAR},
+      </if>
+      <if test="staffStatusval != null" >
+        staff_statusval = #{staffStatusval,jdbcType=INTEGER},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedDate != null" >
+        updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        updated_by = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteFlag != null" >
+        delete_flag = #{deleteFlag,jdbcType=INTEGER},
       </if>
     </set>
     where staff_id = #{staffId,jdbcType=INTEGER}
@@ -137,13 +235,21 @@
   <update id="updateByPrimaryKey" parameterType="com.tech.sayo.wechat.clean.bean.Staff" >
     update cle_staff
     set staff_code = #{staffCode,jdbcType=VARCHAR},
-      staff_name = #{staffName,jdbcType=VARCHAR},
-      staff_age = #{staffAge,jdbcType=INTEGER},
+      staff_lastname = #{staffLastname,jdbcType=VARCHAR},
+      staff_fullname = #{staffFullname,jdbcType=VARCHAR},
       staff_image = #{staffImage,jdbcType=VARCHAR},
       staff_nativeplace = #{staffNativeplace,jdbcType=VARCHAR},
       staff_idcode = #{staffIdcode,jdbcType=VARCHAR},
       staff_mobile = #{staffMobile,jdbcType=VARCHAR},
-      staff_statusval = #{staffStatusVal,jdbcType=INTEGER}
+      staff_birthday = #{staffBirthday,jdbcType=VARCHAR},
+      staff_worklong = #{staffWorklong,jdbcType=INTEGER},
+      staff_excel = #{staffExcel,jdbcType=VARCHAR},
+      staff_statusval = #{staffStatusval,jdbcType=INTEGER},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      updated_by = #{updatedBy,jdbcType=VARCHAR},
+      delete_flag = #{deleteFlag,jdbcType=INTEGER}
     where staff_id = #{staffId,jdbcType=INTEGER}
   </update>
 </mapper>
