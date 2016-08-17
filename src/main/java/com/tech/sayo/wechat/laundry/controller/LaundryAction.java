@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tech.sayo.background.sys.service.SMessageService;
 import com.tech.sayo.base.entity.MyPage;
 import com.tech.sayo.base.entity.MyStatus;
 import com.tech.sayo.wechat.laundry.bean.RevOrder;
@@ -26,6 +27,9 @@ public class LaundryAction {
 	@Autowired
 	private LaundryService laundryService;
 	
+	@Autowired
+	private SMessageService messageService;
+	
 	@RequestMapping(value = "laundry",method = RequestMethod.GET)
 	public String getLaundry(HttpServletRequest request,HttpServletResponse response,RevOrder order,String callback){
 		return JsonpUtil.jsonpCllback(laundryService.getLaundry(),callback);
@@ -33,6 +37,7 @@ public class LaundryAction {
 	
 	@RequestMapping(value = "submitrevorder",method = RequestMethod.GET)
 	public String submiRevtOrder(HttpServletRequest request,HttpServletResponse response,RevOrder order,String callback){
+		messageService.insertLaundryOrderMessage();
 		return JsonpUtil.jsonpCllback(laundryService.submiRevtOrder(order),callback);
 	}
 	

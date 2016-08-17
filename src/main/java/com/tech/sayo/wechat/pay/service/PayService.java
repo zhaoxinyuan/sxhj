@@ -42,7 +42,7 @@ public interface PayService {
 	
 	public Map<String, Object> wechatPayCallback(HttpServletRequest request,HttpServletResponse response);
 	
-	public void insertPayDetailForWechat(Map<String, Object> map,Integer orderId);
+	public boolean insertPayDetailForWechat(Map<String, Object> map,Integer orderId);
 	
 	public UnifiedWeChatOrder refillAccountWechat(HttpServletRequest request, HttpServletResponse response,double amount,String wechatId);
 	

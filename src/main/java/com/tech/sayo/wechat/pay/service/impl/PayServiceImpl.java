@@ -55,6 +55,7 @@ public class PayServiceImpl implements PayService{
 	private static final String NAMESPACE_INFOUSER  = "com.tech.sayo.wechat.account.bean.mapper.UserMapper.";
 	private static final String TIP_ORDER_NAMESPACE_INFOUSER = "com.ftc.wechat.account.dao.CleTipOrderMapper.";
 	
+	
 	@Autowired
 	private BaseDao baseDao;
 	
@@ -93,6 +94,7 @@ public class PayServiceImpl implements PayService{
 		
 		baseDao.insert(ACCOUNT_NAMESPACE_INFOUSER + "insertSelective", account);
 		baseDao.modify(STORE_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
+		
 		status.MyStatusSuccess();
 		return status;
 	}
@@ -127,6 +129,7 @@ public class PayServiceImpl implements PayService{
 		
 		baseDao.insert(ACCOUNT_NAMESPACE_INFOUSER + "insertSelective", account);
 		baseDao.modify(CLEAN_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
+		
 		status.MyStatusSuccess();
 		return status;
 	}
@@ -163,6 +166,7 @@ public class PayServiceImpl implements PayService{
 		
 		baseDao.insert(ACCOUNT_NAMESPACE_INFOUSER + "insertSelective", account);
 		baseDao.modify(LAUNDRY_ORDER_NAMESPACE_INFOUSER + "updateByPrimaryKeySelective", order);
+		
 		status.MyStatusSuccess();
 		return status;
 	}
@@ -435,7 +439,7 @@ public class PayServiceImpl implements PayService{
 	}
 
 	@Override
-	public void insertPayDetailForWechat(Map<String, Object> map,Integer orderId) {
+	public boolean insertPayDetailForWechat(Map<String, Object> map,Integer orderId) {
 		PayDetail detail = baseDao.selectOne(PAYDETAIL_NAMESPACE_INFOUSER + "selectByOrderNo", map.get("out_trade_no").toString());
 		if(detail == null){
 			detail = new  PayDetail();
@@ -446,6 +450,9 @@ public class PayServiceImpl implements PayService{
 			detail.setPayPlatformid(((Platform)(baseDao.selectOne(PLATFROM_NAMESPACE_INFOUSER + "selectByCode", "wechatpay"))).getPlatformId());
 			detail.setPayPlatformTradeno(map.get("transaction_id").toString());
 			baseDao.insert(PAYDETAIL_NAMESPACE_INFOUSER + "insertSelective", detail);
+			return true;
+		}else{
+			return false;
 		}
 	}
 

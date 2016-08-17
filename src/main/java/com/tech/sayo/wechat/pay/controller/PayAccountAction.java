@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tech.sayo.background.sys.service.SMessageService;
 import com.tech.sayo.wechat.pay.service.PayService;
 import com.tech.sayo.wechat.util.JsonpUtil;
 
@@ -23,13 +24,18 @@ public class PayAccountAction {
 	@Autowired
 	private PayService payService;
 	
+	@Autowired
+	private SMessageService messageService;
+	
 	@RequestMapping(value = "paystore",method = RequestMethod.GET)
 	public String PayStoreByAccount(HttpServletRequest request,HttpServletResponse response,Integer orderId, Integer accountUserid,String callback){
+		messageService.insertStoreOrderMessage();
 		return JsonpUtil.jsonpCllback(payService.PayStoreByAccount(orderId, accountUserid),callback);
 	}
 	
 	@RequestMapping(value = "payclean",method = RequestMethod.GET)
 	public String PayCleanByAccount(HttpServletRequest request,HttpServletResponse response,Integer orderId, Integer accountUserid,String callback){
+		messageService.insertCleanOrderMessage();
 		return JsonpUtil.jsonpCllback(payService.PayCleanByAccount(orderId, accountUserid),callback);
 	}
 	

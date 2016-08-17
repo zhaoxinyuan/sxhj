@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public User getUserByWechatId(String wechatId) {
-		return baseDao.selectOne(NAMESPACE_INFOUSER + "selectByWechatId", wechatId);
+		return wechatId == null || wechatId.equals("") ? null : (User)baseDao.selectOne(NAMESPACE_INFOUSER + "selectByWechatId", wechatId);
 	}
 	
 	@Override

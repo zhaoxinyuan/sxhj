@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.tech.sayo.background.sys.service.SMessageService;
 import com.tech.sayo.base.entity.MyPage;
 import com.tech.sayo.base.entity.MyStatus;
 import com.tech.sayo.wechat.clean.bean.CleOrder;
@@ -29,6 +30,9 @@ import com.tech.sayo.wechat.util.JsonpUtil;
 public class CleanAction {
 	@Autowired
 	private CleanService cleanService;
+	
+	@Autowired
+	private SMessageService messageService;		
 	
 	@RequestMapping(value = "categories",method = RequestMethod.GET)
 	public String getCleanCategorise(HttpServletRequest request,HttpServletResponse response,String callback){
@@ -58,6 +62,7 @@ public class CleanAction {
 	
 	@RequestMapping(value = "nanordersubmit",method = RequestMethod.GET)
 	public String nannyOrderSubmit(HttpServletRequest request,HttpServletResponse response,String order,String callback){
+		messageService.insertNannyOrderMessage();
 		return JsonpUtil.jsonpCllback(cleanService.orderSubmit(new Gson().fromJson(order, NanOrder.class)),callback);
 	}
 	

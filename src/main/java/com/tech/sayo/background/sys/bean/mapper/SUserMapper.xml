@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tech.sayo.background.sys.dao.SUserMapper" >
+  <resultMap id="BaseResultMap" type="com.tech.sayo.background.sys.bean.SUser" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="org_id" property="orgId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="fullname" property="fullname" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="employee_id" property="employeeId" jdbcType="INTEGER" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="password_start_date" property="passwordStartDate" jdbcType="DATE" />
+    <result column="password_expire_date" property="passwordExpireDate" jdbcType="DATE" />
+    <result column="password_expire_days" property="passwordExpireDays" jdbcType="INTEGER" />
+    <result column="password_set_date" property="passwordSetDate" jdbcType="DATE" />
+    <result column="can_update_password" property="canUpdatePassword" jdbcType="CHAR" />
+    <result column="comments" property="comments" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="updated_date" property="updatedDate" jdbcType="TIMESTAMP" />
+    <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="delete_flag" property="deleteFlag" jdbcType="INTEGER" />
+    <result column="is_interface" property="isInterface" jdbcType="INTEGER" />
+    <result column="is_admin" property="isAdmin" jdbcType="INTEGER" />
+    <result column="is_checkIn" property="isCheckin" jdbcType="INTEGER" />
+    <result column="tq_num" property="tqNum" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, org_id, user_name, email, fullname, status, employee_id, password, password_start_date, 
+    password_expire_date, password_expire_days, password_set_date, can_update_password, 
+    comments, created_date, created_by, updated_date, updated_by, delete_flag, is_interface, 
+    is_admin, is_checkIn, tq_num
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from s_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByGroup" resultMap="BaseResultMap" parameterType="com.tech.sayo.background.sys.bean.SUser" >
+   SELECT a.* 
+    FROM s_user a
+    LEFT JOIN s_user_group_user_link b ON a.id = b.user_id
+    LEFT JOIN s_user_group c ON c.id = b.user_group_id
+    where c.user_group_name = #{groupName,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from s_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tech.sayo.background.sys.bean.SUser" >
+    insert into s_user (id, org_id, user_name, 
+      email, fullname, status, 
+      employee_id, password, password_start_date, 
+      password_expire_date, password_expire_days, password_set_date, 
+      can_update_password, comments, created_date, 
+      created_by, updated_date, updated_by, 
+      delete_flag, is_interface, is_admin, 
+      is_checkIn, tq_num)
+    values (#{id,jdbcType=INTEGER}, #{orgId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{fullname,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{employeeId,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, #{passwordStartDate,jdbcType=DATE}, 
+      #{passwordExpireDate,jdbcType=DATE}, #{passwordExpireDays,jdbcType=INTEGER}, #{passwordSetDate,jdbcType=DATE}, 
+      #{canUpdatePassword,jdbcType=CHAR}, #{comments,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{createdBy,jdbcType=VARCHAR}, #{updatedDate,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, 
+      #{deleteFlag,jdbcType=INTEGER}, #{isInterface,jdbcType=INTEGER}, #{isAdmin,jdbcType=INTEGER}, 
+      #{isCheckin,jdbcType=INTEGER}, #{tqNum,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tech.sayo.background.sys.bean.SUser" >
+    insert into s_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orgId != null" >
+        org_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="fullname != null" >
+        fullname,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="employeeId != null" >
+        employee_id,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="passwordStartDate != null" >
+        password_start_date,
+      </if>
+      <if test="passwordExpireDate != null" >
+        password_expire_date,
+      </if>
+      <if test="passwordExpireDays != null" >
+        password_expire_days,
+      </if>
+      <if test="passwordSetDate != null" >
+        password_set_date,
+      </if>
+      <if test="canUpdatePassword != null" >
+        can_update_password,
+      </if>
+      <if test="comments != null" >
+        comments,
+      </if>
+      <if test="createdDate != null" >
+        created_date,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="updatedDate != null" >
+        updated_date,
+      </if>
+      <if test="updatedBy != null" >
+        updated_by,
+      </if>
+      <if test="deleteFlag != null" >
+        delete_flag,
+      </if>
+      <if test="isInterface != null" >
+        is_interface,
+      </if>
+      <if test="isAdmin != null" >
+        is_admin,
+      </if>
+      <if test="isCheckin != null" >
+        is_checkIn,
+      </if>
+      <if test="tqNum != null" >
+        tq_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="fullname != null" >
+        #{fullname,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="employeeId != null" >
+        #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="passwordStartDate != null" >
+        #{passwordStartDate,jdbcType=DATE},
+      </if>
+      <if test="passwordExpireDate != null" >
+        #{passwordExpireDate,jdbcType=DATE},
+      </if>
+      <if test="passwordExpireDays != null" >
+        #{passwordExpireDays,jdbcType=INTEGER},
+      </if>
+      <if test="passwordSetDate != null" >
+        #{passwordSetDate,jdbcType=DATE},
+      </if>
+      <if test="canUpdatePassword != null" >
+        #{canUpdatePassword,jdbcType=CHAR},
+      </if>
+      <if test="comments != null" >
+        #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedDate != null" >
+        #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteFlag != null" >
+        #{deleteFlag,jdbcType=INTEGER},
+      </if>
+      <if test="isInterface != null" >
+        #{isInterface,jdbcType=INTEGER},
+      </if>
+      <if test="isAdmin != null" >
+        #{isAdmin,jdbcType=INTEGER},
+      </if>
+      <if test="isCheckin != null" >
+        #{isCheckin,jdbcType=INTEGER},
+      </if>
+      <if test="tqNum != null" >
+        #{tqNum,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tech.sayo.background.sys.bean.SUser" >
+    update s_user
+    <set >
+      <if test="orgId != null" >
+        org_id = #{orgId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="fullname != null" >
+        fullname = #{fullname,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="employeeId != null" >
+        employee_id = #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="passwordStartDate != null" >
+        password_start_date = #{passwordStartDate,jdbcType=DATE},
+      </if>
+      <if test="passwordExpireDate != null" >
+        password_expire_date = #{passwordExpireDate,jdbcType=DATE},
+      </if>
+      <if test="passwordExpireDays != null" >
+        password_expire_days = #{passwordExpireDays,jdbcType=INTEGER},
+      </if>
+      <if test="passwordSetDate != null" >
+        password_set_date = #{passwordSetDate,jdbcType=DATE},
+      </if>
+      <if test="canUpdatePassword != null" >
+        can_update_password = #{canUpdatePassword,jdbcType=CHAR},
+      </if>
+      <if test="comments != null" >
+        comments = #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedDate != null" >
+        updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        updated_by = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteFlag != null" >
+        delete_flag = #{deleteFlag,jdbcType=INTEGER},
+      </if>
+      <if test="isInterface != null" >
+        is_interface = #{isInterface,jdbcType=INTEGER},
+      </if>
+      <if test="isAdmin != null" >
+        is_admin = #{isAdmin,jdbcType=INTEGER},
+      </if>
+      <if test="isCheckin != null" >
+        is_checkIn = #{isCheckin,jdbcType=INTEGER},
+      </if>
+      <if test="tqNum != null" >
+        tq_num = #{tqNum,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tech.sayo.background.sys.bean.SUser" >
+    update s_user
+    set org_id = #{orgId,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      fullname = #{fullname,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      employee_id = #{employeeId,jdbcType=INTEGER},
+      password = #{password,jdbcType=VARCHAR},
+      password_start_date = #{passwordStartDate,jdbcType=DATE},
+      password_expire_date = #{passwordExpireDate,jdbcType=DATE},
+      password_expire_days = #{passwordExpireDays,jdbcType=INTEGER},
+      password_set_date = #{passwordSetDate,jdbcType=DATE},
+      can_update_password = #{canUpdatePassword,jdbcType=CHAR},
+      comments = #{comments,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      updated_date = #{updatedDate,jdbcType=TIMESTAMP},
+      updated_by = #{updatedBy,jdbcType=VARCHAR},
+      delete_flag = #{deleteFlag,jdbcType=INTEGER},
+      is_interface = #{isInterface,jdbcType=INTEGER},
+      is_admin = #{isAdmin,jdbcType=INTEGER},
+      is_checkIn = #{isCheckin,jdbcType=INTEGER},
+      tq_num = #{tqNum,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

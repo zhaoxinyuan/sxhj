@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tech.sayo.background.sys.service.SMessageService;
 import com.tech.sayo.wechat.clean.bean.CleOrder;
 import com.tech.sayo.wechat.clean.bean.CleTipOrder;
 import com.tech.sayo.wechat.clean.bean.DifOrder;
@@ -41,6 +42,9 @@ public class PayAction {
 
 	@Autowired
 	private LaundryService ladService;
+	
+	@Autowired
+	private SMessageService messageService;
 
 	@RequestMapping(value = "platform", method = RequestMethod.GET)
 	public String platform(HttpServletRequest request, HttpServletResponse response, String callback) {
@@ -59,7 +63,9 @@ public class PayAction {
 			StrOrder order = strService.getOrder(map.get("out_trade_no").toString());
 			order.setOrderStatusval(2);
 			strService.updateOrderStatus(order);
-			payService.insertPayDetailForWechat(map,order.getOrderId());
+			if(payService.insertPayDetailForWechat(map,order.getOrderId())){
+				messageService.insertStoreOrderMessage();
+			}
 		}
 		return null;
 	}
@@ -76,7 +82,9 @@ public class PayAction {
 			CleOrder order = cleService.getOrder(map.get("out_trade_no").toString());
 			order.setOrderStatusval(2);
 			cleService.updateCleOrderStatus(order);
-			payService.insertPayDetailForWechat(map,order.getOrderId());
+			if(payService.insertPayDetailForWechat(map,order.getOrderId())){
+				messageService.insertCleanOrderMessage();
+			}
 		}
 		return null;
 	}
